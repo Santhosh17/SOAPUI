@@ -1,2 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<con:testSuite id="8b86ed1d-b6da-465e-9988-298789279764" name="Module 1 Basics" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="8b86ed1d-b6da-465e-9988-298789279764fileName">Module-1-Basics</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:runType>SEQUENTIAL</con:runType><con:properties/><con:reportParameters/></con:testSuite>
