@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="e79bf90a-6807-434f-b235-4e4f62ee541f" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="createContractPayment" searchProperties="true" timeout="0" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="9980e61b-6ade-40c4-be50-564627094071fileName">createContractPayment</con:setting><con:setting id="e79bf90a-6807-434f-b235-4e4f62ee541ffileName">createContractPayment</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="calltestcase" name="Run create3MonthsBackdatedContract" id="315dad2f-0b52-4924-b77b-5a631e1349c2"><con:settings/><con:config xsi:type="con:RunTestCaseStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:targetTestCase>e2ad569f-8fa9-4673-abe9-90d87f3e30a6</con:targetTestCase><con:properties><con:property><con:name>externalContractNumber</con:name></con:property><con:property><con:name>status</con:name></con:property><con:property><con:name>cmsId</con:name></con:property><con:property><con:name>currentCMSIDD</con:name></con:property><con:property><con:name>settlementAmount</con:name></con:property><con:property><con:name>sysCMSIDD</con:name></con:property><con:property><con:name>cmsIDD</con:name></con:property><con:property><con:name>dealerbpmid</con:name></con:property><con:property><con:name>bpmid</con:name></con:property><con:property><con:name>registrationNumber</con:name></con:property><con:property><con:name>orderNumber</con:name></con:property><con:property><con:name>vin</con:name></con:property></con:properties><con:returnProperties><con:entry>externalContractNumber</con:entry><con:entry>status</con:entry><con:entry>cmsId</con:entry><con:entry>currentCMSIDD</con:entry><con:entry>settlementAmount</con:entry><con:entry>sysCMSIDD</con:entry><con:entry>cmsIDD</con:entry><con:entry>dealerbpmid</con:entry><con:entry>bpmid</con:entry><con:entry>registrationNumber</con:entry><con:entry>orderNumber</con:entry><con:entry>vin</con:entry></con:returnProperties><con:runMode>PARALLELL</con:runMode></con:config></con:testStep><con:testStep type="request" name="createContractPayment" id="dfde83cf-5f69-4816-8a23-13fbb08a8dac"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>createContractPayment</con:operation><con:request name="createContractPayment" id="2eaf48e4-c9d9-4aa2-af5f-726379ba47c3"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://mkvsudfsdock11:81/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:con="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <con:createContractPayment>
+         <con:externalContractNumber>${Run create3MonthsBackdatedContract#externalContractNumber}</con:externalContractNumber>
+         <con:totalTransactionAmount>?</con:totalTransactionAmount>
+         <con:effectiveDate>?</con:effectiveDate>
+         <con:transactionType>?</con:transactionType>
+         <con:paymentType>?</con:paymentType>
+         <!--Optional:-->
+         <con:paymentDescription>?</con:paymentDescription>
+         <!--Optional:-->
+         <con:referenceNumber>?</con:referenceNumber>
+         <!--Optional:-->
+         <con:invoiceNumber>?</con:invoiceNumber>
+         <!--Optional:-->
+         <con:earlySettlementReason>?</con:earlySettlementReason>
+         <con:territoryCode>?</con:territoryCode>
+         <!--Optional:-->
+         <con:additionalInfo>?</con:additionalInfo>
+         <con:applicationInfo><!--Optional:-->
+            <!--Optional:-->
+            <com:tenantInfo>
+               <com:tenantCode>${#Project#countryCode}</com:tenantCode>
+            </com:tenantInfo>
+            <!--Optional:-->
+            <com:securityAudit>
+               <com:messageId>145855676474232</com:messageId>
+               <com:timestamp>2018-03-21T20:26:24+10:00</com:timestamp>
+               <com:clientAppId>P021992679</com:clientAppId>
+               <com:userId>${#Project#userId}</com:userId>
+               <com:authorisingUserId>${#Project#authorisingUserId}</com:authorisingUserId>
+               <com:authorisingUserId>${#Project#authorisingUserId}</com:authorisingUserId><com:clientLanguage>en_AU</com:clientLanguage>
+            </com:securityAudit>
+         </con:applicationInfo>
+      </con:createContractPayment>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="6c0ec832-14d9-4cde-8010-62a67070125d"/><con:assertion type="Schema Compliance" id="ca4d5431-5d10-4f15-be8c-d003131115e9"><con:configuration/></con:assertion><con:assertion type="SOAP Fault Assertion" id="6c1008ff-1ab1-4e85-ac2b-4b26e7dac510"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:properties/><con:reportParameters/><con:breakPoints><con:testStepId>ceaba695-d1e9-4022-a7b1-5ee5de9e7bec</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>

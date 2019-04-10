@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="99d3b9c3-5cff-4279-9381-b5d62ab96a16" failOnError="false" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="createContractNotes" searchProperties="true" timeout="0" wsrmEnabled="false" wsrmVersion="1.0" wsrmAckTo="" amfAuthorisation="false" amfEndpoint="" amfLogin="" amfPassword="" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="IncludeOverview">true</con:setting><con:setting id="IncludeResults">true</con:setting><con:setting id="FlowLayout">false</con:setting><con:setting id="ErrorDetails">true</con:setting><con:setting id="IncludeCoverage">true</con:setting><con:setting id="6e64e473-4687-4bb8-8d31-4a2088a77cfffileName">createContractNotes</con:setting><con:setting id="99d3b9c3-5cff-4279-9381-b5d62ab96a16fileName">createContractNotes</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="datasource" name="getExcelData" id="6b3239b8-319b-4e06-a3d1-5399551c9929"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Excel"><con:configuration><file>${projectDir}/createContractNotes.xlsx</file><worksheet>${#Project#workSheet}</worksheet><cell>${#TestSuite#TestStartCell}</cell><ignoreEmpty>true</ignoreEmpty><evaluateFormulas>false</evaluateFormulas></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>Row</con:property><con:property>ExpectedAPIoutput</con:property><con:property>Scenario</con:property><con:property>contractNumber</con:property><con:property>note</con:property><con:property>messageId</con:property><con:property>timestamp</con:property><con:property>clientAppId</con:property><con:property>userId</con:property><con:startRow>0</con:startRow><con:endRow/><con:completeLastOperation>true</con:completeLastOperation><con:trimValues>false</con:trimValues><con:entitizeValues>false</con:entitizeValues><con:restartOnRun>true</con:restartOnRun><con:expandProperties>false</con:expandProperties></con:config></con:testStep><con:testStep type="datasource" name="getContractNumber" id="971e6469-772e-44f2-b5e4-ca620fecb4ab"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;entry key="countryCode" value="${#Project#countryCode}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBCALMS2CMS( Default environment )</Connection><query>Select lk.LNKNUM_EXTERNAL_REF_FIELD As lk_LNKNUM_EXTERNAL_REF_FIELD,
+  lk.LNKNUM_INTERNAL_REF_FIELD As lk_LNKNUM_INTERNAL_REF_FIELD, lc.CLINK_PRIMARY
+  As lc_CLINK_PRIMARY, lc.CLINK_SECONDARY As lc_CLINK_SECONDARY,
+  lc.CLINK_PRIMARY_MCU As lc_CLINK_PRIMARY_MCU, a.LOAN_NUM As a_LOAN_NUM,
+  a.START_DATE As a_START_DATE, a.IDD As a_IDD, a.END_DATE As a_END_DATE,
+  a.LOAN_STATUS As a_LOAN_STATUS, a.LOAN_COUNTRY As a_LOAN_COUNTRY,
+  lm.ACCT_BPMID As lm_ACCT_BPMID
+From LLNKNUM lk, LCLINK lc,
+    (Select ln.*, to_date(lpad(to_char(ln.LOAN_START_DATE), 6, '0'),
+      'ddMMyy') As START_DATE,
+      to_date(lpad(to_char(dt.TABLE_LAST_INT_DEBIT_DDMMYY), 6, '0'),
+      'ddMMyy') As IDD, to_date(lpad(to_char(ln.LOAN_MATURITY), 8, '0'),
+      'ddMMyyyy') As END_DATE
+    From LLOAN ln, VIEW_LTABLE_LAST_DEBIT_DATE dt
+    Where dt.TABLE_TERRITORY_CODE = ln.LOAN_COUNTRY) a, LACMSTR lm
+Where lk.LNKNUM_INTERNAL_REF_FIELD = lc.CLINK_PRIMARY And lc.CLINK_SECONDARY =
+  a.LOAN_NUM And a.LOAN_ACCT_1 = lm.ACCT_NUMBER And (lc.CLINK_PRIMARY_MCU = 'Y'
+  And a.START_DATE &lt; a.IDD And a.IDD &lt; a.END_DATE And a.LOAN_STATUS In (0, 8, 1,
+  3) And a.LOAN_COUNTRY = :countryCode And a.LOAN_CUSTOMER_TYPE_1 = 'P')and rownum=1</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>lk_LNKNUM_EXTERNAL_REF_FIELD</con:property><con:property>lk_LNKNUM_INTERNAL_REF_FIELD</con:property><con:property>lc_CLINK_PRIMARY</con:property><con:property>lc_CLINK_SECONDARY</con:property><con:property>lc_CLINK_PRIMARY_MCU</con:property><con:property>a_LOAN_NUM</con:property><con:property>a_START_DATE</con:property><con:property>a_IDD</con:property><con:property>a_END_DATE</con:property><con:property>a_LOAN_STATUS</con:property><con:property>a_LOAN_COUNTRY</con:property><con:property>lm_ACCT_BPMID</con:property><con:startRow>0</con:startRow><con:endRow/><con:completeLastOperation>true</con:completeLastOperation><con:failOnEmpty>true</con:failOnEmpty><con:gotoLoopOnEmpty>true</con:gotoLoopOnEmpty><con:trimValues>true</con:trimValues><con:entitizeValues>false</con:entitizeValues><con:restartOnRun>true</con:restartOnRun><con:expandProperties>false</con:expandProperties></con:config></con:testStep><con:testStep type="groovy" name="resetRowCountBeforeCreateContractNotetoZero" id="0052efcb-9dcd-424e-81e8-6557c5dabb5d"><con:settings/><con:config><script>log.info "**************TEST SCRIPT START: CreateContract Notes API**************"
+testRunner.testCase.setPropertyValue( "rowCountBeforeCreateContractNote", "0" )
+def contractDetailsfromExcel = context.expand( '${getExcelData#contractNumber}' )
+//def lOAN_NUM = context.expand( '${getContractNumber#LOAN_NUM}' )
+//def lk_LNKNUM_EXTERNAL_REF_FIELD = context.expand( '${getContractNumber#lk_LNKNUM_EXTERNAL_REF_FIELD}' )
+def lc_CLINK_SECONDARY = context.expand( '${getContractNumber#lc_CLINK_SECONDARY}' )
+
+
+def contractNo = ""
+if (contractDetailsfromExcel == "CONTRACT"){
+	contractNo = lc_CLINK_SECONDARY 
+}
+testRunner.testCase.setPropertyValue( "contract", contractNo)
+log.info "Setting the Variables rowCountBeforeCreateContractNote to  0"
+</script></con:config></con:testStep><con:testStep type="datasource" name="rowCountfromDatabaseBeforeCreatingNote" id="7d15dc93-1afe-43b1-b2a8-ed1a7be51d13"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;xml-fragment/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBCALMS2CMS( Default environment )</Connection><query>Select COUNT(*)
+From LNOTEPAD
+Where LNOTEPAD.NOTEPAD_LOAN = ${#TestCase#contract}</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>COUNT(*)</con:property><con:startRow>0</con:startRow><con:endRow/><con:completeLastOperation>true</con:completeLastOperation><con:failOnEmpty>true</con:failOnEmpty><con:gotoLoopOnEmpty>true</con:gotoLoopOnEmpty><con:trimValues>true</con:trimValues><con:entitizeValues>false</con:entitizeValues><con:restartOnRun>true</con:restartOnRun><con:expandProperties>false</con:expandProperties></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script(Capture row Count before Create)" id="31c0c345-fb26-46ad-a64b-c9100f0be5e2"><con:settings/><con:config><script>def cOUNT = context.expand( '${rowCountfromDatabaseBeforeCreatingNote#COUNT(*)}' )
+log.info "Row Count before createContractNotes		 		:" + cOUNT
+testRunner.testCase.setPropertyValue( "rowCountBeforeCreateContractNote", cOUNT )</script></con:config></con:testStep><con:testStep type="request" name="createContractNote" id="95b0a072-97fd-408f-94db-ae9bc0f421da"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>createContractNote</con:operation><con:request name="createContractNote" id="bb6892b6-11d2-446e-8f4d-489899f4875a" defaultOutgoingWss="" defaultIncomingWss="" outgoingWss="" incomingWss=""><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvdfsdev01/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:con="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <con:createContractNote>
+<!--         <con:externalContractNumber>${#TestCase#contract}</con:externalContractNumber>-->
+<con:externalContractNumber>1000001004</con:externalContractNumber>
+         <con:contractNote>${getExcelData#note}</con:contractNote>
+         <con:applicationInfo>
+            <com:tenantInfo>
+               <com:tenantCode>${#Project#countryCode}</com:tenantCode>
+            </com:tenantInfo>
+            <com:securityAudit>
+               <com:messageId>${getExcelData#messageId}</com:messageId>
+               <com:timestamp>${getExcelData#timestamp}</com:timestamp>
+               <com:clientAppId>${getExcelData#clientAppId}</com:clientAppId>
+               <com:userId>${getExcelData#userId}</com:userId>
+               <com:authorisingUserId>${#Project#authorisingUserId}</com:authorisingUserId><com:clientLanguage>en_AU</com:clientLanguage>
+            </com:securityAudit>
+         </con:applicationInfo>
+      </con:createContractNote>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="a0a3cb17-a19f-4bc8-822a-2c845f7e0e4a"/><con:assertion type="Schema Compliance" id="55be03f7-b234-4852-abc2-382c048ae6cc"><con:configuration/></con:assertion><con:assertion type="SOAP Fault Assertion" id="d4cd73b3-9bb2-4b85-b64b-c87d0f680181"/><con:assertion type="GroovyScriptAssertion" id="5141646f-3bc0-4ac4-9020-6bf569c1e4b8" name="Script Assertion"><con:configuration/></con:assertion><con:assertion type="XPath Match" id="2b44f3af-4479-44b7-812f-b554c0380f05" name="Match content of [ns4:responseStatus]"><con:configuration><path>declare namespace ns4='http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract';
+//ns4:createContractNoteResponse[1]/ns4:contractNoteResponse[1]/ns4:responseStatus[1]/text()</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XPath Match" id="82f07c7b-d960-4fdd-a613-7c51cf3fed74" name="Check for existence of [ns4:responseStatus]"><con:configuration><path>declare namespace ns4='http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract';
+exists( //ns4:createContractNoteResponse/ns4:contractNoteResponse/ns4:responseStatus)</path><content>true</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="GroovyScriptAssertion" id="cf653a77-a126-45d2-beb0-a6b4fdd6692b" name="Assert node [ns4:responseStatus]"><con:configuration><scriptText>import com.eviware.soapui.support.XmlHolder
+
+def holder = new XmlHolder( messageExchange.responseContentAsXml )
+holder.namespaces["ns4"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract"
+def node = holder.getDomNode( "//ns4:createContractNoteResponse[1]/ns4:contractNoteResponse[1]/ns4:responseStatus[1]" )
+
+assert node != null
+</scriptText></con:configuration></con:assertion><con:assertion type="GroovyScriptAssertion" id="c5c07d8f-9718-421f-826d-0ecfddcd570b" name="Script Assertion 2"><con:configuration/></con:assertion><con:assertion type="GroovyScriptAssertion" id="88bd4daa-b610-4322-8847-5e6698baedb7" name="Assert node [ns2:timestamp]"><con:configuration><scriptText>import com.eviware.soapui.support.XmlHolder
+
+def holder = new XmlHolder( messageExchange.responseContentAsXml )
+holder.namespaces["ns4"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract"
+holder.namespaces["ns2"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes"
+def node = holder.getDomNode( "//ns4:createContractNoteResponse[1]/ns4:contractNoteResponse[1]/ns4:applicationInfo[1]/ns2:securityAudit[1]/ns2:timestamp[1]" )
+
+assert node != null
+</scriptText></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="ba5f7dc0-e8db-409c-b494-16037c932774"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4afb3ac9-5034-4c9c-8880-fc76dd54bdc6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3413a0c0-76cc-4f43-9482-3efe9e972e81"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a32f4f82-e311-4f8a-ba4f-accdfcbdadcf"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1d61f86f-f9a2-4364-a52c-3d321cfb1a28"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="b796eeee-b2bf-40b2-9d2a-9d00c30d0dab"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="263f20f9-2653-4f33-8d66-1694d38c9931"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1f7152d8-1be5-485f-bc97-18cbc1aa4ba8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="3b0f4fd5-8397-4067-b032-ecfa22cfa5ff"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="02782eb4-ecaf-43ac-8f0c-0a1eeebbdd7a"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="15dff999-92e5-4da2-8a61-2a9da4ce2988"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="95a2ef28-4286-4bbc-8a51-c37e33c44140"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="datasource" name="rowCountfromDatabaseAfterCreatingNote" id="745841bd-9dea-42b0-9652-4edf6f0f3916"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;xml-fragment/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBCALMS2CMS( Default environment )</Connection><query>Select count(*)
+From LNOTEPAD
+Where LNOTEPAD.NOTEPAD_LOAN =${#TestCase#contract}</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>COUNT(*)</con:property><con:startRow>0</con:startRow><con:endRow/><con:completeLastOperation>true</con:completeLastOperation><con:failOnEmpty>true</con:failOnEmpty><con:gotoLoopOnEmpty>true</con:gotoLoopOnEmpty><con:trimValues>true</con:trimValues><con:entitizeValues>false</con:entitizeValues><con:restartOnRun>true</con:restartOnRun><con:expandProperties>false</con:expandProperties></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script(Capture row Count after Create)" id="d15c7f46-e4c6-48b0-bea0-e1ab12645b14"><con:settings/><con:config><script>def cOUNT = context.expand( '${rowCountfromDatabaseAfterCreatingNote#COUNT(*)}' )
+log.info "Row Count after createContractNotes		 		:" + cOUNT
+testRunner.testCase.setPropertyValue( "rowCountAfterCreateContractNote", cOUNT )</script></con:config></con:testStep><con:testStep type="groovy" name="Groovy(validate data)" id="cfc26b8c-fecf-48ae-b38f-de826fed5fe7"><con:settings/><con:config><script>
+import com.eviware.soapui.model.testsuite.TestRunner.Status
+import com.eviware.soapui.support.XmlHolder
+
+def testResult = "FAIL" 
+
+def response = context.expand('${createContractNote#Response}')
+def holder = new XmlHolder(response)
+holder.namespaces["ns4"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract"
+holder.namespaces["ns3"]='http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ErrorTypes'
+holder.namespaces["ns2"]='http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes';
+//ns4:createContractNoteResponse[1]/ns4:contractNoteResponse[1]/ns4:audit[1]/ns2:timestamp[1]/text()
+if (holder.getNodeValue('exists(//ns4:createContractNoteResponse/ns4:contractNoteResponse/ns4:responseStatus)')== "true")
+{
+log.info "Contract notes created successfully   : " + holder.getNodeValue('exists(//ns4:createContractNoteResponse/ns4:contractNoteResponse/ns4:responseStatus)')
+log.info "Contract Number 				   : " + context.expand( '${#TestCase#contract}' )
+testResult = "PASS"
+}else{
+log.info "Create Contract notes has issue   : " + holder.getNodeValue('exists(//ns4:createContractNoteResponse/ns4:contractNoteResponse/ns4:responseStatus)')
+log.error "Fault code 				    	: " + holder.getNodeValue('//faultcode[1]/text()')
+log.error "Fault error 				    : " + holder.getNodeValue('//faultstring[1]/text()')
+log.error "Error Code     			    		: " + holder.getNodeValue('//detail[1]/ns3:businessError[1]/ns3:errorCode[1]/text()')
+testResult = "FAIL" 
+}
+
+// Validating the row Count :
+def cOUNTBefore = context.expand( '${rowCountfromDatabaseBeforeCreatingNote#COUNT(*)}' )
+def cOUNTAfter = context.expand( '${rowCountfromDatabaseAfterCreatingNote#COUNT(*)}' )
+log.info "cOUNTBefore" +cOUNTBefore 
+log.info "cOUNTAfter"+cOUNTAfter
+if (cOUNTAfter.toInteger()- cOUNTBefore.toInteger() == 1){
+	log.info "One row added successfully"
+	testResult = "PASS"
+}else{
+	log.error  "Contract Note did not get added successfully to database"
+	testResult = "FAIL"
+}
+
+//validating the data from database
+def nOTEPAD_LONG_DATE = context.expand( '${getDataFromDatabaseAfterCreate#NOTEPAD_LONG_DATE}' )
+def nOTEPAD_DATA = context.expand( '${getDataFromDatabaseAfterCreate#NOTEPAD_DATA}' )
+log.info "Data from data Base :  " + nOTEPAD_LONG_DATE +"    " + nOTEPAD_DATA
+
+def rawRequest = context.expand( '${createContractNote#RawRequest}')
+def holderRequest = new XmlHolder(rawRequest)
+def contractNote,userId,messageId,clientAppId
+contractNote = holderRequest.getNodeValue('//con:contractNote')
+userId =  holderRequest.getNodeValue('//com:userId')
+messageId =holderRequest.getNodeValue('//com:messageId')
+clientAppId = holderRequest.getNodeValue('//com:clientAppId')
+log.info holderRequest.getNodeValue('//con:contractNote')
+log.info holderRequest.getNodeValue('//com:userId')
+log.info holderRequest.getNodeValue('//com:messageId')
+log.info holderRequest.getNodeValue('//com:clientAppId')
+
+//Values from response
+def responseDateTimeStamp = holder.getNodeValue('//ns4:createContractNoteResponse[1]/ns4:contractNoteResponse[1]/ns4:applicationInfo[1]/ns2:securityAudit[1]/ns2:timestamp[1]/text()')
+log.info "reponse datetime from audit			:" +responseDateTimeStamp
+def responsedatefromAudit  = responseDateTimeStamp.take(10)
+responsedatefromAudit  = responsedatefromAudit.replace("-","")
+log.info "response date from audit in DB format 	:" +responsedatefromAudit
+def responsetime = responseDateTimeStamp.split('T')
+//log.info responsetime[0]
+//log.info responsetime[1]
+def timeStampfromAudit =  responsetime[1].take(8)
+log.info "reponse time from audit			:" + timeStampfromAudit
+
+def userIDFromAudit = holder.getNodeValue('//ns4:createContractNoteResponse[1]/ns4:contractNoteResponse[1]/ns4:applicationInfo[1]/ns2:securityAudit[1]/ns2:userId[1]/text()')
+log.info holder.getNodeValue('//ns4:createContractNoteResponse[1]/ns4:contractNoteResponse[1]/ns4:applicationInfo[1]/ns2:securityAudit[1]/ns2:userId[1]/text()')
+
+def noteToVerifyWithDB = userIDFromAudit+" "+contractNote
+log.info "Note FromDB before trimming the time Stamp ------"+ nOTEPAD_DATA
+def noteFROMDB = nOTEPAD_DATA.drop(8)
+log.info "Note FromDB after trimming the time Stamp ------"+ noteFROMDB
+
+if ((noteToVerifyWithDB.trim() == noteFROMDB.trim()) &amp;&amp; (responsedatefromAudit.trim()==nOTEPAD_LONG_DATE.trim())) {
+	log.info " Date Value from xml ------"+responsedatefromAudit.trim() 
+	log.info "Date Value from Database ------" + nOTEPAD_LONG_DATE.trim()
+	log.info "Note value from the request ------" + noteToVerifyWithDB 
+	log.info "Note Value from Database ------"+ noteFROMDB
+	log.info "equal"
+}else{
+	log.info " Date Value from xml------"+responsedatefromAudit.trim()
+	log.info " Date Value from Database ------ " + nOTEPAD_LONG_DATE.trim()
+	log.info " Note value from the request ------" + noteToVerifyWithDB  
+	log.info " Note Value from Database ------"+ noteFROMDB
+//	log.info noteToVerifyWithDB  +"*"+ noteFROMDB
+	log.error " not equal"
+
+}
+
+testRunner.testCase.testSuite.setPropertyValue("TestResult", testResult)
+
+log.info "**************TEST SCRIPT END  : CreateContract Notes API**************"
+</script></con:config></con:testStep><con:testStep type="datasourceloop" name="DataSource Loop" id="2f8d8ac4-5aed-4a42-b830-1f62b4b029ec" disabled="true"><con:settings/><con:config><dataSourceStep>getExcelData</dataSourceStep><targetStep>resetRowCountBeforeCreateContractNotetoZero</targetStep></con:config></con:testStep><con:properties><con:property><con:name>rowCountBeforeCreateContractNote</con:name><con:value>0</con:value></con:property><con:property><con:name>rowCountAfterCreateContractNote</con:name><con:value>0</con:value></con:property><con:property><con:name>contract</con:name><con:value>100000023</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>af92915a-0cf8-402c-88bf-ffb4d44864f2</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>40d108c6-a8b4-4c24-bfda-cb63e2538af2</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>54b82e61-3cf5-4172-b65b-ad3bd28fa2df</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>846ce0ab-3fef-45fa-a49b-f404b1eeafc0</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>b763f59f-9ad4-44b1-97dc-817a1fd7bd03</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>2b6b0d0c-d733-4a66-86e7-26437e30f9a7</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>66668ef0-80d5-4a4b-b7f9-082e2b54953a</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>c4d78f23-5d9b-4549-b0b9-d263e1743018</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>2b37807a-f837-4e13-a02b-78ba8b4aa351</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>539dee9e-a6da-4f6c-accf-988d36124ac1</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>b8429b25-d02a-4a77-a0d3-f5d873cc041d</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="ba5f7dc0-e8db-409c-b494-16037c932774"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4afb3ac9-5034-4c9c-8880-fc76dd54bdc6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3413a0c0-76cc-4f43-9482-3efe9e972e81"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a32f4f82-e311-4f8a-ba4f-accdfcbdadcf"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="263f20f9-2653-4f33-8d66-1694d38c9931"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1f7152d8-1be5-485f-bc97-18cbc1aa4ba8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3b0f4fd5-8397-4067-b032-ecfa22cfa5ff"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="02782eb4-ecaf-43ac-8f0c-0a1eeebbdd7a"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="15dff999-92e5-4da2-8a61-2a9da4ce2988"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="95a2ef28-4286-4bbc-8a51-c37e33c44140"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>

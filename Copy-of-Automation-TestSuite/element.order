@@ -1,0 +1,16 @@
+Automated-createContractNotes.xml
+Automated-updateContractCustomerLinks.xml
+Automated-getContractNotes.xml
+Schema-Validation-CreateContract-notes.xml
+Schema-Validation-getContract-notes.xml
+Automated-getContractTransactionHistory.xml
+Automated-getContractTransactionHistory-MCR.xml
+Schema-Validation-getContractTransactionHistory.xml
+Automated-getSearch.xml
+AutomatedCreateContractPayment---CONTRACT.xml
+AutomatedCreateContractPayment---MCU.xml
+AutomatedCreateContractPayment---MCR.xml
+Schema-Validation---AutomatedCreateContractPayment.xml
+AutomatedCreateContractPaymentReversal---CONTRACT.xml
+AutomatedCreateContractPaymentReversal---MCU.xml
+AutomatedCreateContractPaymentReversal---MCR.xml

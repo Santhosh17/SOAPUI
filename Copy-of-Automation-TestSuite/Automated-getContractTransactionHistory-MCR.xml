@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="7a7d3c3d-4214-49c7-a4a5-042b4c7bf351" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Automated getContractTransactionHistory MCR" searchProperties="true" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="IncludeOverview">true</con:setting><con:setting id="IncludeResults">true</con:setting><con:setting id="FlowLayout">true</con:setting><con:setting id="ErrorDetails">true</con:setting><con:setting id="IncludeCoverage">true</con:setting><con:setting id="024e30b4-3f93-4ccd-bbbf-544228aa1fa8fileName">Automated-getContractTransactionHistory-MCR</con:setting><con:setting id="7a7d3c3d-4214-49c7-a4a5-042b4c7bf351fileName">Automated-getContractTransactionHistory-MCR</con:setting></con:settings><con:testStep type="datasource" name="getExceldata" id="3a6d2140-f736-4aa7-afd5-a5206a4ae873"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Excel"><con:configuration><file>C:/CMS Automation/API New/new/apiregression/getContractTransactionHistory - MCR.xlsx</file><worksheet>${#Project#Worksheet}</worksheet><cell>A2</cell><ignoreEmpty>true</ignoreEmpty><evaluateFormulas>false</evaluateFormulas></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:preload>false</con:preload><con:property>Row</con:property><con:property>ExpectedAPIoutput</con:property><con:property>Scenario</con:property><con:property>contractNumber</con:property><con:property>messageId</con:property><con:property>timestamp</con:property><con:property>clientAppId</con:property><con:property>userId</con:property><con:startRow>0</con:startRow><con:endRow/><con:failOnEmpty>false</con:failOnEmpty><con:gotoLoopOnEmpty>false</con:gotoLoopOnEmpty><con:trimValues>false</con:trimValues><con:entitizeValues>false</con:entitizeValues><con:restartOnRun>true</con:restartOnRun><con:expandProperties>false</con:expandProperties></con:config></con:testStep><con:testStep type="groovy" name="Reset Counter Values" id="59a82d92-5bb6-4399-895d-f4e6b51b28c9"><con:settings/><con:config><script>log.info "**************TEST SCRIPT START: getContractTransactionHistory API**************"
+testRunner.testCase.setPropertyValue( "countIterator", "0" )
+testRunner.testCase.setPropertyValue( "XmlCounter", "1" )</script></con:config></con:testStep><con:testStep type="datasource" name="totalTranNumbers" id="c3a895f4-82f9-4402-b0ee-4add77b563bf"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;xml-fragment/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select COUNT(*) from LMCTRAN where  MCTRAN_MCR_REFERENCE =${getExceldata#contractNumber} </query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>COUNT(*)</con:property><con:startRow>0</con:startRow><con:endRow/><con:failOnEmpty>false</con:failOnEmpty><con:gotoLoopOnEmpty>false</con:gotoLoopOnEmpty><con:trimValues>true</con:trimValues><con:entitizeValues>false</con:entitizeValues><con:restartOnRun>true</con:restartOnRun><con:expandProperties>false</con:expandProperties></con:config></con:testStep><con:testStep type="request" name="getContractTransactionHistory" id="1d11d57c-88df-449b-a57f-5201cbc1248c"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>getContractTransactionHistory</con:operation><con:request name="getContractTransactionHistory" id="548fc1f8-b0cf-4c7d-a8b0-77581941d975" defaultOutgoingWss="" defaultIncomingWss="" outgoingWss="" incomingWss=""><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvdfsdev01/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:con="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <con:getContractTransactionHistory>
+         
+         <con:externalContractNumber>${getExceldata#contractNumber}</con:externalContractNumber><con:audit>
+            <com:messageId>${getExceldata#messageId}</com:messageId>
+            <com:timestamp>${getExceldata#timestamp}</com:timestamp>
+            <com:clientAppId>${getExceldata#clientAppId}</com:clientAppId>
+            <com:userId>${getExceldata#userId}</com:userId><com:clientLanguage>en_GB</com:clientLanguage>
+         </con:audit>
+      </con:getContractTransactionHistory>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="caf736f3-b6b6-4184-b065-9da5c5aede76"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="ba5f7dc0-e8db-409c-b494-16037c932774"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4afb3ac9-5034-4c9c-8880-fc76dd54bdc6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3413a0c0-76cc-4f43-9482-3efe9e972e81"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a32f4f82-e311-4f8a-ba4f-accdfcbdadcf"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1d61f86f-f9a2-4364-a52c-3d321cfb1a28"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="b796eeee-b2bf-40b2-9d2a-9d00c30d0dab"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="263f20f9-2653-4f33-8d66-1694d38c9931"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1f7152d8-1be5-485f-bc97-18cbc1aa4ba8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="3b0f4fd5-8397-4067-b032-ecfa22cfa5ff"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="02782eb4-ecaf-43ac-8f0c-0a1eeebbdd7a"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="15dff999-92e5-4da2-8a61-2a9da4ce2988"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script 1" id="fb1d1653-778e-4596-8677-b59e3c3ae11e"><con:settings/><con:config><script>log.info " loop Transactions"</script></con:config></con:testStep><con:testStep type="datasource" name="DataSource" id="0fc13d5f-a088-4b72-a9e5-83186f1cf26e"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;xml-fragment/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select MCTRAN_MCR_REFERENCE as YTRAN_LOAN, MCTRAN_NO as YTRAN_NO,MCTRAN_ACCT as YTRAN_ACCT,MCTRAN_ARR_BAL as YTRAN_ARR_BAL, MCTRAN_ARR_GOVT as YTRAN_ARR_GOVT,MCTRAN_ARR_INT as YTRAN_ARR_INT,MCTRAN_ARR_MISC as YTRAN_ARR_MISC,
+MCTRAN_ARR_ODI as YTRAN_ARR_ODI, MCTRAN_ARR_PRINC as YTRAN_ARR_PRINC, MCTRAN_BATCH as YTRAN_BATCH, MCTRAN_CODE as YTRAN_CODE, MCTRAN_CUR_BAL  as YTRAN_CUR_BAL , to_char(to_date(lpad(to_char(MCTRAN_DATE),6,'0'),'ddMMyy'),'YYYYMMDD') as YTRAN_DATE ,
+MCTRAN_FIRST_INSTAL as YTRAN_FIRST_INSTAL ,to_char(to_date(lpad(to_char(MCTRAN_ID_DATE),6,'0'),'ddMMyy'),'YYYYMMDD') as YTRAN_ID_DATE,MCTRAN_INT_BEAR as YTRAN_INT_BEAR,MCTRAN_INTEREST_TYPE as YTRAN_INTEREST_TYPE,
+MCTRAN_LAST_INSTAL as YTRAN_LAST_INSTAL ,MCTRAN_MEMO as YTRAN_MEMO ,MCTRAN_NORM_INSTAL as YTRAN_NORM_INSTAL,MCTRAN_OS_GOVT as YTRAN_OS_GOVT,MCTRAN_OS_INT as YTRAN_OS_INT,MCTRAN_OS_PRINC as YTRAN_OS_PRINC ,
+MCTRAN_PAYMENT_METHOD as YTRAN_PAYMENT_METHOD,MCTRAN_REF_NUM as YTRAN_REF_NUM, MCTRAN_RESIDUAL as YTRAN_RESIDUAL ,MCTRAN_SUB_CODE as YTRAN_SUB_CODE,
+MCTRAN_SYS_DATE as YTRAN_SYS_DATE , MCTRAN_SYS_TIME as YTRAN_SYS_TIME,MCTRAN_USER_ID as YTRAN_USER_ID ,MCTRAN_VALUE as YTRAN_VALUE ,MCTRAN_VALUE_FID as YTRAN_VALUE_FID,
+MCTRAN_VALUE_INT as YTRAN_VALUE_INT,MCTRAN_VALUE_MISC as YTRAN_VALUE_MISC ,MCTRAN_VALUE_ODI as YTRAN_VALUE_ODI,MCTRAN_VALUE_PRINC as YTRAN_VALUE_PRINC,
+MCTRAN_VALUE_SD as YTRAN_VALUE_SD , MCTRAN_VALUE_VAT as YTRAN_VALUE_VAT 
+from LMCTRAN 
+where MCTRAN_MCR_REFERENCE =${getExceldata#contractNumber} 
+and MCTRAN_ID_DATE > 0 
+
+Union all
+select MCTRAN_MCR_REFERENCE as YTRAN_LOAN, MCTRAN_NO as YTRAN_NO,MCTRAN_ACCT as YTRAN_ACCT,MCTRAN_ARR_BAL as YTRAN_ARR_BAL, MCTRAN_ARR_GOVT as YTRAN_ARR_GOVT,MCTRAN_ARR_INT as YTRAN_ARR_INT,MCTRAN_ARR_MISC as YTRAN_ARR_MISC,
+MCTRAN_ARR_ODI as YTRAN_ARR_ODI, MCTRAN_ARR_PRINC as YTRAN_ARR_PRINC, MCTRAN_BATCH as YTRAN_BATCH, MCTRAN_CODE as YTRAN_CODE, MCTRAN_CUR_BAL  as YTRAN_CUR_BAL , to_char(to_date(lpad(to_char(MCTRAN_DATE),6,'0'),'ddMMyy'),'YYYYMMDD') as YTRAN_DATE ,
+MCTRAN_FIRST_INSTAL as YTRAN_FIRST_INSTAL ,'0' as YTRAN_ID_DATE,MCTRAN_INT_BEAR as YTRAN_INT_BEAR,MCTRAN_INTEREST_TYPE as YTRAN_INTEREST_TYPE,
+MCTRAN_LAST_INSTAL as YTRAN_LAST_INSTAL ,MCTRAN_MEMO as YTRAN_MEMO ,MCTRAN_NORM_INSTAL as YTRAN_NORM_INSTAL,MCTRAN_OS_GOVT as YTRAN_OS_GOVT,MCTRAN_OS_INT as YTRAN_OS_INT,MCTRAN_OS_PRINC as YTRAN_OS_PRINC ,
+MCTRAN_PAYMENT_METHOD as YTRAN_PAYMENT_METHOD,MCTRAN_REF_NUM as YTRAN_REF_NUM, MCTRAN_RESIDUAL as YTRAN_RESIDUAL ,MCTRAN_SUB_CODE as YTRAN_SUB_CODE,
+MCTRAN_SYS_DATE as YTRAN_SYS_DATE , MCTRAN_SYS_TIME as YTRAN_SYS_TIME,MCTRAN_USER_ID as YTRAN_USER_ID ,MCTRAN_VALUE as YTRAN_VALUE ,MCTRAN_VALUE_FID as YTRAN_VALUE_FID,
+MCTRAN_VALUE_INT as YTRAN_VALUE_INT,MCTRAN_VALUE_MISC as YTRAN_VALUE_MISC ,MCTRAN_VALUE_ODI as YTRAN_VALUE_ODI,MCTRAN_VALUE_PRINC as YTRAN_VALUE_PRINC,
+MCTRAN_VALUE_SD as YTRAN_VALUE_SD , MCTRAN_VALUE_VAT as YTRAN_VALUE_VAT 
+from LMCTRAN 
+where MCTRAN_MCR_REFERENCE =${getExceldata#contractNumber} 
+and MCTRAN_ID_DATE = 0
+order by 2 desc</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>YTRAN_LOAN</con:property><con:property>YTRAN_NO</con:property><con:property>YTRAN_ACCT</con:property><con:property>YTRAN_ARR_BAL</con:property><con:property>YTRAN_ARR_GOVT</con:property><con:property>YTRAN_ARR_INT</con:property><con:property>YTRAN_ARR_MISC</con:property><con:property>YTRAN_ARR_ODI</con:property><con:property>YTRAN_ARR_PRINC</con:property><con:property>YTRAN_BATCH</con:property><con:property>YTRAN_CODE</con:property><con:property>YTRAN_CUR_BAL</con:property><con:property>YTRAN_DATE</con:property><con:property>YTRAN_FIRST_INSTAL</con:property><con:property>YTRAN_ID_DATE</con:property><con:property>YTRAN_INT_BEAR</con:property><con:property>YTRAN_INTEREST_TYPE</con:property><con:property>YTRAN_LAST_INSTAL</con:property><con:property>YTRAN_MEMO</con:property><con:property>YTRAN_NORM_INSTAL</con:property><con:property>YTRAN_OS_GOVT</con:property><con:property>YTRAN_OS_INT</con:property><con:property>YTRAN_OS_PRINC</con:property><con:property>YTRAN_PAYMENT_METHOD</con:property><con:property>YTRAN_REF_NUM</con:property><con:property>YTRAN_RESIDUAL</con:property><con:property>YTRAN_SUB_CODE</con:property><con:property>YTRAN_SYS_DATE</con:property><con:property>YTRAN_SYS_TIME</con:property><con:property>YTRAN_USER_ID</con:property><con:property>YTRAN_VALUE</con:property><con:property>YTRAN_VALUE_FID</con:property><con:property>YTRAN_VALUE_INT</con:property><con:property>YTRAN_VALUE_MISC</con:property><con:property>YTRAN_VALUE_ODI</con:property><con:property>YTRAN_VALUE_PRINC</con:property><con:property>YTRAN_VALUE_SD</con:property><con:property>YTRAN_VALUE_VAT</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script" id="0f43cc0c-d924-48e7-9dc5-676d55062565"><con:settings/><con:config><script>import com.eviware.soapui.model.testsuite.TestRunner.Status
+import com.eviware.soapui.support.XmlHolder
+import org.apache.log4j.Logger
+
+def response = context.expand('${getContractTransactionHistory#response}')
+def holder = new XmlHolder(response)
+holder.namespaces["ns1"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract"
+
+def numberOfTransactionsFromXML = holder["count(//ns1:transaction)"]
+def cOUNT =  context.expand( '${totalTranNumbers#COUNT(*)}' )
+
+log.info "Number of YTran Transactions from XML ----------" + numberOfTransactionsFromXML
+log.info "Number of YTran Transactions from db Count -----" + cOUNT
+if (numberOfTransactionsFromXML == cOUNT) {
+	assert true
+}else{
+	log.info "Number of Ytran records from database does not match the  records from XML response"
+	
+}
+
+//----------------------------------------------Data from XML ------------------------------------------
+def val = holder.getNodeValue('//ns1:getContractTransactionHistoryResponse[1]/ns1:contractTransactionHistoryResponse[1]/ns1:contractTransactionHistory[1]/ns1:transactions[1]/ns1:transaction[1]/ns1:yTranLoan[1]')
+def xmlCounter = context.expand( '${#TestCase#XmlCounter}' )
+int k = xmlCounter.toInteger() 
+def nodeNames =["yTranNo","yTranLoan", "ytranAcct","yTranArrBal", "yTranArrGovt","yTranArrInt", "yTranArrMisc","yTranArrODI", "yTranArrPrinc","yTranBatch", "yTranCode","yTranCurBal", "yTranDate","yTranFirstInstal","yTranIdDate", "yTranIntBear","yTranInterestType", "yTranLastInstal","yTranMemo", "yTranNormInstal","yTranOsGovt", "yTranOsInt","yTranOsPrinc", "yTranPaymentMethod","ytranRefNum", "yTranResidual","yTranSubCode", "yTranSysDate","yTranUserId", "yTranValue","yTranValueFid","yTranValueInt","yTranValueMisc","yTranValueOdi","yTranValuePrinc","yTranValueSd","yTranValueVat"]
+int j=0
+def MAX_SIZE = cOUNT.toInteger()
+def arr_nodeValueXML = new Object[MAX_SIZE]
+def arr_dbValue = new Object[MAX_SIZE]
+def arr_nodeName = new Object[MAX_SIZE]
+log.info "K Value from counter - XML Counter       "+ k
+
+for (ytrand in nodeNames){	
+//try {
+	if (holder.getNodeValue('exists(//ns1:transaction['+k+']/ns1:'+ytrand+'[1])')){
+//		log.info (ytrand)
+		arr_nodeName[j]= ytrand
+		arr_nodeValueXML[j] = holder.getNodeValue('//ns1:transaction['+k+']/ns1:'+ytrand+'[1]')
+//		log.info "VALUE FROM XML RESPONSE -------------------------------: " + arr_nodeValueXML[j]
+	}else{
+		nodeValueXML[j] = "0"
+//		log.info "string value from dom node when the tag does not exist " + arr_nodeValueXML[j]
+	}
+	j=j+1
+
+}
+
+
+//--------------------------------------Data from database ---------------------------------
+def yTRAN_NO = context.expand( '${DataSource#YTRAN_NO}' )
+def yTRAN_LOAN = "0" // AS it is MCR Loan Num ios Zero
+def yTRAN_ACCT = context.expand( '${DataSource#YTRAN_ACCT}' )
+def yTRAN_ARR_BAL = context.expand( '${DataSource#YTRAN_ARR_BAL}' )
+def yTRAN_ARR_GOVT = context.expand( '${DataSource#YTRAN_ARR_GOVT}' )
+def yTRAN_ARR_INT = context.expand( '${DataSource#YTRAN_ARR_INT}' )
+def yTRAN_ARR_MISC = context.expand( '${DataSource#YTRAN_ARR_MISC}' )
+def yTRAN_ARR_ODI = context.expand( '${DataSource#YTRAN_ARR_ODI}' )
+def yTRAN_ARR_PRINC = context.expand( '${DataSource#YTRAN_ARR_PRINC}' )
+def yTRAN_BATCH = context.expand( '${DataSource#YTRAN_BATCH}' )
+def yTRAN_CODE = context.expand( '${DataSource#YTRAN_CODE}' )
+def YTRAN_CUR_BAL = context.expand( '${DataSource#YTRAN_CUR_BAL}' )
+def yTRAN_DATE = context.expand( '${DataSource#YTRAN_DATE}' )
+def yTRAN_FIRST_INSTAL = context.expand( '${DataSource#YTRAN_FIRST_INSTAL}' )
+def yTRAN_ID_DATE = context.expand( '${DataSource#YTRAN_ID_DATE}' )
+def yTRAN_INT_BEAR = context.expand( '${DataSource#YTRAN_INT_BEAR}' )
+def yTRAN_INTEREST_TYPE = context.expand( '${DataSource#YTRAN_INTEREST_TYPE}' )
+def yTRAN_LAST_INSTAL = context.expand( '${DataSource#YTRAN_LAST_INSTAL}' )
+def yTRAN_OS_GOVT = context.expand( '${DataSource#YTRAN_OS_GOVT}' )
+def yTRAN_MEMO = context.expand( '${DataSource#YTRAN_MEMO}' )
+def yTRAN_NORM_INSTAL = context.expand( '${DataSource#YTRAN_NORM_INSTAL}' )
+def yTRAN_OS_INT = context.expand( '${DataSource#YTRAN_OS_INT}' )
+def yTRAN_OS_PRINC = context.expand( '${DataSource#YTRAN_OS_PRINC}' )
+def yTRAN_PAYMENT_METHOD = context.expand( '${DataSource#YTRAN_PAYMENT_METHOD}' )
+def yTRAN_REF_NUM = context.expand( '${DataSource#YTRAN_REF_NUM}' )
+def yTRAN_RESIDUAL = context.expand( '${DataSource#YTRAN_RESIDUAL}' )
+def yTRAN_SUB_CODE = context.expand( '${DataSource#YTRAN_SUB_CODE}' )
+def yTRAN_SYS_DATE = context.expand( '${DataSource#YTRAN_SYS_DATE}' )
+def yTRAN_SYS_TIME = context.expand( '${DataSource#YTRAN_SYS_TIME}' )
+def yTRAN_USER_ID = context.expand( '${DataSource#YTRAN_USER_ID}' )
+def yTRAN_VALUE = context.expand( '${DataSource#YTRAN_VALUE}' )
+def yTRAN_VALUE_FID = context.expand( '${DataSource#YTRAN_VALUE_FID}' )
+def yTRAN_VALUE_INT = context.expand( '${DataSource#YTRAN_VALUE_INT}' )
+def yTRAN_VALUE_MISC = context.expand( '${DataSource#YTRAN_VALUE_MISC}' )
+def yTRAN_VALUE_ODI = context.expand( '${DataSource#YTRAN_VALUE_ODI}' )
+def yTRAN_VALUE_PRINC = context.expand( '${DataSource#YTRAN_VALUE_PRINC}' )
+def yTRAN_VALUE_SD = context.expand( '${DataSource#YTRAN_VALUE_SD}' )
+def yTRAN_VALUE_VAT = context.expand( '${DataSource#YTRAN_VALUE_VAT}' )
+def REFUND_TYPE = "OTHER"
+def TRAN_MEMO = context.expand( '${DataSource#YTRAN_MEMO}' )
+def DESCRIPTION = context.expand( '${DataSource#YTRAN_MEMO}' )
+
+//	DESCRIPTION = context.expand( '${DataSource#YTRAN_MEMO}' )
+def DESCRIPTIONS ="",TRAN_MEMOS =""
+	desValue = DESCRIPTION.split(" ")
+	for (value1 in desValue){
+		DESCRIPTIONS =  DESCRIPTIONS + value1.trim()+ " "
+	}
+	
+if (yTRAN_CODE.toInteger() == 7 ){
+	DESCRIPTION = DESCRIPTIONS.trim()
+	yTRAN_MEMO =  DESCRIPTION.trim()
+	TRAN_MEMO = DESCRIPTION.trim()
+}
+
+if (yTRAN_SUB_CODE.length()==1) {
+	yTRAN_SUB_CODE = "0"+yTRAN_SUB_CODE
+}
+if (yTRAN_CODE.length()==1){
+	yTRAN_CODE= "0"+yTRAN_CODE
+}
+yTRAN_CODE = yTRAN_CODE+":"+yTRAN_SUB_CODE
+
+
+
+def dbNames =[yTRAN_NO,yTRAN_LOAN, yTRAN_ACCT,yTRAN_ARR_BAL, yTRAN_ARR_GOVT,yTRAN_ARR_INT, yTRAN_ARR_MISC,yTRAN_ARR_ODI, yTRAN_ARR_PRINC,yTRAN_BATCH, yTRAN_CODE,YTRAN_CUR_BAL, yTRAN_DATE,yTRAN_FIRST_INSTAL,yTRAN_ID_DATE, yTRAN_INT_BEAR,yTRAN_INTEREST_TYPE, yTRAN_LAST_INSTAL,yTRAN_MEMO, yTRAN_NORM_INSTAL,yTRAN_OS_GOVT, yTRAN_OS_INT,yTRAN_OS_PRINC, yTRAN_PAYMENT_METHOD,yTRAN_REF_NUM, yTRAN_RESIDUAL,yTRAN_SUB_CODE, yTRAN_SYS_DATE,yTRAN_USER_ID, yTRAN_VALUE, yTRAN_VALUE_FID,yTRAN_VALUE_INT,yTRAN_VALUE_MISC,yTRAN_VALUE_ODI,yTRAN_VALUE_PRINC,yTRAN_VALUE_SD,yTRAN_VALUE_VAT]
+def h =0
+for (dbvalueeach in dbNames){	
+		arr_dbValue[h] = dbvalueeach
+		h=h+1
+}
+
+
+//---------------------------------------Data validation --------------------------------------------------
+
+
+log.info " ******************************************************"
+for (int g = 0; g&lt;=h;g++){
+
+if(arr_dbValue[g]==""){
+	arr_dbValue[g]= null
+}
+		if (g==27){
+		
+			def xmlValueSystemDate = arr_nodeValueXML[g].take(10)
+			xmlValueSystemDate = xmlValueSystemDate.replace("-","")
+			arr_nodeValueXML[g] = xmlValueSystemDate
+			}
+
+			if (g==12){
+				def xmlValueTranDate = arr_nodeValueXML[g].take(10)
+			xmlValueTranDate = xmlValueTranDate.replace("-","")
+			arr_nodeValueXML[g] = xmlValueTranDate
+			}
+			if (g==14){
+				def xmlValueTranIDDate = arr_nodeValueXML[g].take(10)
+			xmlValueTranIDDate = xmlValueTranIDDate.replace("-","")
+			arr_nodeValueXML[g] = xmlValueTranIDDate
+			}
+			
+		if(arr_nodeValueXML[g] == arr_dbValue[g] ){
+//			log.info "Node name from XMl ---- : "+ arr_nodeName[g]
+//			log.info "Value from XMl -----    : "+ arr_nodeValueXML[g] 
+//			log.info "Value from db -----     : "+ arr_dbValue[g]
+//			log.info "Value from XML response MATCHES  Value  from the db table "
+		}
+		else{
+			if (g!=24 &amp;&amp; g!=26 ){
+			log.info g
+			log.info "Node name from XMl ---- : "+ arr_nodeName[g]
+			log.info "Value from XMl -----    : "+ arr_nodeValueXML[g] 
+			log.info "Value from db -----     : "+ arr_dbValue[g]
+			log.error "Value from XML response DOES NOT MATCH  Value  from the db table "
+			}
+		}
+	}
+
+if (k &lt; cOUNT.toInteger()){
+	k= k+1
+}
+
+testRunner.testCase.setPropertyValue( "XmlCounter", k.toString() )
+
+// Reset Values to zero 
+j=0
+k=0
+h=0
+log.info "**************TEST SCRIPT END : getContractTransactionHistory API**************"
+</script></con:config></con:testStep><con:testStep type="datasourceloop" name="DataSource Loop - loop transactions" id="e60ea696-d57f-4182-accb-d854b680c296"><con:settings/><con:config><dataSourceStep>DataSource</dataSourceStep><targetStep>Groovy Script</targetStep></con:config></con:testStep><con:testStep type="datasourceloop" name="DataSource Loop - Excel" id="ed011887-84b1-4667-97d0-7d8a9e9ead26" disabled="true"><con:settings/><con:config><dataSourceStep>getExceldata</dataSourceStep><targetStep>Reset Counter Values</targetStep></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script - extra" id="bc1b26b5-bb20-4201-b17b-450763ad5d56" disabled="true"><con:settings/><con:config><script>
+arr_yTranNo= holder.getNodeValues('//ns1:yTranNo')
+arr_yTranLoan= holder.getNodeValues('//ns1:yTranLoan')
+arr_ytranAcct= holder.getNodeValues('//ns1:ytranAcct')
+arr_yTranArrBal= holder.getNodeValues('//ns1:yTranArrBal')
+arr_yTranArrGovt= holder.getNodeValues('//ns1:yTranArrGovt')
+arr_yTranArrInt= holder.getNodeValues('//ns1:yTranArrInt')
+arr_yTranArrMisc= holder.getNodeValues('//ns1:yTranArrMisc')
+arr_yTranArrODI= holder.getNodeValues('//ns1:yTranArrODI')
+arr_yTranArrPrinc= holder.getNodeValues('//ns1:yTranArrPrinc')
+arr_yTranBatch= holder.getNodeValues('//ns1:yTranBatch')
+arr_yTranCode= holder.getNodeValues('//ns1:yTranCode')
+arr_yTranCurBal= holder.getNodeValues('//ns1:yTranCurBal')
+arr_yTranDate = holder.getNodeValues('//ns1:yTranDate')
+arr_yTranFirstInstal = holder.getNodeValues('//ns1:yTranFirstInstal')
+arr_yTranIntBear = holder.getNodeValues('//ns1:yTranIntBear')
+arr_yTranInterestType = holder.getNodeValues('//ns1:yTranInterestType')
+arr_yTranLastInstal= holder.getNodeValues('//ns1:yTranLastInstal')
+arr_yTranMemo= holder.getNodeValues('//ns1:yTranMemo')
+arr_yTranNormInstal= holder.getNodeValues('//ns1:yTranNormInstal')
+arr_yTranOsGovt= holder.getNodeValues('//ns1:yTranOsGovt')
+arr_yTranOsInt= holder.getNodeValues('//ns1:yTranOsInt')
+arr_yTranOsPrinc = holder.getNodeValues('//ns1:yTranOsPrinc')
+arr_yTranPaymentMethod = holder.getNodeValues('//ns1:yTranPaymentMethod')
+arr_ytranRefNum = holder.getNodeValues('//ns1:ytranRefNum')
+arr_yTranResidual = holder.getNodeValues('//ns1:yTranResidual')
+arr_yTranSubCode = holder.getNodeValues('//ns1:yTranSubCode')
+arr_yTranSysDate = holder.getNodeValues('//ns1:yTranSysDate')
+arr_yTranUserId = holder.getNodeValues('//ns1:yTranUserId')
+arr_yTranValue = holder.getNodeValues('//ns1:yTranValue')
+
+</script></con:config></con:testStep><con:properties><con:property><con:name>countIterator</con:name><con:value>0</con:value></con:property><con:property><con:name>XmlCounter</con:name><con:value>227</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>0f6af0d4-e278-4300-9f91-2339bf70c463</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>77e58d97-2ba2-41e5-82c5-62abc3dea96b</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>99010f90-2248-4a34-a904-40c9975416a8</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>fe69097b-a568-4114-a950-f3f38f69cef7</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>74dfacb0-ff45-46c7-8b86-531b9ef1e7a5</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>6d987b4a-43bd-4678-9dd1-61d5262f2a58</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>a4ebc5c0-6f9f-42d5-a085-1f87102e528a</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>297c28b7-440c-4165-86e9-4e9121399426</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>a9ec2eea-4711-40e4-92f6-ac3706c4c22f</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>9251dc56-a269-400b-9b99-bc6eb40d29e7</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="ba5f7dc0-e8db-409c-b494-16037c932774"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4afb3ac9-5034-4c9c-8880-fc76dd54bdc6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3413a0c0-76cc-4f43-9482-3efe9e972e81"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a32f4f82-e311-4f8a-ba4f-accdfcbdadcf"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="263f20f9-2653-4f33-8d66-1694d38c9931"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1f7152d8-1be5-485f-bc97-18cbc1aa4ba8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3b0f4fd5-8397-4067-b032-ecfa22cfa5ff"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="02782eb4-ecaf-43ac-8f0c-0a1eeebbdd7a"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="15dff999-92e5-4da2-8a61-2a9da4ce2988"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>

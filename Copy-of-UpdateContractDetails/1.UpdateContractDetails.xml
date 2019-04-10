@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="5598a57c-37cf-4906-8310-68ac669b8368" discardOkResults="false" failOnError="false" failTestCaseOnErrors="true" keepSession="false" name="1.UpdateContractDetails" searchProperties="true" timeout="0" maxResults="10000000" wsrmEnabled="false" wsrmVersion="1.0" wsrmAckTo="" amfAuthorisation="false" amfEndpoint="" amfLogin="" amfPassword="" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="8dc8df2a-4560-43c7-9a09-5c585f45dceefileName">1.UpdateContractDetails</con:setting><con:setting id="5598a57c-37cf-4906-8310-68ac669b8368fileName">1.UpdateContractDetails</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="datasource" name="ExcelDataSource" id="a6feda19-8533-43e8-8b24-c02b305565dc"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Excel"><con:configuration><file>${projectDir}/updateContractDetails.xlsx</file><worksheet>${#Project#workSheet}</worksheet><cell>${#TestSuite#TestStartCell}</cell><ignoreEmpty>true</ignoreEmpty><evaluateFormulas>false</evaluateFormulas></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>testId</con:property><con:property>scenario</con:property><con:property>expectedAPIOutput</con:property><con:property>expectedErrorCode</con:property><con:property>expectedErrorDescription</con:property><con:property>expectedFaultCode</con:property><con:property>expectedFaultString</con:property><con:property>externalContractNumber</con:property><con:property>QueryType</con:property><con:property>Query</con:property><con:property>eocIntention</con:property><con:property>customerIntensionCode</con:property><con:property>territoryCode</con:property><con:property>messageId</con:property><con:property>timestamp</con:property><con:property>clientAppId</con:property><con:property>auditUserId</con:property><con:property>clientLanguage</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="request" name="updateContractDetails" id="4bfa2b93-138c-4af5-88a1-d92de5371fdb"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>updateContractDetails</con:operation><con:request name="updateContractDetails" id="ae932d04-a2fa-439f-99f5-7ca03136509a"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvbmwdev01:28080/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:con="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <con:updateContractDetails>\r
+         <con:updateContractDetailsRequest>\r
+            <con:contractNumber>\r
+               <!--Optional:-->\r
+               <com:externalContractNumber>?</com:externalContractNumber>\r
+               <!--Optional:-->\r
+               <com:internalContractNumber>?</com:internalContractNumber>\r
+            </con:contractNumber>\r
+            <con:contractUpdateDetails>\r
+               <!--Optional:-->\r
+               <con:customerIntention>\r
+                  <!--Optional:-->\r
+                  <con:code>?</con:code>\r
+               </con:customerIntention>\r
+               <!--Optional:-->\r
+               <con:hypotheticalFinalRV>?</con:hypotheticalFinalRV>\r
+               <!--Optional:-->\r
+               <con:vapDetails>\r
+                  <!--Optional:-->\r
+                  <con:vapId>?</con:vapId>\r
+                  <!--Optional:-->\r
+                  <con:vapFmoId>?</con:vapFmoId>\r
+                  <!--Optional:-->\r
+                  <con:vapName>?</con:vapName>\r
+                  <!--Optional:-->\r
+                  <con:vapExtReference>?</con:vapExtReference>\r
+                  <!--Optional:-->\r
+                  <con:vapGroup>?</con:vapGroup>\r
+                  <!--Optional:-->\r
+                  <con:vapBasePremium>?</con:vapBasePremium>\r
+                  <!--Optional:-->\r
+                  <con:vapInputs>\r
+                     <!--Zero or more repetitions:-->\r
+                     <con:vapInput>\r
+                        <con:input>?</con:input>\r
+                        <con:value>?</con:value>\r
+                     </con:vapInput>\r
+                  </con:vapInputs>\r
+               </con:vapDetails>\r
+               <!--Optional:-->\r
+               <con:externalContractStatus>\r
+                  <!--Optional:-->\r
+                  <con:code>?</con:code>\r
+               </con:externalContractStatus>\r
+            </con:contractUpdateDetails>\r
+         </con:updateContractDetailsRequest>\r
+         <con:applicationInfo>\r
+            <!--Optional:-->\r
+            <com:tenantInfo>\r
+               <com:tenantCode>?</com:tenantCode>\r
+            </com:tenantInfo>\r
+            <!--Optional:-->\r
+            <com:securityAudit>\r
+               <com:messageId>?</com:messageId>\r
+               <com:timestamp>?</com:timestamp>\r
+               <com:clientAppId>?</com:clientAppId>\r
+               <com:userId>?</com:userId>\r
+               <!--Optional:-->\r
+               <com:authorisingUserId>?</com:authorisingUserId>\r
+               <com:clientLanguage>?</com:clientLanguage>\r
+            </com:securityAudit>\r
+         </con:applicationInfo>\r
+      </con:updateContractDetails>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="9a9275a0-025d-47c5-8106-3f72ceb30c45"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="e6adfe25-6984-4ee1-93c5-4d9c74b1fdf6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="groovy" name="Validation" id="bac0024b-0191-4544-94ac-164862167ce3"><con:settings/><con:config><script>log.info  "  **************************************"
+
+import com.eviware.soapui.support.XmlHolder
+def response = context.expand( '${updateContractDetails#Response}' )
+
+def holder = new XmlHolder(response)
+def aCTUAL_OUTPUT = "true"
+
+//holder.namespaces["ns4"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract"
+holder.namespaces["ns1"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract"
+holder.namespaces["ns2"] ='http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes'
+holder.namespaces["ns3"]='http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ErrorTypes'
+
+
+// Data from excel
+def scenario = context.expand( '${ExcelDataSource#scenario}' )
+def expectedAPIOutput = context.expand( '${ExcelDataSource#expectedAPIOutput}' )
+def expectedErrorCode = context.expand( '${ExcelDataSource#expectedErrorCode}' )
+def customerIntensionCode = context.expand( '${ExcelDataSource#customerIntensionCode}' )
+
+
+//Data from test suite
+def contractNumber = context.expand( '${#TestSuite#contract}' )
+
+log.info "Scenario :   -------------------------------:" + scenario
+log.info "External Contract Number :  ----------------:" + contractNumber
+log.info "Customer Intention Code : ------------------:" + customerIntensionCode
+
+
+try{
+if (expectedAPIOutput == 'TRUE'){
+	nodeExists = holder.getNodeValue('exists( //ns1:updateContractDetailsResponse[1]/ns1:updateResponse[1]/ns1:responseStatus[1])')
+	
+	if (nodeExists == "true" ){
+		log.info "node exists"
+		responseStatus  = holder.getNodeValue('//ns1:updateContractDetailsResponse[1]/ns1:updateResponse[1]/ns1:responseStatus[1]')
+		log.info "responseStatus " + responseStatus
+		
+		if (responseStatus == "true"){
+	     aCTUAL_OUTPUT = "true"
+		}else{
+			 aCTUAL_OUTPUT = "false"
+		}
+		if( responseStatus == expectedAPIOutput){
+		log.info "Expected output -----:" + expectedAPIOutput
+		log.info "Actual output  -------:" + responseStatus
+		aCTUAL_OUTPUT = 'true'	
+		}
+	
+	}else{
+		faultString = holder.getNodeValue('//faultstring[1]')
+		errorCode = holder.getNodeValue('//ns3:businessError[1]/ns3:errorCode[1]')
+		log.error "Error Occured"	
+		log.error "Expected output -----:" + expectedAPIOutput
+		log.error "Actual output  -------:" + faultString
+		log.error "Error Code  ----------:" + errorCode
+		aCTUAL_OUTPUT = 'false'
+
+	}}else{
+	
+	value = holder.getNodeValue('//faultstring[1]')
+	errorCode = holder.getNodeValue('//detail[1]/ns3:businessError[1]/ns3:errorCode[1]')
+	//detail[1]/ns3:businessError[1]/ns3:errorCode[1]
+	log.info "test"+errorCode
+	if(value ==null){
+		responseStatus  = holder.getNodeValue('//ns4:updateContractDetailsResponse/ns4:updateResponse/ns4:responseStatus[1]')
+		log.error "Expected output ------:" + expectedAPIOutput
+		log.error "Actual output  -------:" + responseStatus
+		log.error "Status is   ----------:" + responseStatus
+		aCTUAL_OUTPUT = 'false'
+	}else{
+		if (errorCode==expectedErrorCode){
+		log.info "Expected output ------:" + expectedAPIOutput
+		log.info "Actual output  -------:" + value
+		log.info "Error Code  ----------:" + errorCode
+		aCTUAL_OUTPUT = 'true'
+		}else{
+		log.error "Expected output ------:" + expectedAPIOutput
+		log.error "Actual output  -------:" + value
+		log.error "Error Code  ----------:" + errorCode
+		aCTUAL_OUTPUT = 'false'
+		}
+	}}}catch(e){
+		log.error "Error log " + e ;
+		aCTUAL_OUTPUT = 'false'
+}
+
+
+testRunner.testCase.testSuite.setPropertyValue( "TestResult", aCTUAL_OUTPUT )
+
+
+log.info  " ************************************************************************."
+ 
+</script></con:config></con:testStep><con:properties/><con:reportParameters/><con:breakPoints><con:testStepId>f337a2d8-b19c-4b90-ba26-b51e3a9ef420</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="e6adfe25-6984-4ee1-93c5-4d9c74b1fdf6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>

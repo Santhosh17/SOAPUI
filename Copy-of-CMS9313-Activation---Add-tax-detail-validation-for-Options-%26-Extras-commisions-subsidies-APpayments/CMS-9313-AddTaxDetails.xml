@@ -1,0 +1,1930 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="eeb02746-acc5-4879-9935-4ab1df552640" discardOkResults="false" failOnError="false" failTestCaseOnErrors="true" keepSession="false" name="CMS-9313-AddTaxDetails" searchProperties="true" timeout="0" maxResults="5000000" wsrmEnabled="false" wsrmVersion="1.0" wsrmAckTo="" amfAuthorisation="false" amfEndpoint="" amfLogin="" amfPassword="" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="60c18efc-fb39-4c7e-8459-2fa5fd125f1afileName">CreateContractBundleActivation</con:setting><con:setting id="ad28faed-bfaf-4af6-8420-1fd2cc39d6c7fileName">CMS-9313-AddTaxOptionsAndExtras</con:setting><con:setting id="c6fce2b3-990a-4b0a-b355-2403bf9b0e24fileName">CMS-9313-AddTaxOptionsAndExtrasIsLeaseFalse</con:setting><con:setting id="345dd6c8-20fd-4f76-9a74-6043abad771ffileName">CMS-9313-AddTaxOptionsAndExtrasIsLeaseTrue</con:setting><con:setting id="5c0e444b-1471-433c-bfab-62106549e534fileName">CMS-9313-AddTaxOptionsAndExtrasIsLeaseTrue</con:setting><con:setting id="76627d14-8910-4ba1-ae2a-a53b0a0acd1efileName">CMS-9313-AddTaxDetails</con:setting><con:setting id="eeb02746-acc5-4879-9935-4ab1df552640fileName">CMS-9313-AddTaxDetails</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="Information" id="5216e065-0275-4946-adc5-062d34eb60f5"><con:settings/><con:config><script>//AddTaxDetails  - BMWTEST03 Env
+
+/* 
+*   As part of the Net v Gross enhancement, added validation for the tax detail breakdown. 
+*   If the contract is a lease i.e. isLease is true, then the net amount, gross amount , tax code, tax rate must all be provided. 
+*   if its not a lease i.e. isLease false then gross amount is mandatory 
+*   
+*   1. isLease = true 
+*   2. isLease = false  
+*   
+*      
+*/
+
+//Automated scripts for not just OptionsAndExtras but also other tax elements like commissions, subsidies, appayments elements when isLease is True, and when isLease is False
+
+// validated the response for success, and loan number i.e response cms id, database columns like Gross amount, net amount, tax amount, tax code, tax rate
+
+//*************TABLES*************************
+
+// LCOMMEXP  - Commissions
+// LSUBSDTYP - Subsidies
+// LDISBURSE - appayments
+// LASSETOPT - Options and Extras
+
+//*************End Of TABLES********************</script></con:config></con:testStep><con:testStep type="groovy" name="RandomBpmId" id="146e63d4-4c10-4eb6-9ad2-35eaf76be754"><con:settings/><con:config><script>def randomBpmId=(int)(Math.random()*500000)
+def randomVIN=1000000+(int)(Math.random()*500000)
+def randomRegNum = (int)(Math.random()*50)
+
+log.info("randomRegNum"+randomRegNum)
+def vin = "ABC"+randomVIN
+
+
+
+def regNum = "AB"+randomRegNum+"ABC"
+//def randomVinNumber = ZFA197870005112737
+//log.info(randomBpmId)
+log.info(regNum)
+log.info(vin)
+
+def maxLengthForAlphaNumeric = 7
+def setTestSuiteAlphaNumeric = new Random().with {(1..maxLengthForAlphaNumeric).collect { (('A'..'Z')+('0'..'9')).join()[ nextInt( (('A'..'Z')+('0'..'9')).join().length() ) ] }.join()
+  }
+  // the below line will print alphaNumeric value with max length of 10 digits.
+log.info("alphanumeric"+setTestSuiteAlphaNumeric)
+
+def maxLengthForNumber = 8
+def setTestSuiteNumber = new Random().with {
+    (1..maxLengthForNumber).collect { ('0'..'9').join()[ nextInt( ('0'..'9').join().length() ) ] }.join()
+  }
+   // the below line will print Numeric value with max length of 8 digits.
+log.info("number"+ setTestSuiteNumber)
+
+def maxLengthForCharacters = 5
+def setTestSuiteCharacters = new Random().with {(1..maxLengthForCharacters).collect { ('A'..'Z').join()[ nextInt( ('A'..'Z').join().length() ) ] }.join()
+  }
+
+  // the below line will print Character values with max length of 5 digits.
+log.info("characters"+setTestSuiteCharacters)
+
+// set the value to testsuite like below
+//testRunner.testCase.testSuite.setPropertyValue("RandomCharacterValue",setTestSuiteCharacters) 
+
+//def maxLengthForFloatingNumber = 9
+//def setTestSuiteFloatingValue = new Random().with {
+//    (1..maxLengthForFloatingNumber).collect { ('0'..'9').join()[ nextFloat( ('0'..'9').join().length() ) ] }.join()
+//  }
+//
+//  log.info("floating number" + setTestSuiteFloatingValue)
+
+
+testRunner.testCase.testSuite.setPropertyValue("bpmid",String.valueOf(randomBpmId))
+
+testRunner.testCase.testSuite.setPropertyValue("vin",vin)
+testRunner.testCase.testSuite.setPropertyValue("regNum",setTestSuiteAlphaNumeric)
+
+</script></con:config></con:testStep><con:testStep type="datasource" name="CMS9313DataExcel" id="c2b2741a-db3f-4c15-bda7-89734cb59a63"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Excel"><con:configuration><file>${projectDir}/cms9313AddTaxOptionsAndExtras.xlsx</file><worksheet>${#Project#workSheet}</worksheet><cell>${#TestSuite#TestStartCell}</cell><ignoreEmpty>true</ignoreEmpty><evaluateFormulas>false</evaluateFormulas></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>testCaseId</con:property><con:property>TestCaseName</con:property><con:property>expectedResponseStatus</con:property><con:property>expectedErrorCode</con:property><con:property>expectedErrorDescription</con:property><con:property>expectedFaultCode</con:property><con:property>expectedFaultString</con:property><con:property>ccbAppUid</con:property><con:property>ccbScoreBandCodeCmsCode</con:property><con:property>ccbDealerId</con:property><con:property>ccbcustDetailType</con:property><con:property>ccbThirdPartyIdBpmId</con:property><con:property>ccbcustrole</con:property><con:property>ccbcontactviasms</con:property><con:property>ccbtelefaxNum</con:property><con:property>ccbtelefaxType</con:property><con:property>ccbBankAcctDataIbanNumber</con:property><con:property>ccbSwiftCode</con:property><con:property>ccbSortCode</con:property><con:property>ccbbankAcctName</con:property><con:property>ccbBankAcctNumber</con:property><con:property>ccbAddressTypeCmsCode</con:property><con:property>ccbAddressCtryCodeCmsCode</con:property><con:property>ccbBuildingNumber</con:property><con:property>ccbStreet</con:property><con:property>ccbPostTown</con:property><con:property>ccbPostCode</con:property><con:property>ccbGender</con:property><con:property>ccbDateOfBirth</con:property><con:property>ccbFirstName</con:property><con:property>ccbMiddleName</con:property><con:property>ccbSurName</con:property><con:property>ccbctryofBirth</con:property><con:property>ccbBusinessName</con:property><con:property>ContactPerson</con:property><con:property>ccbVatCode</con:property><con:property>ccbSalutation</con:property><con:property>ccbIntraGrpConsolidationCode</con:property><con:property>ccbMasterContractExternalContractNumber</con:property><con:property>ccbBundleIdentifier</con:property><con:property>ccbContractIdentifier</con:property><con:property>ccbContractCurrency</con:property><con:property>ccbMasterContractPrimary</con:property><con:property>ccbContractOptionsPaymentFaicility</con:property><con:property>ccbReportingAndRelationsCountry</con:property><con:property>ccbrepandrelcompanyCmsCode</con:property><con:property>ccbrepandrelregionCmsCode</con:property><con:property>ccbrepandrelbranchCmsCode</con:property><con:property>ccbrepandrelBusinessDivisionCmsCode</con:property><con:property>ccbrepandrelBusinessUnitExternalcode</con:property><con:property>ccbDirDebtFrequency</con:property><con:property>ccbddFirstInstal</con:property><con:property>CCBinstalCalcMethod</con:property><con:property>ccbInstallGrossAmount</con:property><con:property>ccbInstallNetAmount</con:property><con:property>ccbInstallTaxAmount</con:property><con:property>ccbInstallTaxCodeCMSCode</con:property><con:property>ccbInstallTaxRate</con:property><con:property>ccbdatesStartDate</con:property><con:property>ccbDatesQuoteCreationDate</con:property><con:property>ccbBillingDay</con:property><con:property>ccbTerm</con:property><con:property>ccbInterestRatesApr</con:property><con:property>ccbInterestRatesCustTrueRate</con:property><con:property>ccbCommisiionTypeCmsCode</con:property><con:property>ccbCommissionDate</con:property><con:property>ccbCommissionThirdPartyIdBPMId</con:property><con:property>ccbSubsidyTypeCMSCode</con:property><con:property>ccbSubsidyProviderBpmId</con:property><con:property>ccbFinanceProductCodeCmsCode</con:property><con:property>ccbFinanceIsArrears</con:property><con:property>ccbAmountsTotIntGrossAmount</con:property><con:property>ccbAmountsTotIntNetAmount</con:property><con:property>ccbAmountsTotIntTaxAmount</con:property><con:property>ccbAmountsTotIntTaxCodeCmsCode</con:property><con:property>ccbAmountsGrossCostGrossAmount</con:property><con:property>ccbAmountsGrossCostNetAmount</con:property><con:property>ccbAmountsGrossCostTaxAmount</con:property><con:property>ccbGrossCostTaxCodeCmsCode</con:property><con:property>ccbAmntFinancedGrossAmnt</con:property><con:property>ccbAmntFinancedNetAmnt</con:property><con:property>ccbAmntFinancedTaxAmnt</con:property><con:property>ccbAmntFinancedtaxCodeCmsCode</con:property><con:property>ccbResidualTypeCmsCode</con:property><con:property>ccbresidualValueGrossAmount</con:property><con:property>ccbresidualValueNetAmount</con:property><con:property>ccbresidualValueTaxAmount</con:property><con:property>ccbresidualrvPercentage</con:property><con:property>ccbTaxTreatmentTaxCode</con:property><con:property>ccbapPaymentPaymentDate</con:property><con:property>ccbapPaymentPaymentType</con:property><con:property>ccbappaymentPayeeidThirdPartyIdBpmId</con:property><con:property>ccbappaymentPayeridThirdPartyIdBpmId</con:property><con:property>ccbappaymentPaymentDescription</con:property><con:property>ccbPaymentAmountGrossAmount</con:property><con:property>ccbPaymentAmountNetAmount</con:property><con:property>ccbPaymentAmountTaxAmount</con:property><con:property>ccbPaymentAmountTaxCodeCmsCode</con:property><con:property>ccbPaymentAmountTaxRate</con:property><con:property>ccbEndofContractOptionProlongLeadDays</con:property><con:property>ccbEndofContractOptionIsBuyBack</con:property><con:property>ccbEndofContractOptionBuyBackValue</con:property><con:property>ccbEndofContractOptionbuBackerBPMId</con:property><con:property>ccbPaymentType</con:property><con:property>ccbPaymentNumberOfPayments</con:property><con:property>ccbPaymentFrequency</con:property><con:property>ccbPaymentsAmountGrossAmount</con:property><con:property>ccbPaymentsAmountNetAmount</con:property><con:property>ccbPaymentsAmountTaxAmount</con:property><con:property>ccbPaymentsTaxCodeCmsCode</con:property><con:property>ccbPaymentsTaxRate</con:property><con:property>ccbAssetPurpseCmsCode</con:property><con:property>ccbAssetAssetOrSecurity</con:property><con:property>ccbAssetMotorVehicle</con:property><con:property>ccbListPriceGrossAmount</con:property><con:property>ccbListPriceNetAmount</con:property><con:property>ccbListPriceTaxAmount</con:property><con:property>ccbListPriceTaxCodeCmsCode</con:property><con:property>ccbSalePriceGrossAmount</con:property><con:property>ccbSalePriceNetAmount</con:property><con:property>ccbSalePriceTaxAmount</con:property><con:property>ccbSalePriceTaxCodeCmsCode</con:property><con:property>ccbSalePriceTotalCost</con:property><con:property>ccbRegistrationDate</con:property><con:property>ccbVehicleMakeDesc</con:property><con:property>ccbVehicleModelDesc</con:property><con:property>ccbVehicleVariantDesc</con:property><con:property>ccbVehicleExternalVehicleCodeCmsCode</con:property><con:property>ccbVehicleDeliveryDate</con:property><con:property>ccbVehicleColour</con:property><con:property>ccbDepreciationOptionAssetLife</con:property><con:property>ccbOptionsAndExtraType</con:property><con:property>ccboptionsAndExtraoptionsExternalRef</con:property><con:property>ccboptionsAndExtraoptionsDescription</con:property><con:property>ccbSaleConditionCmsCode</con:property><con:property>ccbDamageConditionCmsCode</con:property><con:property>ccbusageInitialMileage</con:property><con:property>ccbUsageAnnualMileage</con:property><con:property>ccbusageChargesChargeDetailsChargeType</con:property><con:property>ccbusageChargesChargeDetailsAmount</con:property><con:property>ccbusageChargesChargeDetailsTolerance</con:property><con:property>ccbUsageChargesChargeDetailsToleranceBasis</con:property><con:property>ccbusageChargesChargeDetailsChrgTyp</con:property><con:property>ccbusageChargesChargeDetailsAmnt</con:property><con:property>ccbusageChargesChargeDetlsTolerance</con:property><con:property>ccbUsageChargesChargeDetlsTolrnceBasis</con:property><con:property>ccbNotesNoteNoteDate</con:property><con:property>ccbNotesNoteNoteText</con:property><con:property>ccbNoteDate</con:property><con:property>ccbNoteText</con:property><con:property>ccbMsgId</con:property><con:property>ccbTimestmp</con:property><con:property>ccbclientAppId</con:property><con:property>ccbUserId</con:property><con:property>ccbClientLanguage</con:property><con:property>ccbFinanceIsLease</con:property><con:property>OptionsAndExtrasGrossPrice</con:property><con:property>OptionsAndExtrasNetPrice</con:property><con:property>OptionsAndExtrasTaxAmount</con:property><con:property>OptionsAndExtrasTaxRate</con:property><con:property>OptionsAndExtrasTaxCode</con:property><con:property>comissionsGrossPrice</con:property><con:property>comissionsNetPrice</con:property><con:property>comissionsTaxAmount</con:property><con:property>comissionsTaxRate</con:property><con:property>ComissionsTaxCode</con:property><con:property>SubsidiesGrossAmount</con:property><con:property>SubsidiesNetsAmount</con:property><con:property>SubsidiesTaxAmount</con:property><con:property>SubsidiesTaxCode</con:property><con:property>disburseGrossAmount</con:property><con:property>disburseNetAmount</con:property><con:property>disburseTaxAmount</con:property><con:property>disburseTaxRate</con:property><con:property>disburseTaxCmsCode</con:property><con:property>subsidiesTaxRate</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="DataSourceProcessingDate" id="cbe0e0e6-9652-45ca-8b56-73c57a1a218a"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;entry key="countryCode" value="${#Project#countryCode}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBCALMS2CMS( Default environment )</Connection><query>select to_char(to_date(lpad(to_char(last_ddmmyy_idb),6,'0'),'ddMMyy'),'yyyy-mm-dd+hh:mm') 
+as idd from View_ltable_Interest_debit where table_territory_code= :countryCode</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>idd</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script" id="4b119da6-eaea-4dae-a304-15142eda8a2c"><con:settings/><con:config><script>import java.text.SimpleDateFormat
+def last_ddmmyy_idb = context.expand( '${DataSourceProcessingDate#idd}' )
+
+log.info(last_ddmmyy_idb)
+
+testRunner.testCase.testSuite.setPropertyValue("processingDate",last_ddmmyy_idb)
+</script></con:config></con:testStep><con:testStep type="request" name="CreateContractBundleAddTaxDetails_BMWTEST03_old" id="30f83e98-818f-4e5b-a95a-bfea9dce5739" disabled="true"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>createContractBundle</con:operation><con:request name="CreateContractBundleAddTaxDetails_BMWTEST03_old" id="1b301b21-bc5d-4ce0-936e-10fde1194cd5"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@remove_empty_content">true</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvbmwdev01:28080/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation" xmlns:cmn="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <createContractBundle xsi:schemaLocation="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation file:///C:/Projects/CALMS2CMS/Calms2CMS/Calms2CmsInterfacesAndDtos/src/main/resources/xsd/BundledActivation.xsd" xmlns:ns0="http://message.motorpos.messaging.wcg.com">
+         <contractBundleData>
+            <application>
+               <userId>${CMS9313DataExcel#ccbAppUid}</userId>
+               <scoreBandCode>
+                  <cmsCode>${CMS9313DataExcel#ccbScoreBandCodeCmsCode}</cmsCode>
+               </scoreBandCode>
+            </application>
+            <dealer>
+               <!--<dealerId>1</dealerId>-->
+               <dealerId>${CMS9313DataExcel#ccbDealerId}</dealerId>
+            </dealer>
+            <customers>
+               <customer>
+                  <details>
+                     <type>${CMS9313DataExcel#ccbcustDetailType}</type>
+                     <thirdPartyId>
+                        <bpmId>${CMS9313DataExcel#ccbThirdPartyIdBpmId}</bpmId>
+                     </thirdPartyId>
+                     <role>${CMS9313DataExcel#ccbcustrole}</role>
+                     <commsChannels>
+                        <contactViaSMS>${CMS9313DataExcel#ccbcontactviasms}</contactViaSMS>
+                        <phoneFaxNums>
+                           <telephoneFax>
+                              <phoneFaxNumber>${CMS9313DataExcel#ccbtelefaxNum}</phoneFaxNumber>
+                              <type>${CMS9313DataExcel#ccbtelefaxType}</type>
+                           </telephoneFax>
+                        </phoneFaxNums>
+                     </commsChannels>
+                     <bankAccounts>
+                        <bankAccountData>
+                           <ibanNumber>${CMS9313DataExcel#ccbBankAcctDataIbanNumber}</ibanNumber>
+                           <swiftCode>${CMS9313DataExcel#ccbSwiftCode}</swiftCode>
+                           <sortCode>${CMS9313DataExcel#ccbSortCode}</sortCode>
+                           <bankAccountName>${CMS9313DataExcel#ccbbankAcctName}</bankAccountName>
+                           <bankAccountNumber>${CMS9313DataExcel#ccbBankAcctNumber}</bankAccountNumber>
+                        </bankAccountData>
+                     </bankAccounts>
+                     <addresses>
+                        <address>
+                           <addressType>
+                              <cmsCode>${CMS9313DataExcel#ccbAddressTypeCmsCode}</cmsCode>
+                           </addressType>
+                           <countryCode>
+                              <cmsCode>${CMS9313DataExcel#ccbAddressCtryCodeCmsCode}</cmsCode>
+                           </countryCode>
+                           
+                           <buildingNumber>${CMS9313DataExcel#ccbBuildingNumber}</buildingNumber>
+                           <street>${CMS9313DataExcel#ccbStreet}</street>
+                           <postTown>${CMS9313DataExcel#ccbPostTown}</postTown>
+                           <postCode>${CMS9313DataExcel#ccbPostCode}</postCode>
+                        </address>
+                     </addresses>
+                     <gender>${CMS9313DataExcel#ccbGender}</gender>
+                     <dateOfBirth>${CMS9313DataExcel#ccbDateOfBirth}</dateOfBirth>
+                     <firstName>${CMS9313DataExcel#ccbFirstName}</firstName>
+                     <middleName>${CMS9313DataExcel#ccbMiddleName}</middleName>
+                     <surname>${CMS9313DataExcel#ccbSurName}</surname>
+                     
+                     <countryOfBirth>${CMS9313DataExcel#ccbctryofBirth}</countryOfBirth>
+                     <businessName>${CMS9313DataExcel#ccbBusinessName}</businessName>
+                     <contactPerson>${CMS9313DataExcel#ContactPerson}</contactPerson>
+                     <vatCode>${CMS9313DataExcel#ccbVatCode}</vatCode>
+                     <salutation>${CMS9313DataExcel#ccbSalutation}</salutation>
+                     <intraGrpConsldnCode>${CMS9313DataExcel#ccbIntraGrpConsolidationCode}</intraGrpConsldnCode>
+                  </details>
+               </customer>
+            </customers>
+            <masterContract>
+               <contractNumber>
+                  <!--<externalContractNumber>6345656</externalContractNumber>-->
+                  <externalContractNumber>${CMS9313DataExcel#ccbMasterContractExternalContractNumber}</externalContractNumber>
+               </contractNumber>
+               <bundles>
+                  <bundle>
+                     <identifier>${CMS9313DataExcel#ccbBundleIdentifier}</identifier>
+                     <contracts>
+                        <contract>
+                           <identifier>${CMS9313DataExcel#ccbContractIdentifier}</identifier>
+                           <currency>${CMS9313DataExcel#ccbContractCurrency}</currency>
+                           <masterContractPrimary>${CMS9313DataExcel#ccbMasterContractPrimary}</masterContractPrimary>
+                           <contractOptions>
+                              <paymentFacility>${CMS9313DataExcel#ccbContractOptionsPaymentFaicility}</paymentFacility>
+                           </contractOptions>
+                           <reportingAndRelations>
+                              <country>${CMS9313DataExcel#ccbReportingAndRelationsCountry}</country>
+                              <company>
+                                 <cmsCode>${CMS9313DataExcel#ccbrepandrelcompanyCmsCode}</cmsCode>
+                              </company>
+                              <region>
+                                 <cmsCode>${CMS9313DataExcel#ccbrepandrelregionCmsCode}</cmsCode>
+                              </region>
+                              <branch>
+                                 <cmsCode>${CMS9313DataExcel#ccbrepandrelbranchCmsCode}</cmsCode>
+                              </branch>
+                              <businessDivision>
+                                 <cmsCode>${CMS9313DataExcel#ccbrepandrelBusinessDivisionCmsCode}</cmsCode>
+                              </businessDivision>
+                              <businessUnit>
+                                 <externalCode>${CMS9313DataExcel#ccbrepandrelBusinessUnitExternalcode}</externalCode>
+                              </businessUnit>
+                              
+                           </reportingAndRelations>
+                           <directDebit>
+                              <!--Optional:-->
+                              <frequency>${CMS9313DataExcel#ccbDirDebtFrequency}</frequency>
+                              <!--Optional:-->
+                              <ddFirstInstal>${CMS9313DataExcel#ccbddFirstInstal}</ddFirstInstal>
+                              <!--Optional:-->
+                              <instalCalcMethod>${CMS9313DataExcel#CCBinstalCalcMethod}</instalCalcMethod>
+                              <!--Optional:-->
+                              <instal>
+                                 <!--Optional:-->
+                                 <grossAmount>${CMS9313DataExcel#ccbInstallGrossAmount}</grossAmount>
+                                 <netAmount>${CMS9313DataExcel#ccbInstallNetAmount}</netAmount>
+                                 <!--Optional:-->
+                                 <taxAmount>${CMS9313DataExcel#ccbInstallTaxAmount}</taxAmount>
+                                 <taxCode>
+                                    <!--Optional:-->
+                                    <cmsCode>${CMS9313DataExcel#ccbInstallTaxCodeCMSCode}</cmsCode>
+                                 </taxCode>
+                                 <taxRate>${CMS9313DataExcel#ccbInstallTaxRate}</taxRate>
+                              </instal>
+                           </directDebit>
+                           <dates>
+                              <startDate>${#TestSuite#processingDate}</startDate>
+                              <quoteCreationDate>${#TestSuite#processingDate}</quoteCreationDate>
+                           </dates>
+                           <billingDay>${CMS9313DataExcel#ccbBillingDay}</billingDay>
+                           <term>${CMS9313DataExcel#ccbTerm}</term>
+                           <interestRates>
+                              <apr>${CMS9313DataExcel#ccbInterestRatesApr}</apr>
+                              <customerTrueRate>${CMS9313DataExcel#ccbInterestRatesCustTrueRate}</customerTrueRate>
+                           </interestRates>
+                           <commissions>
+                              <commission>
+                                 <commissionType>
+                                    <cmsCode>${CMS9313DataExcel#ccbCommisiionTypeCmsCode}</cmsCode>
+                                 </commissionType>
+                                 <amount>
+                                    <grossAmount>${CMS9313DataExcel#comissionsGrossPrice}</grossAmount>
+                                    <netAmount>${CMS9313DataExcel#comissionsNetPrice}</netAmount>
+                                    <taxAmount>${CMS9313DataExcel#comissionsTaxAmount}</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${CMS9313DataExcel#ComissionsTaxCode}</cmsCode>
+                                    </taxCode>
+                                    <taxRate>${CMS9313DataExcel#comissionsTaxRate}</taxRate>
+                                 </amount>
+                                 <commissionDate>${#TestSuite#processingDate}</commissionDate>
+                                 <thirdPartyId>
+                                    <bpmId>${CMS9313DataExcel#ccbCommissionThirdPartyIdBPMId}</bpmId>
+                                 </thirdPartyId>
+                              </commission>
+                           </commissions>
+                           <subsidies>
+                              <subsidy>
+                                 <type>
+                                    <cmsCode>${CMS9313DataExcel#ccbSubsidyTypeCMSCode}</cmsCode>
+                                 </type>
+                                 <provider>
+                                    <bpmId>${CMS9313DataExcel#ccbSubsidyProviderBpmId}</bpmId>
+                                 </provider>
+                                 <amount>
+                                   <grossAmount>${CMS9313DataExcel#SubsidiesGrossAmount}</grossAmount>
+                                    <netAmount>${CMS9313DataExcel#SubsidiesNetsAmount}</netAmount>
+                                    <taxAmount>${CMS9313DataExcel#SubsidiesTaxAmount}</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${CMS9313DataExcel#SubsidiesTaxCode}</cmsCode>
+                                    </taxCode>
+                                    <taxRate>${CMS9313DataExcel#subsidiesTaxRate}</taxRate>
+                                 </amount>
+                              </subsidy>
+                           </subsidies>
+                           <finance>
+                              <financeProductCode>
+                                 <!--<cmsCode>60</cmsCode>-->
+                                 <cmsCode>${CMS9313DataExcel#ccbFinanceProductCodeCmsCode}</cmsCode>
+                              </financeProductCode>
+                              <isArrears>${CMS9313DataExcel#ccbFinanceIsArrears}</isArrears>
+                              <isLease>${CMS9313DataExcel#ccbFinanceIsLease}</isLease>
+                              <amounts>
+                                 <totalInterest>
+                                    <grossAmount>${CMS9313DataExcel#ccbAmountsTotIntGrossAmount}</grossAmount>
+                                    <netAmount>${CMS9313DataExcel#ccbAmountsTotIntNetAmount}</netAmount>
+                                    <taxAmount>${CMS9313DataExcel#ccbAmountsTotIntTaxAmount}</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${CMS9313DataExcel#ccbAmountsTotIntTaxCodeCmsCode}</cmsCode>
+                                    </taxCode>
+                                 </totalInterest>
+                                 <grossCost>
+                                    <grossAmount>${CMS9313DataExcel#ccbAmountsGrossCostGrossAmount}</grossAmount>
+                                    <netAmount>${CMS9313DataExcel#ccbAmountsGrossCostNetAmount}</netAmount>
+                                    <taxAmount>${CMS9313DataExcel#ccbAmountsGrossCostTaxAmount}</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${CMS9313DataExcel#ccbGrossCostTaxCodeCmsCode}</cmsCode>
+                                    </taxCode>
+                                 </grossCost>
+                                 <amountFinanced>
+                                    <grossAmount>${CMS9313DataExcel#ccbAmntFinancedGrossAmnt}</grossAmount>
+                                    <netAmount>${CMS9313DataExcel#ccbAmntFinancedNetAmnt}</netAmount>
+                                    <taxAmount>${CMS9313DataExcel#ccbAmntFinancedTaxAmnt}</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${CMS9313DataExcel#ccbAmntFinancedtaxCodeCmsCode}</cmsCode>
+                                    </taxCode>
+                                 </amountFinanced>
+                                 <residuals>
+                                    <residual>
+                                       <type>
+                                          <cmsCode>${CMS9313DataExcel#ccbResidualTypeCmsCode}</cmsCode>
+                                       </type>
+                                       <value>
+                                          <!--Optional:-->
+                                          <grossAmount>${CMS9313DataExcel#ccbresidualValueGrossAmount}</grossAmount>
+                                          <!--Optional:-->
+                                          <netAmount>${CMS9313DataExcel#ccbresidualValueNetAmount}</netAmount>
+                                          <!--Optional:-->
+                                          <taxAmount>${CMS9313DataExcel#ccbresidualValueTaxAmount}</taxAmount>
+                                          <!--Optional:-->
+                                       </value>
+                                       <rvPercentage>${CMS9313DataExcel#ccbresidualrvPercentage}</rvPercentage>
+                                    </residual>
+                                 </residuals>
+                              </amounts>
+                              <taxTreatment>
+                                 <taxCode>${CMS9313DataExcel#ccbTaxTreatmentTaxCode}</taxCode>
+                              </taxTreatment>
+                           </finance>
+                           <apPayments>
+<!--                              <apPayment>-->
+<!--                                 <paymentDate>2013-11-20+01:00</paymentDate>-->
+<!--                                 <paymentType>0001</paymentType>-->
+<!--                                 <payeeId>-->
+<!--                                    <thirdPartyId>-->
+<!--                                       <bpmId>12345</bpmId>-->
+<!--                                    </thirdPartyId>-->
+<!--                                 </payeeId>-->
+<!--                                 <payerId>-->
+<!--                                    <thirdPartyId>-->
+<!--                                       <bpmId>12345</bpmId>-->
+<!--                                    </thirdPartyId>-->
+<!--                                 </payerId>-->
+<!--                                 <paymentDescription>Vehicle Purchase</paymentDescription>-->
+<!--                                 <paymentAmount>-->
+<!--                                    <grossAmount>82300.00</grossAmount>-->
+<!--                                    <netAmount>69159.66</netAmount>-->
+<!--                                    <taxAmount>13140.34</taxAmount>-->
+<!--                                    <taxCode>-->
+<!--                                       <cmsCode>0001</cmsCode>-->
+<!--                                    </taxCode>-->
+<!--                                    <taxRate>0.19</taxRate>-->
+<!--                                 </paymentAmount>-->
+<!--                                 <referenceCode>300003-13</referenceCode>-->
+<!--                              </apPayment>-->
+<!--                              <apPayment>-->
+<!--                                 <paymentDate>2014-01-18+02:00</paymentDate>-->
+<!--                                 <paymentType>0002</paymentType>-->
+<!--                                 <payeeId>-->
+<!--                                    <thirdPartyId>-->
+<!--                                       <bpmId>12345</bpmId>-->
+<!--                                    </thirdPartyId>-->
+<!--                                 </payeeId>-->
+<!--                                 <payerId>-->
+<!--                                    <thirdPartyId>-->
+<!--                                       <bpmId>12345</bpmId>-->
+<!--                                    </thirdPartyId>-->
+<!--                                 </payerId>-->
+<!--                                 <paymentDescription>Salesperson Commission</paymentDescription>-->
+<!--                                 <paymentAmount>-->
+<!--                                    <grossAmount>325.68</grossAmount>-->
+<!--                                    <netAmount>273.68</netAmount>-->
+<!--                                    <taxAmount>52.00</taxAmount>-->
+<!--                                    <taxCode>-->
+<!--                                       <cmsCode>0001</cmsCode>-->
+<!--                                    </taxCode>-->
+<!--                                    <taxRate>0.19</taxRate>-->
+<!--                                 </paymentAmount>-->
+<!--                              </apPayment>-->
+                              <apPayment>
+                                 <paymentDate>${#TestSuite#processingDate}</paymentDate>
+                                 <paymentType>${CMS9313DataExcel#ccbapPaymentPaymentType}</paymentType>
+                                 <payeeId>
+                                    <thirdPartyId>
+                                       <bpmId>${CMS9313DataExcel#ccbappaymentPayeeidThirdPartyIdBpmId}</bpmId>
+                                    </thirdPartyId>
+                                 </payeeId>
+                                 <payerId>
+                                    <thirdPartyId>
+                                       <bpmId>${CMS9313DataExcel#ccbappaymentPayeridThirdPartyIdBpmId}</bpmId>
+                                    </thirdPartyId>
+                                 </payerId>
+                                 <paymentDescription>${CMS9313DataExcel#ccbappaymentPaymentDescription}</paymentDescription>
+                                 <paymentAmount>
+                                    <grossAmount>${CMS9313DataExcel#ccbPaymentAmountGrossAmount}</grossAmount>
+                                    <netAmount>${CMS9313DataExcel#ccbPaymentAmountNetAmount}</netAmount>
+                                    <taxAmount>${CMS9313DataExcel#ccbPaymentAmountTaxAmount}</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${CMS9313DataExcel#ccbPaymentAmountTaxCodeCmsCode}</cmsCode>
+                                    </taxCode>
+                                    <taxRate>${CMS9313DataExcel#ccbPaymentAmountTaxRate}</taxRate>
+                                 </paymentAmount>
+                              </apPayment>
+                          </apPayments>
+                           <endOfContractOptions>
+                              <endOfContractOption>
+                                 <prolongLeadDays>${CMS9313DataExcel#ccbEndofContractOptionProlongLeadDays}</prolongLeadDays>
+                                 <isBuyback>${CMS9313DataExcel#ccbEndofContractOptionIsBuyBack}</isBuyback>
+                                 <buybackValue>${CMS9313DataExcel#ccbEndofContractOptionBuyBackValue}</buybackValue>
+                                 <buybacker>
+                                    <bpmId>${CMS9313DataExcel#ccbEndofContractOptionbuBackerBPMId}</bpmId>
+                                 </buybacker>
+                              </endOfContractOption>
+                           </endOfContractOptions>
+                           <schedule>
+                              <payments>
+                                 <payment>
+                                    <type>${CMS9313DataExcel#ccbPaymentType}</type>
+                                    <numberOfPayments>${CMS9313DataExcel#ccbPaymentNumberOfPayments}</numberOfPayments>
+                                    <frequency>${CMS9313DataExcel#ccbPaymentFrequency}</frequency>
+                                    <amount>
+                                       <grossAmount>${CMS9313DataExcel#ccbPaymentsAmountGrossAmount}</grossAmount>
+                                       <netAmount>${CMS9313DataExcel#ccbPaymentsAmountNetAmount}</netAmount>
+                                       <taxAmount>${CMS9313DataExcel#ccbPaymentsAmountTaxAmount}</taxAmount>
+                                       <taxCode>
+                                          <cmsCode>${CMS9313DataExcel#ccbPaymentsTaxCodeCmsCode}</cmsCode>
+                                       </taxCode>
+                                       <taxRate>${CMS9313DataExcel#ccbPaymentsTaxRate}</taxRate>
+                                    </amount>
+                                 </payment>
+                              </payments>
+                           </schedule>
+                           <assets>
+                              <asset>
+                                 <purpose>
+                                    <cmsCode>${CMS9313DataExcel#ccbAssetPurpseCmsCode}</cmsCode>
+                                 </purpose>
+                                 <assetOrSecurity>${CMS9313DataExcel#ccbAssetAssetOrSecurity}</assetOrSecurity>
+                                 <motorvehicle>${CMS9313DataExcel#ccbAssetMotorVehicle}</motorvehicle>
+                                 <listPrice>
+                                    <grossAmount>${CMS9313DataExcel#ccbListPriceGrossAmount}</grossAmount>
+                                    <netAmount>${CMS9313DataExcel#ccbListPriceNetAmount}</netAmount>
+                                    <taxAmount>${CMS9313DataExcel#ccbListPriceTaxAmount}</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${CMS9313DataExcel#ccbListPriceTaxCodeCmsCode}</cmsCode>
+                                    </taxCode>
+                                 </listPrice>
+                                 <salePrice>
+                                    <grossAmount>${CMS9313DataExcel#ccbSalePriceGrossAmount}</grossAmount>
+                                   <netAmount>${CMS9313DataExcel#ccbSalePriceNetAmount}</netAmount>
+                                    <taxAmount>${CMS9313DataExcel#ccbSalePriceTaxAmount}</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${CMS9313DataExcel#ccbSalePriceTaxCodeCmsCode}</cmsCode>
+                                    </taxCode>
+                                 </salePrice>
+                                 <totalCost>${CMS9313DataExcel#ccbSalePriceTotalCost}</totalCost>
+                                 <registrationNumber>${#TestSuite#regNum}</registrationNumber>
+                                 <registrationDate>${#TestSuite#processingDate}</registrationDate>
+                                 <vin>${#TestSuite#vin}</vin>
+                                 <vehicle>
+                                    <makeDesc>${CMS9313DataExcel#ccbVehicleMakeDesc}</makeDesc>
+                                    <modelDesc>${CMS9313DataExcel#ccbVehicleModelDesc}</modelDesc>
+                                    <variantDesc>${CMS9313DataExcel#ccbVehicleVariantDesc}</variantDesc>
+                                    <externalVehicleCode>
+                                       <cmsCode>${CMS9313DataExcel#ccbVehicleExternalVehicleCodeCmsCode}</cmsCode>
+                                    </externalVehicleCode>
+                                    <deliveryDate>${#TestSuite#processingDate}</deliveryDate>
+                                    <colour>${CMS9313DataExcel#ccbVehicleColour}</colour>
+                                 </vehicle>
+                                 <depreciationOptions>
+                                    <depreciationOption>
+                                       <assetLife>${CMS9313DataExcel#ccbDepreciationOptionAssetLife}</assetLife>
+                                    </depreciationOption>
+                                 </depreciationOptions>
+                                 <optionsAndExtras>
+                                    <optionsAndExtra>
+                                       <type>${CMS9313DataExcel#ccbOptionsAndExtraType}</type>
+                                       <optionsExternalRef>${CMS9313DataExcel#ccboptionsAndExtraoptionsExternalRef}</optionsExternalRef>
+                                       <optionsDescription>${CMS9313DataExcel#ccboptionsAndExtraoptionsDescription}</optionsDescription>
+                                       <priceGross>
+                                          <grossAmount>${CMS9313DataExcel#OptionsAndExtrasGrossPrice}</grossAmount>
+                                          <netAmount>${CMS9313DataExcel#OptionsAndExtrasNetPrice}</netAmount>
+                                          <taxAmount>${CMS9313DataExcel#OptionsAndExtrasTaxAmount}</taxAmount>
+                                          <taxCode>
+                                             <cmsCode>${CMS9313DataExcel#OptionsAndExtrasTaxCode}</cmsCode>
+                                          </taxCode>
+                                          <taxRate>${CMS9313DataExcel#OptionsAndExtrasTaxRate}</taxRate>
+                                       </priceGross>
+                                    </optionsAndExtra>
+                                 </optionsAndExtras>
+                                 <saleCondition>
+                                    <cmsCode>${CMS9313DataExcel#ccbSaleConditionCmsCode}</cmsCode>
+                                 </saleCondition>
+                                 <damageCondition>
+                                    <cmsCode>${CMS9313DataExcel#ccbDamageConditionCmsCode}</cmsCode>
+                                 </damageCondition>
+                                 <usage>
+                                    <initialMileage>${CMS9313DataExcel#ccbusageInitialMileage}</initialMileage>
+                                    <annualMileage>${CMS9313DataExcel#ccbUsageAnnualMileage}</annualMileage>
+                                    <usageCharges>
+                                       <chargeDetails>
+                                          <chargeType>${CMS9313DataExcel#ccbusageChargesChargeDetailsChargeType}</chargeType>
+                                          <amount>${CMS9313DataExcel#ccbusageChargesChargeDetailsAmount}</amount>
+                                          <tolerance>${CMS9313DataExcel#ccbusageChargesChargeDetailsTolerance}</tolerance>
+                                          <toleranceBasis>${CMS9313DataExcel#ccbUsageChargesChargeDetailsToleranceBasis}</toleranceBasis>
+                                       </chargeDetails>
+                                       <chargeDetails>
+                                          <chargeType>${CMS9313DataExcel#ccbusageChargesChargeDetailsChrgTyp}</chargeType>
+                                          <amount>${CMS9313DataExcel#ccbusageChargesChargeDetailsAmnt}</amount>
+                                          <tolerance>${CMS9313DataExcel#ccbusageChargesChargeDetlsTolerance}</tolerance>
+                                          <toleranceBasis>${CMS9313DataExcel#ccbUsageChargesChargeDetlsTolrnceBasis}</toleranceBasis>
+                                       </chargeDetails>
+                                    </usageCharges>
+                                 </usage>
+                              </asset>
+                           </assets>
+                        </contract>
+                     </contracts>
+                  </bundle>
+               </bundles>
+               <!--<links>-->
+               <!--Zero or more repetitions:-->
+               <!--<link>-->
+               <!--<linkId>1</linkId>-->
+               <!--<linkType>CUST</linkType>-->
+               <!--</link>-->
+               <!--</links>-->
+               <notes>
+                  <!--Zero or more repetitions:-->
+                  <note>
+                     <!--Optional:-->
+                     <noteDate>${#TestSuite#processingDate}</noteDate>
+                     <!--Optional:-->
+                     <noteText>${CMS9313DataExcel#ccbNotesNoteNoteText}</noteText>
+                  </note>
+                  <note>
+                     <!--Optional:-->
+                     <noteDate>${#TestSuite#processingDate}</noteDate>
+                     <!--Optional:-->
+                     <noteText>${CMS9313DataExcel#ccbNoteText}</noteText>
+                  </note>
+
+               </notes>
+            </masterContract>
+         </contractBundleData>
+         <applicationInfo>
+            <cmn:securityAudit>
+               <cmn:messageId>${CMS9313DataExcel#ccbMsgId}</cmn:messageId>
+               <cmn:timestamp>${CMS9313DataExcel#ccbTimestmp}</cmn:timestamp>
+               <cmn:clientAppId>${CMS9313DataExcel#ccbclientAppId}</cmn:clientAppId>
+               <cmn:userId>${CMS9313DataExcel#ccbUserId}</cmn:userId>
+               <cmn:clientLanguage>${CMS9313DataExcel#ccbClientLanguage}</cmn:clientLanguage>
+            </cmn:securityAudit>
+         </applicationInfo>
+      </createContractBundle>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="e849ab1b-7340-4f98-84e0-4fbd91941411"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="320f4cd4-8e0d-4f07-9bf5-8f6a477967f9"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="9510a289-eeaf-4f53-b130-71b247e62fec"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="request" name="CreateContractBundleAddTaxDetails_BMWTEST03" id="1048fafe-6ea6-4504-8d91-ce47c40ce8f0"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>createContractBundle</con:operation><con:request name="CreateContractBundleAddTaxDetails_BMWTEST03" id="1b301b21-bc5d-4ce0-936e-10fde1194cd5"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@remove_empty_content">true</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvbmwdev01:28080/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <createContractBundle xmlns:NS1="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation">
+         <contractBundleData>
+            <application>
+               <userId>65466</userId>
+               <scoreBandCode>
+                  <cmsCode>1</cmsCode>
+               </scoreBandCode>
+            </application>
+            <salesPerson>
+               <thirdPartyId>
+               <!--vvamc-->
+                  <bpmId>777746</bpmId>
+               </thirdPartyId>
+            </salesPerson>
+            <dealer>
+               <thirdPartyId>
+                  <bpmId>777746</bpmId>
+               </thirdPartyId>
+            </dealer>
+            <customers>
+               <customer>
+                  <details>
+                        <type>I</type>
+                     <thirdPartyId>
+                        <bpmId>${#TestSuite#bpmid}</bpmId>
+                     </thirdPartyId>
+                    <role>P</role>
+                     <commsChannels>
+                        <contactViaSMS>true</contactViaSMS>
+                        <phoneFaxNums>
+                           <telephoneFax>
+                              <phoneFaxNumber>004914587676678</phoneFaxNumber>
+                              <type>HO</type>
+                           </telephoneFax>
+                           <telephoneFax>
+                              <phoneFaxNumber>004914587676612</phoneFaxNumber>
+                              <type>MOB</type>
+                           </telephoneFax>
+                        </phoneFaxNums>
+                     </commsChannels>
+                     <bankAccounts>
+                        <bankAccountData>
+                           <ibanNumber>DE39700202704320253727</ibanNumber>
+                           <swiftCode>HYVEDEMM</swiftCode>
+                           <mandate>
+                              <valid>true</valid>
+                              <signedDate>2017-08-23</signedDate>
+                           </mandate>
+                           <bankAccountName>Mr. John Jones</bankAccountName>
+                        </bankAccountData>
+                     </bankAccounts>
+                     <addresses>
+                        <address>
+                           <addressType>
+                              <cmsCode>0001</cmsCode>
+                           </addressType>
+                           <countryCode>
+                              <cmsCode>DE</cmsCode>
+                           </countryCode>
+                           <streetNumber>1</streetNumber>
+                           <street>Heidemannstraße</street>
+                           <postTown>München</postTown>
+                           <postCode>80939</postCode>
+                        </address>
+                        <address>
+                           <addressType>
+                              <cmsCode>0016</cmsCode>
+                           </addressType>
+                           <countryCode>
+                              <cmsCode>DE</cmsCode>
+                           </countryCode>
+                           <streetNumber>5</streetNumber>
+                           <street>Heidemannstraße</street>
+                           <postTown>München</postTown>
+                           <postCode>80939</postCode>
+                        </address>
+                     </addresses>
+                     <gender>M</gender>
+                     <dateOfBirth>1956-02-14</dateOfBirth>
+                     <firstName>John</firstName>
+                     <middleName>A</middleName>
+                     <surname>Jones</surname>
+                     <title>Mr</title>
+                     <countryOfBirth>DE</countryOfBirth>
+                     <preferredLanguage>
+                        <cmsCode>1</cmsCode>
+                     </preferredLanguage>
+                     <vatCode>0001</vatCode>
+                     <salutation>Herr</salutation>
+                     
+                     <emails>
+                        <email>
+                           <emailType>
+                              <cmsCode>1</cmsCode>
+                           </emailType>
+                           <emailAddress>info@whiteclarkegroup.com</emailAddress>
+                           <isPrimaryMailing>true</isPrimaryMailing>
+                        </email>
+                     </emails>
+  <customerStatus>
+                        <cmsCode>${CMS8323DataExcel#ccbCustomerStatusCMSCode}</cmsCode>
+                        <externalCode>${CMS8323DataExcel#ccbCustomerStatusExternalCode}</externalCode>
+                     </customerStatus>
+                      <isDeceased>${CMS8323DataExcel#ccbIsDeceased}</isDeceased>
+                     <isNegativeinfo>${CMS8323DataExcel#ccbisNegativeInfo}</isNegativeinfo>
+                  
+                     <driversLic>${CMS8323DataExcel#ccbDriversLic}</driversLic>
+                     <directMarketingPost>${CMS8323DataExcel#ccbDirectMarketingPost}</directMarketingPost>
+                     <suffix>${CMS8323DataExcel#ccbSuffix}</suffix>
+                     <suffixCode>
+                        <cmsCode>${CMS8323DataExcel#ccbSuffixCodeCMScode}</cmsCode>
+                        <externalCode>${CMS8323DataExcel#ccbSuffixCodeExternalCode}</externalCode>
+                     </suffixCode>
+                     <maidenName>${CMS8323DataExcel#ccbMaidenName}</maidenName>
+                     <motabilityFlag>${CMS8323DataExcel#ccbMotabilityFlag}</motabilityFlag>
+                     <baselClassCode>
+                        <cmsCode>${CMS8323DataExcel#baselClasscodecmsCode}</cmsCode>
+                        <externalCode>${CMS8323DataExcel#ccbBaselClassCodeExternalCode}</externalCode>
+                     </baselClassCode>
+                     <ctryResidence>
+                        <cmsCode>${CMS8323DataExcel#ccbCtryResidenceCMSCode}</cmsCode>
+                        <externalCode>${CMS8323DataExcel#ccbCtryResidenceExternalCode}</externalCode>
+                     </ctryResidence>
+                 
+                     <previousName>${CMS8323DataExcel#ccbPreviousName}</previousName>
+            
+                     <privacyConsent>${CMS8323DataExcel#ccbPrivacyConsent}</privacyConsent>
+                  </details>
+               </customer>
+<!--               <customer>-->
+<!--                  <details>-->
+<!--                     -->
+<!--  <type>${#TestSuite#CustType}</type>-->
+<!--                     <thirdPartyId>-->
+<!--                        <bpmId>5162310</bpmId>-->
+<!--                     </thirdPartyId>-->
+<!--                     <role>${#TestSuite#RoleTwo}</role>-->
+<!--                     <commsChannels>-->
+<!--                        <contactViaSMS>true</contactViaSMS>-->
+<!--                        <phoneFaxNums>-->
+<!--                           <telephoneFax>-->
+<!--                              <phoneFaxNumber>004914457676678</phoneFaxNumber>-->
+<!--                              <type>HO</type>-->
+<!--                           </telephoneFax>-->
+<!--                           <telephoneFax>-->
+<!--                              <phoneFaxNumber>004914637676612</phoneFaxNumber>-->
+<!--                              <type>MOB</type>-->
+<!--                           </telephoneFax>-->
+<!--                        </phoneFaxNums>-->
+<!--                     </commsChannels>-->
+<!--                     <bankAccounts>-->
+<!--                        <bankAccountData>-->
+<!--                           <ibanNumber>DE39700202704320253727</ibanNumber>-->
+<!--                           <swiftCode>HYVEDEMM</swiftCode>-->
+<!--                           <mandate>-->
+<!--                              <valid>true</valid>-->
+<!--                              <signedDate>2017-08-23</signedDate>-->
+<!--                           </mandate>-->
+<!--                           <bankAccountName>Mrs. Jackie Jones</bankAccountName>-->
+<!--                        </bankAccountData>-->
+<!--                     </bankAccounts>-->
+<!--                     <addresses>-->
+<!--                        <address>-->
+<!--                           <addressType>-->
+<!--                              <cmsCode>0001</cmsCode>-->
+<!--                           </addressType>-->
+<!--                           <countryCode>-->
+<!--                              <cmsCode>DE</cmsCode>-->
+<!--                           </countryCode>-->
+<!--                           <streetNumber>1</streetNumber>-->
+<!--                           <street>Heidemannstraße</street>-->
+<!--                           <postTown>München</postTown>-->
+<!--                           <postCode>80939</postCode>-->
+<!--                        </address>-->
+<!--                        <address>-->
+<!--                           <addressType>-->
+<!--                              <cmsCode>0016</cmsCode>-->
+<!--                           </addressType>-->
+<!--                           <countryCode>-->
+<!--                              <cmsCode>DE</cmsCode>-->
+<!--                           </countryCode>-->
+<!--                           <streetNumber>5</streetNumber>-->
+<!--                           <street>Heidemannstraße</street>-->
+<!--                           <postTown>München</postTown>-->
+<!--                           <postCode>80939</postCode>-->
+<!--                        </address>-->
+<!--                     </addresses>-->
+<!--                     <gender>F</gender>-->
+<!--                     <dateOfBirth>1959-02-14</dateOfBirth>-->
+<!--                     <firstName>Jackie</firstName>-->
+<!--                     <middleName>A</middleName>-->
+<!--                     <surname>Jones</surname>-->
+<!--                     <title>Mrs</title>-->
+<!--                     <countryOfBirth>DE</countryOfBirth>-->
+<!--                     <preferredLanguage>-->
+<!--                        <cmsCode>1</cmsCode>-->
+<!--                     </preferredLanguage>-->
+<!--                     <vatCode>0001</vatCode>-->
+<!--                     <salutation>Frau</salutation>-->
+<!--                     <staffType/>-->
+<!--                     <emails>-->
+<!--                        <email>-->
+<!--                           <emailType>-->
+<!--                              <cmsCode>1</cmsCode>-->
+<!--                           </emailType>-->
+<!--                           <emailAddress>info@whiteclarkegroup.com</emailAddress>-->
+<!--                           <isPrimaryMailing>true</isPrimaryMailing>-->
+<!--                        </email>-->
+<!--                     </emails>-->
+<!--                  </details>-->
+<!--               </customer>-->
+            </customers>
+            <masterContract>
+               <contractNumber>
+                 <externalContractNumber>${CMS8323DataExcel#CCBContractNumberExternalContractNumber}</externalContractNumber>
+               </contractNumber>
+               <bundles>
+                  <bundle>
+                     <identifier>1</identifier>
+                     <contracts>
+                        <contract>
+                           <identifier>1</identifier>
+                           <proposalId>4001570</proposalId>
+                           <currency>EUR</currency>
+                           <!--<bundlePrimary>true</bundlePrimary>-->
+                           <masterContractPrimary>true</masterContractPrimary>
+                           <masterContractFeeMCU>true</masterContractFeeMCU>
+                           <bundleFeeMCU>true</bundleFeeMCU>
+                           <invoiceOptions>
+                              <printInvoice>false</printInvoice>
+                           </invoiceOptions>
+                           <contractOptions>
+                              <paymentFacility>4</paymentFacility>
+                           </contractOptions>
+                           <reportingAndRelations>
+                              <country>DE</country>
+                              <company>
+                                 <cmsCode>0001</cmsCode>
+                              </company>
+                              <region>
+                                 <cmsCode>21</cmsCode>
+                              </region>
+                              <branch>
+                                 <cmsCode>0001</cmsCode>
+                              </branch>
+                              <businessDivision>
+                                 <cmsCode>0002</cmsCode>
+                              </businessDivision>
+                              <businessUnit>
+                                 <externalCode>4</externalCode>
+                              </businessUnit>
+                           </reportingAndRelations>
+<!--                           <dates>-->
+<!--                              <startDate>2013-06-25</startDate>-->
+<!--                              <quoteCreationDate>2014-01-25</quoteCreationDate>-->
+<!--                           </dates>-->
+
+<dates>
+                              <startDate>2016-06-25</startDate>
+                              <quoteCreationDate>2017-01-25</quoteCreationDate>
+                           </dates>
+                           <billingDay>23</billingDay>
+                           <term>36</term>
+                           <interestRates>
+                              <customerTrueRate>4.31</customerTrueRate>
+                           </interestRates>
+<!--                           <commissions>-->
+<!--                              <commission>-->
+<!--                                 <commissionType>-->
+<!--                                    <cmsCode>1</cmsCode>-->
+<!--                                 </commissionType>-->
+<!--                                 <amount>-->
+<!--                                    <grossAmount>119.0</grossAmount>-->
+<!--                                    <netAmount>100.0</netAmount>-->
+<!--                                    <taxAmount>19.0</taxAmount>-->
+<!--                                    <taxCode>-->
+<!--                                       <cmsCode>001</cmsCode>-->
+<!--                                    </taxCode>-->
+<!--                                    <taxRate>0.19</taxRate>-->
+<!--                                 </amount>-->
+<!--                                 <commissionDate>2014-01-25</commissionDate>-->
+<!--                                 <thirdPartyId>-->
+<!--                                    <bpmId>1</bpmId>-->
+<!--                                 </thirdPartyId>-->
+<!--                              </commission>-->
+<!--                              <commission>-->
+<!--                                 <commissionType>-->
+<!--                                    <cmsCode>2</cmsCode>-->
+<!--                                 </commissionType>-->
+<!--                                 <amount>-->
+<!--                                    <grossAmount>57.96</grossAmount>-->
+<!--                                    <netAmount>48.71</netAmount>-->
+<!--                                    <taxAmount>9.25</taxAmount>-->
+<!--                                    <taxCode>-->
+<!--                                       <cmsCode>001</cmsCode>-->
+<!--                                    </taxCode>-->
+<!--                                    <taxRate>19</taxRate>-->
+<!--                                 </amount>-->
+<!--                                 <commissionDate>2014-01-25</commissionDate>-->
+<!--                                 <thirdPartyId>-->
+<!--                                    <bpmId>1</bpmId>-->
+<!--                                 </thirdPartyId>-->
+<!--                              </commission>-->
+<!--                           </commissions>-->
+<!--                           <subsidies>-->
+<!--                              <subsidy>-->
+<!--                                 <type>-->
+<!--                                    <cmsCode>01</cmsCode>-->
+<!--                                 </type>-->
+<!--                                 <provider>-->
+<!--                                    <bpmId>1</bpmId>-->
+<!--                                 </provider>-->
+<!--                                 <amount>-->
+<!--                                    <grossAmount>13743.99</grossAmount>-->
+<!--                                    <netAmount>11549.57</netAmount>-->
+<!--                                    <taxAmount>2194.42</taxAmount>-->
+<!--                                    <taxCode>-->
+<!--                                       <cmsCode>001</cmsCode>-->
+<!--                                    </taxCode>-->
+<!--                                    <taxRate>0.19</taxRate>-->
+<!--                                 </amount>-->
+<!--                              </subsidy>-->
+<!--                           </subsidies>-->
+                <commissions>
+                              <commission>
+                                 <commissionType>
+                                    <cmsCode>${CMS9313DataExcel#ccbCommisiionTypeCmsCode}</cmsCode>
+                                 </commissionType>
+                                 <amount>
+                                    <grossAmount>${CMS9313DataExcel#comissionsGrossPrice}</grossAmount>
+                                    <netAmount>${CMS9313DataExcel#comissionsNetPrice}</netAmount>
+                                    <taxAmount>${CMS9313DataExcel#comissionsTaxAmount}</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${CMS9313DataExcel#ComissionsTaxCode}</cmsCode>
+                                    </taxCode>
+                                    <taxRate>${CMS9313DataExcel#comissionsTaxRate}</taxRate>
+                                 </amount>
+                                 <commissionDate>${#TestSuite#processingDate}</commissionDate>
+                                 <thirdPartyId>
+                                    <bpmId>${CMS9313DataExcel#ccbCommissionThirdPartyIdBPMId}</bpmId>
+                                 </thirdPartyId>
+                              </commission>
+                           </commissions>
+                           <subsidies>
+                              <subsidy>
+                                 <type>
+                                    <cmsCode>${CMS9313DataExcel#ccbSubsidyTypeCMSCode}</cmsCode>
+                                 </type>
+                                 <provider>
+                                    <bpmId>${CMS9313DataExcel#ccbSubsidyProviderBpmId}</bpmId>
+                                 </provider>
+                                 <amount>
+                                   <grossAmount>${CMS9313DataExcel#SubsidiesGrossAmount}</grossAmount>
+                                    <netAmount>${CMS9313DataExcel#SubsidiesNetsAmount}</netAmount>
+                                    <taxAmount>${CMS9313DataExcel#SubsidiesTaxAmount}</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${CMS9313DataExcel#SubsidiesTaxCode}</cmsCode>
+                                    </taxCode>
+                                    <taxRate>${CMS9313DataExcel#subsidiesTaxRate}</taxRate>
+                                 </amount>
+                              </subsidy>
+                           </subsidies>
+                           <finance>
+                              <financePlanReferenceCode>
+                                 <externalCode>2987</externalCode>
+                              </financePlanReferenceCode>
+                              <financeProductCode>
+                                 <cmsCode>0010</cmsCode>
+                              </financeProductCode>
+                              <isArrears>false</isArrears>
+                              <isLease>${CMS9313DataExcel#ccbFinanceIsLease}</isLease>
+                              <isStructured>false</isStructured>
+                              <amounts>
+                                 <totalInterest>
+                                 <grossAmount>${CMS9313DataExcel#ccbAmountsTotIntGrossAmount}</grossAmount>
+                                    <netAmount>6009.63</netAmount>
+                                 </totalInterest>
+                                 <grossCost>
+                                 <grossAmount>${CMS9313DataExcel#ccbAmountsGrossCostGrossAmount}</grossAmount>
+                                    <netAmount>64500.85</netAmount>
+                                 </grossCost>
+                                 <amountFinanced>
+                                 
+<grossAmount>${CMS9313DataExcel#ccbAmntFinancedGrossAmnt}</grossAmount>
+                                    <netAmount>64500.85</netAmount>
+                                 </amountFinanced>
+                                 <residuals>
+                                    <residual>
+                                       <type>
+                                          <cmsCode>1</cmsCode>
+                                       </type>
+                                       <value>
+                                       <grossAmount>${CMS9313DataExcel#ccbresidualValueGrossAmount}</grossAmount>
+                                          <netAmount>36504.20</netAmount>
+                                       </value>
+                                       <rvPercentage>48.0</rvPercentage>
+                                    </residual>
+                                    <residual>
+                                       <type>
+                                          <cmsCode>2</cmsCode>
+                                       </type>
+                                       <value>
+                                          <netAmount>36504.20</netAmount>
+                                       </value>
+                                       <rvPercentage>48.0</rvPercentage>
+                                    </residual>
+                                 </residuals>
+                              </amounts>
+                              <taxTreatment>
+                                 <taxCode>001</taxCode>
+                              </taxTreatment>
+                           </finance>
+                           <endOfContractOptions>
+                              <endOfContractOption>
+                                 <eocAssessment>
+                                    <cmsCode>1</cmsCode>
+                                    
+                                 </eocAssessment>
+                                 <endOfContractparties>
+                                    <endOfContractparty>
+                                       <eocPartyId>
+                                          <bpmId>1</bpmId>
+                                          <!--<pmsId/>-->
+                                          <!--<cmsId/>-->
+                                          <entityType>9</entityType>
+                                       </eocPartyId>
+                                       <optionToBuy>
+                                          <cmsCode>1</cmsCode>
+                                          
+                                       </optionToBuy>
+                                       <buybackSetValue>
+                                          <cmsCode>1</cmsCode>
+                                          
+                                       </buybackSetValue>
+                                       <rvCompensation>100.00</rvCompensation>
+                                    </endOfContractparty>
+                                 </endOfContractparties>
+                                 <prolongLeadDays>1</prolongLeadDays>
+                              </endOfContractOption>
+                           </endOfContractOptions>
+ <apPayments>
+                           <apPayment>
+                                 <paymentDate>${#TestSuite#processingDate}</paymentDate>
+                                 <paymentType>${CMS9313DataExcel#ccbapPaymentPaymentType}</paymentType>
+<!--                                 <payeeId>-->
+<!--                                    <thirdPartyId>-->
+<!--                                       <bpmId>${CMS9313DataExcel#ccbappaymentPayeeidThirdPartyIdBpmId}</bpmId>-->
+<!--                                    </thirdPartyId>-->
+<!--                                 </payeeId>-->
+<!--                                 <payerId>-->
+<!--                                    <thirdPartyId>-->
+<!--                                       <bpmId>${CMS9313DataExcel#ccbappaymentPayeridThirdPartyIdBpmId}</bpmId>-->
+<!--                                    </thirdPartyId>-->
+<!--                                 </payerId>-->
+                                 <paymentDescription>${CMS9313DataExcel#ccbappaymentPaymentDescription}</paymentDescription>
+                                 <paymentAmount>
+                                    <grossAmount>${CMS9313DataExcel#ccbPaymentAmountGrossAmount}</grossAmount>
+                                    <netAmount>${CMS9313DataExcel#ccbPaymentAmountNetAmount}</netAmount>
+                                    <taxAmount>${CMS9313DataExcel#ccbPaymentAmountTaxAmount}</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${CMS9313DataExcel#ccbPaymentAmountTaxCodeCmsCode}</cmsCode>
+                                    </taxCode>
+                                    <taxRate>${CMS9313DataExcel#ccbPaymentAmountTaxRate}</taxRate>
+                                 </paymentAmount>
+                              </apPayment>
+                          </apPayments>
+                           <schedule>
+                              <payments>
+                                    <payment>
+                                    <type>1</type>
+                                    <numberOfPayments>36</numberOfPayments>
+                                    <frequency>1</frequency>
+                                    <amount>
+                                       <grossAmount>958.82</grossAmount>
+                                       <netAmount>805.73</netAmount>
+                                       <taxAmount>153.09</taxAmount>
+                                       <taxCode>
+                                          <cmsCode>001</cmsCode>
+                                       </taxCode>
+                                       <taxRate>19</taxRate>
+                                    </amount>
+                                 </payment>
+                              </payments>
+                           </schedule>
+                           <assets>
+                              <asset>
+                                 <purpose>
+                                    <cmsCode>1</cmsCode>
+                                 </purpose>
+                                 <assetOrSecurity>A</assetOrSecurity>
+                                 <listPrice>
+                                 <grossAmount>${CMS9313DataExcel#ccbListPriceGrossAmount}</grossAmount>
+                                    <netAmount>52605.04</netAmount>
+                                 </listPrice>
+                                 <salePrice>
+                                  <grossAmount>${CMS9313DataExcel#ccbSalePriceGrossAmount}</grossAmount> 
+                                    <netAmount>64500.85</netAmount>
+                                 </salePrice>
+                                 <totalCost>76050.42</totalCost>
+                                   <registrationNumber>${#TestSuite#regNum}</registrationNumber>
+                                 <registrationDate>${#TestSuite#processingDate}</registrationDate>
+                                 <vin>${#TestSuite#vin}</vin>
+                                 <chassisNumber>42551311</chassisNumber>
+                                 <manufactureYear>2016</manufactureYear>
+                                 <manufactureMonth>8</manufactureMonth>
+                                 <assetCategory>0001</assetCategory>
+                                 <isNew>true</isNew>
+                                 <vehicle>
+                                    <makeDesc>BMW</makeDesc>
+                                    <modelDesc>3 series</modelDesc>
+                                    <variantDesc>328i</variantDesc>
+                                    <deliveryDate>2014-01-25</deliveryDate>
+                                 </vehicle>
+                                 <depreciationOptions>
+                                    <assetLife>28</assetLife>
+                                 </depreciationOptions>
+                                 <optionsAndExtras>
+                                    <optionsAndExtra>
+<!--                                       <type>FFO</type>-->
+<!--                                       <optionsExternalRef>1</optionsExternalRef>-->
+<!--                                       <priceGross>-->
+<!--                                          <grossAmount>27900.00</grossAmount>-->
+<!--                                          <netAmount>23445.38</netAmount>-->
+<!--                                          <taxAmount>4454.62</taxAmount>-->
+<!--                                          <taxCode>-->
+<!--                                             <cmsCode>001</cmsCode>-->
+<!--                                          </taxCode>-->
+<!--                                          <taxRate>19</taxRate>-->
+<!--                                       </priceGross>-->
+<type>${CMS9313DataExcel#ccbOptionsAndExtraType}</type>
+                                       <optionsExternalRef>${CMS9313DataExcel#ccboptionsAndExtraoptionsExternalRef}</optionsExternalRef>
+                                       <optionsDescription>${CMS9313DataExcel#ccboptionsAndExtraoptionsDescription}</optionsDescription>
+                                       <priceGross>
+                                          <grossAmount>${CMS9313DataExcel#OptionsAndExtrasGrossPrice}</grossAmount>
+                                          <netAmount>${CMS9313DataExcel#OptionsAndExtrasNetPrice}</netAmount>
+                                          <taxAmount>${CMS9313DataExcel#OptionsAndExtrasTaxAmount}</taxAmount>
+                                          <taxCode>
+                                             <cmsCode>${CMS9313DataExcel#OptionsAndExtrasTaxCode}</cmsCode>
+                                          </taxCode>
+                                          <taxRate>${CMS9313DataExcel#OptionsAndExtrasTaxRate}</taxRate>
+                                       </priceGross>
+                                    </optionsAndExtra>
+                                 </optionsAndExtras>
+                                 <documents>
+                                    <document>
+                                      <documentType>
+                                          <cmsCode>1</cmsCode>
+                                       </documentType>
+                                       <thirdPartyId>
+                                          <bpmId>1</bpmId>
+                                       </thirdPartyId>
+                                       <!--<documentID>
+                                          <cmsCode>10</cmsCode>
+                                       </documentID>
+-->
+                                       <releaseDate>2014-01-25</releaseDate>
+                                       <referenceNumber>123ABC</referenceNumber>
+                                       <location>
+                                          <cmsCode>1</cmsCode>
+                                       </location>
+                                       <documentID>10</documentID>
+                                    </document>
+                                 </documents>
+                                 <assetCMSType>M</assetCMSType>
+                                 <assetDummy>false</assetDummy>
+                                 <saleCondition>
+                                    <cmsCode>1</cmsCode>
+                                 </saleCondition>
+                                 <damageCondition>
+                                    <cmsCode>1</cmsCode>
+                                 </damageCondition>
+                                 <usage>
+                                    <unitOfMeasure>KM</unitOfMeasure>
+                                    <initialMileage>0</initialMileage>
+                                    <annualMileage>0</annualMileage>
+                                 </usage>
+                                 <orderNumber>823419099285G</orderNumber>
+                              </asset>
+                           </assets>
+                        </contract>
+                     </contracts>
+                  </bundle>
+               </bundles>
+            </masterContract>
+         </contractBundleData>
+         <applicationInfo>
+            <com:tenantInfo>
+               <com:tenantCode>49</com:tenantCode>
+            </com:tenantInfo>
+            <com:securityAudit>
+               <com:messageId>414d5120514d32202020202020202020c8c8225920038912</com:messageId>
+               <com:timestamp>2017-05-24T11:59:42.090+05:30</com:timestamp>
+               <com:clientAppId/>
+               <com:userId>QQIRSID</com:userId>
+               <com:clientLanguage>en_AU</com:clientLanguage>
+            </com:securityAudit>
+         </applicationInfo>
+      </createContractBundle>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="e849ab1b-7340-4f98-84e0-4fbd91941411"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="320f4cd4-8e0d-4f07-9bf5-8f6a477967f9"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="9510a289-eeaf-4f53-b130-71b247e62fec"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="request" name="CreateContractBundleAddTaxDetails_BMWDEV01" id="930a7e66-f238-4ba9-945b-09b2bc496be7" disabled="true"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>createContractBundle</con:operation><con:request name="CreateContractBundleAddTaxDetails_BMWDEV01" id="1b301b21-bc5d-4ce0-936e-10fde1194cd5"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@remove_empty_content">true</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvbmwdev01:28080/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation" xmlns:cmn="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <createContractBundle xsi:schemaLocation="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation file:///C:/Projects/CALMS2CMS/Calms2CMS/Calms2CmsInterfacesAndDtos/src/main/resources/xsd/BundledActivation.xsd" xmlns:ns0="http://message.motorpos.messaging.wcg.com">
+         <contractBundleData>
+            <application>
+               <userId>${CMS9313DataExcel#ccbAppUid}</userId>
+               <scoreBandCode>
+                  <cmsCode>${CMS9313DataExcel#ccbScoreBandCodeCmsCode}</cmsCode>
+               </scoreBandCode>
+            </application>
+            <dealer>
+               <!--<dealerId>1</dealerId>-->
+               <dealerId>${CMS9313DataExcel#ccbDealerId}</dealerId>
+            </dealer>
+            <customers>
+               <customer>
+                  <details>
+                     <type>${CMS9313DataExcel#ccbcustDetailType}</type>
+                     <thirdPartyId>
+                        <bpmId>${CMS9313DataExcel#ccbThirdPartyIdBpmId}</bpmId>
+                     </thirdPartyId>
+                     <role>${CMS9313DataExcel#ccbcustrole}</role>
+                     <commsChannels>
+                        <contactViaSMS>${CMS9313DataExcel#ccbcontactviasms}</contactViaSMS>
+                        <phoneFaxNums>
+                           <telephoneFax>
+                              <phoneFaxNumber>${CMS9313DataExcel#ccbtelefaxNum}</phoneFaxNumber>
+                              <type>${CMS9313DataExcel#ccbtelefaxType}</type>
+                           </telephoneFax>
+                        </phoneFaxNums>
+                     </commsChannels>
+                     <bankAccounts>
+                        <bankAccountData>
+                           <ibanNumber>${CMS9313DataExcel#ccbBankAcctDataIbanNumber}</ibanNumber>
+                           <swiftCode>${CMS9313DataExcel#ccbSwiftCode}</swiftCode>
+                           <sortCode>${CMS9313DataExcel#ccbSortCode}</sortCode>
+                           <bankAccountName>${CMS9313DataExcel#ccbbankAcctName}</bankAccountName>
+                           <bankAccountNumber>${CMS9313DataExcel#ccbBankAcctNumber}</bankAccountNumber>
+                        </bankAccountData>
+                     </bankAccounts>
+                     <addresses>
+                        <address>
+                           <addressType>
+                              <cmsCode>${CMS9313DataExcel#ccbAddressTypeCmsCode}</cmsCode>
+                           </addressType>
+                           <countryCode>
+                              <cmsCode>${CMS9313DataExcel#ccbAddressCtryCodeCmsCode}</cmsCode>
+                           </countryCode>
+                           <buildingNumber>${CMS9313DataExcel#ccbBuildingNumber}</buildingNumber>
+                           <street>${CMS9313DataExcel#ccbStreet}</street>
+                           <postTown>${CMS9313DataExcel#ccbPostTown}</postTown>
+                           <postCode>${CMS9313DataExcel#ccbPostCode}</postCode>
+                        </address>
+                     </addresses>
+                     <gender>${CMS9313DataExcel#ccbGender}</gender>
+                     <dateOfBirth>${CMS9313DataExcel#ccbDateOfBirth}</dateOfBirth>
+                     <firstName>${CMS9313DataExcel#ccbFirstName}</firstName>
+                     <middleName>${CMS9313DataExcel#ccbMiddleName}</middleName>
+                     <surname>${CMS9313DataExcel#ccbSurName}</surname>
+                     <countryOfBirth>${CMS9313DataExcel#ccbctryofBirth}</countryOfBirth>
+                     <businessName>${CMS9313DataExcel#ccbBusinessName}</businessName>
+                     <contactPerson>${CMS9313DataExcel#ContactPerson}</contactPerson>
+                     <vatCode>${CMS9313DataExcel#ccbVatCode}</vatCode>
+                     <salutation>${CMS9313DataExcel#ccbSalutation}</salutation>
+                     <intraGrpConsldnCode>${CMS9313DataExcel#ccbIntraGrpConsolidationCode}</intraGrpConsldnCode>
+                  </details>
+               </customer>
+            </customers>
+            <masterContract>
+               <contractNumber>
+                  <!--<externalContractNumber>6345656</externalContractNumber>-->
+                  <externalContractNumber>${CMS9313DataExcel#ccbMasterContractExternalContractNumber}</externalContractNumber>
+               </contractNumber>
+               <bundles>
+                  <bundle>
+                     <identifier>${CMS9313DataExcel#ccbBundleIdentifier}</identifier>
+                     <contracts>
+                        <contract>
+                           <identifier>${CMS9313DataExcel#ccbContractIdentifier}</identifier>
+                           <currency>${CMS9313DataExcel#ccbContractCurrency}</currency>
+                           <masterContractPrimary>${CMS9313DataExcel#ccbMasterContractPrimary}</masterContractPrimary>
+                           <contractOptions>
+                              <paymentFacility>${CMS9313DataExcel#ccbContractOptionsPaymentFaicility}</paymentFacility>
+                           </contractOptions>
+                           <reportingAndRelations>
+                              <country>${CMS9313DataExcel#ccbReportingAndRelationsCountry}</country>
+                              <company>
+                                 <cmsCode>${CMS9313DataExcel#ccbrepandrelcompanyCmsCode}</cmsCode>
+                              </company>
+                              <region>
+                                 <cmsCode>${CMS9313DataExcel#ccbrepandrelregionCmsCode}</cmsCode>
+                              </region>
+                              <branch>
+                                 <cmsCode>${CMS9313DataExcel#ccbrepandrelbranchCmsCode}</cmsCode>
+                              </branch>
+                              <businessDivision>
+                                 <cmsCode>${CMS9313DataExcel#ccbrepandrelBusinessDivisionCmsCode}</cmsCode>
+                              </businessDivision>
+                              <businessUnit>
+                                 <externalCode>${CMS9313DataExcel#ccbrepandrelBusinessUnitExternalcode}</externalCode>
+                              </businessUnit>
+                           </reportingAndRelations>
+                           <directDebit>
+                              <!--Optional:-->
+                              <frequency>${CMS9313DataExcel#ccbDirDebtFrequency}</frequency>
+                              <!--Optional:-->
+                              <ddFirstInstal>${CMS9313DataExcel#ccbddFirstInstal}</ddFirstInstal>
+                              <!--Optional:-->
+                              <instalCalcMethod>${CMS9313DataExcel#CCBinstalCalcMethod}</instalCalcMethod>
+                              <!--Optional:-->
+                              <instal>
+                                 <!--Optional:-->
+                                 <grossAmount>${CMS9313DataExcel#ccbInstallGrossAmount}</grossAmount>
+                                 <netAmount>${CMS9313DataExcel#ccbInstallNetAmount}</netAmount>
+                                 <!--Optional:-->
+                                 <taxAmount>${CMS9313DataExcel#ccbInstallTaxAmount}</taxAmount>
+                                 <taxCode>
+                                    <!--Optional:-->
+                                    <cmsCode>${CMS9313DataExcel#ccbInstallTaxCodeCMSCode}</cmsCode>
+                                 </taxCode>
+                                 <taxRate>${CMS9313DataExcel#ccbInstallTaxRate}</taxRate>
+                              </instal>
+                           </directDebit>
+                           <dates>
+                              <startDate>${#TestSuite#processingDate}</startDate>
+                              <quoteCreationDate>${#TestSuite#processingDate}</quoteCreationDate>
+                           </dates>
+                           <billingDay>${CMS9313DataExcel#ccbBillingDay}</billingDay>
+                           <term>${CMS9313DataExcel#ccbTerm}</term>
+                           <interestRates>
+                              <apr>${CMS9313DataExcel#ccbInterestRatesApr}</apr>
+                              <customerTrueRate>${CMS9313DataExcel#ccbInterestRatesCustTrueRate}</customerTrueRate>
+                           </interestRates>
+                           <commissions>
+                              <commission>
+                                 <commissionType>
+                                    <cmsCode>${CMS9313DataExcel#ccbCommisiionTypeCmsCode}</cmsCode>
+                                 </commissionType>
+                                 <amount>
+                                    <grossAmount>${CMS9313DataExcel#comissionsGrossPrice}</grossAmount>
+                                    <netAmount>${CMS9313DataExcel#comissionsNetPrice}</netAmount>
+                                    <taxAmount>${CMS9313DataExcel#comissionsTaxAmount}</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${CMS9313DataExcel#ComissionsTaxCode}</cmsCode>
+                                    </taxCode>
+                                    <taxRate>${CMS9313DataExcel#comissionsTaxRate}</taxRate>
+                                 </amount>
+                                 <commissionDate>${#TestSuite#processingDate}</commissionDate>
+                                 <thirdPartyId>
+                                    <bpmId>${CMS9313DataExcel#ccbCommissionThirdPartyIdBPMId}</bpmId>
+                                 </thirdPartyId>
+                              </commission>
+                           </commissions>
+                           <subsidies>
+                              <subsidy>
+                                 <type>
+                                    <cmsCode>${CMS9313DataExcel#ccbSubsidyTypeCMSCode}</cmsCode>
+                                 </type>
+                                 <provider>
+                                    <bpmId>${CMS9313DataExcel#ccbSubsidyProviderBpmId}</bpmId>
+                                 </provider>
+                                 <amount>
+                                    <grossAmount>${CMS9313DataExcel#SubsidiesGrossAmount}</grossAmount>
+                                    <netAmount>${CMS9313DataExcel#SubsidiesNetsAmount}</netAmount>
+                                    <taxAmount>${CMS9313DataExcel#SubsidiesTaxAmount}</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${CMS9313DataExcel#SubsidiesTaxCode}</cmsCode>
+                                    </taxCode>
+                                    <taxRate>${CMS9313DataExcel#subsidiesTaxRate}</taxRate>
+                                 </amount>
+                              </subsidy>
+                           </subsidies>
+                           <finance>
+                              <financeProductCode>
+                                 <!--<cmsCode>60</cmsCode>-->
+                                 <cmsCode>${CMS9313DataExcel#ccbFinanceProductCodeCmsCode}</cmsCode>
+                              </financeProductCode>
+                              <isArrears>${CMS9313DataExcel#ccbFinanceIsArrears}</isArrears>
+                              <isLease>${CMS9313DataExcel#ccbFinanceIsLease}</isLease>
+                              <amounts>
+                                 <totalInterest>
+                                    <grossAmount>${CMS9313DataExcel#ccbAmountsTotIntGrossAmount}</grossAmount>
+                                    <netAmount>${CMS9313DataExcel#ccbAmountsTotIntNetAmount}</netAmount>
+                                    <taxAmount>${CMS9313DataExcel#ccbAmountsTotIntTaxAmount}</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${CMS9313DataExcel#ccbAmountsTotIntTaxCodeCmsCode}</cmsCode>
+                                    </taxCode>
+                                 </totalInterest>
+                                 <grossCost>
+                                    <grossAmount>${CMS9313DataExcel#ccbAmountsGrossCostGrossAmount}</grossAmount>
+                                    <netAmount>${CMS9313DataExcel#ccbAmountsGrossCostNetAmount}</netAmount>
+                                    <taxAmount>${CMS9313DataExcel#ccbAmountsGrossCostTaxAmount}</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${CMS9313DataExcel#ccbGrossCostTaxCodeCmsCode}</cmsCode>
+                                    </taxCode>
+                                 </grossCost>
+                                 <amountFinanced>
+                                    <grossAmount>${CMS9313DataExcel#ccbAmntFinancedGrossAmnt}</grossAmount>
+                                    <netAmount>${CMS9313DataExcel#ccbAmntFinancedNetAmnt}</netAmount>
+                                    <taxAmount>${CMS9313DataExcel#ccbAmntFinancedTaxAmnt}</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${CMS9313DataExcel#ccbAmntFinancedtaxCodeCmsCode}</cmsCode>
+                                    </taxCode>
+                                 </amountFinanced>
+                                 <residuals>
+                                    <residual>
+                                       <type>
+                                          <cmsCode>${CMS9313DataExcel#ccbResidualTypeCmsCode}</cmsCode>
+                                       </type>
+                                       <value>
+                                          <!--Optional:-->
+                                          <grossAmount>${CMS9313DataExcel#ccbresidualValueGrossAmount}</grossAmount>
+                                          <!--Optional:-->
+                                          <netAmount>${CMS9313DataExcel#ccbresidualValueNetAmount}</netAmount>
+                                          <!--Optional:-->
+                                          <taxAmount>${CMS9313DataExcel#ccbresidualValueTaxAmount}</taxAmount>
+                                          <!--Optional:-->
+                                       </value>
+                                       <rvPercentage>${CMS9313DataExcel#ccbresidualrvPercentage}</rvPercentage>
+                                    </residual>
+                                 </residuals>
+                              </amounts>
+                              <taxTreatment>
+                                 <taxCode>${CMS9313DataExcel#ccbTaxTreatmentTaxCode}</taxCode>
+                              </taxTreatment>
+                           </finance>
+                           <apPayments>
+                              <!--<apPayment>-->
+                              <!--<paymentDate>2013-11-20+01:00</paymentDate>-->
+                              <!--<paymentType>0001</paymentType>-->
+                              <!--<payeeId>-->
+                              <!--<thirdPartyId>-->
+                              <!--<bpmId>12345</bpmId>-->
+                              <!--</thirdPartyId>-->
+                              <!--</payeeId>-->
+                              <!--<payerId>-->
+                              <!--<thirdPartyId>-->
+                              <!--<bpmId>12345</bpmId>-->
+                              <!--</thirdPartyId>-->
+                              <!--</payerId>-->
+                              <!--<paymentDescription>Vehicle Purchase</paymentDescription>-->
+                              <!--<paymentAmount>-->
+                              <!--<grossAmount>82300.00</grossAmount>-->
+                              <!--<netAmount>69159.66</netAmount>-->
+                              <!--<taxAmount>13140.34</taxAmount>-->
+                              <!--<taxCode>-->
+                              <!--<cmsCode>0001</cmsCode>-->
+                              <!--</taxCode>-->
+                              <!--<taxRate>0.19</taxRate>-->
+                              <!--</paymentAmount>-->
+                              <!--<referenceCode>300003-13</referenceCode>-->
+                              <!--</apPayment>-->
+                              <!--<apPayment>-->
+                              <!--<paymentDate>2014-01-18+02:00</paymentDate>-->
+                              <!--<paymentType>0002</paymentType>-->
+                              <!--<payeeId>-->
+                              <!--<thirdPartyId>-->
+                              <!--<bpmId>12345</bpmId>-->
+                              <!--</thirdPartyId>-->
+                              <!--</payeeId>-->
+                              <!--<payerId>-->
+                              <!--<thirdPartyId>-->
+                              <!--<bpmId>12345</bpmId>-->
+                              <!--</thirdPartyId>-->
+                              <!--</payerId>-->
+                              <!--<paymentDescription>Salesperson Commission</paymentDescription>-->
+                              <!--<paymentAmount>-->
+                              <!--<grossAmount>325.68</grossAmount>-->
+                              <!--<netAmount>273.68</netAmount>-->
+                              <!--<taxAmount>52.00</taxAmount>-->
+                              <!--<taxCode>-->
+                              <!--<cmsCode>0001</cmsCode>-->
+                              <!--</taxCode>-->
+                              <!--<taxRate>0.19</taxRate>-->
+                              <!--</paymentAmount>-->
+                              <!--</apPayment>-->
+                              <apPayment>
+                                 <paymentDate>${#TestSuite#processingDate}</paymentDate>
+                                 <paymentType>${CMS9313DataExcel#ccbapPaymentPaymentType}</paymentType>
+                                 <payeeId>
+                                    <thirdPartyId>
+                                       <bpmId>${CMS9313DataExcel#ccbappaymentPayeeidThirdPartyIdBpmId}</bpmId>
+                                    </thirdPartyId>
+                                 </payeeId>
+                                 <payerId>
+                                    <thirdPartyId>
+                                       <bpmId>${CMS9313DataExcel#ccbappaymentPayeridThirdPartyIdBpmId}</bpmId>
+                                    </thirdPartyId>
+                                 </payerId>
+                                 <paymentDescription>${CMS9313DataExcel#ccbappaymentPaymentDescription}</paymentDescription>
+                                 <paymentAmount>
+                                    <grossAmount>${CMS9313DataExcel#ccbPaymentAmountGrossAmount}</grossAmount>
+                                    <netAmount>${CMS9313DataExcel#ccbPaymentAmountNetAmount}</netAmount>
+                                    <taxAmount>${CMS9313DataExcel#ccbPaymentAmountTaxAmount}</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${CMS9313DataExcel#ccbPaymentAmountTaxCodeCmsCode}</cmsCode>
+                                    </taxCode>
+                                    <taxRate>${CMS9313DataExcel#ccbPaymentAmountTaxRate}</taxRate>
+                                 </paymentAmount>
+                              </apPayment>
+                           </apPayments>
+                           <!--<endOfContractOptions>
+                              <endOfContractOption>
+                                 <prolongLeadDays>${CMS9313DataExcel#ccbEndofContractOptionProlongLeadDays}</prolongLeadDays>
+                                 <isBuyback>${CMS9313DataExcel#ccbEndofContractOptionIsBuyBack}</isBuyback>
+                                 <buybackValue>${CMS9313DataExcel#ccbEndofContractOptionBuyBackValue}</buybackValue>
+                                 <buybacker>
+                                    <bpmId>${CMS9313DataExcel#ccbEndofContractOptionbuBackerBPMId}</bpmId>
+                                 </buybacker>
+                              </endOfContractOption>
+                           </endOfContractOptions>-->
+                           <schedule>
+                              <payments>
+                                 <payment>
+                                    <type>${CMS9313DataExcel#ccbPaymentType}</type>
+                                    <numberOfPayments>${CMS9313DataExcel#ccbPaymentNumberOfPayments}</numberOfPayments>
+                                    <frequency>${CMS9313DataExcel#ccbPaymentFrequency}</frequency>
+                                    <amount>
+                                       <grossAmount>${CMS9313DataExcel#ccbPaymentsAmountGrossAmount}</grossAmount>
+                                       <netAmount>${CMS9313DataExcel#ccbPaymentsAmountNetAmount}</netAmount>
+                                       <taxAmount>${CMS9313DataExcel#ccbPaymentsAmountTaxAmount}</taxAmount>
+                                       <taxCode>
+                                          <cmsCode>${CMS9313DataExcel#ccbPaymentsTaxCodeCmsCode}</cmsCode>
+                                       </taxCode>
+                                       <taxRate>${CMS9313DataExcel#ccbPaymentsTaxRate}</taxRate>
+                                    </amount>
+                                 </payment>
+                              </payments>
+                           </schedule>
+                           <assets>
+                              <asset>
+                                 <purpose>
+                                    <cmsCode>${CMS9313DataExcel#ccbAssetPurpseCmsCode}</cmsCode>
+                                 </purpose>
+                                 <assetOrSecurity>${CMS9313DataExcel#ccbAssetAssetOrSecurity}</assetOrSecurity>
+                                 <motorvehicle>${CMS9313DataExcel#ccbAssetMotorVehicle}</motorvehicle>
+                                 <listPrice>
+                                    <grossAmount>${CMS9313DataExcel#ccbListPriceGrossAmount}</grossAmount>
+                                    <netAmount>${CMS9313DataExcel#ccbListPriceNetAmount}</netAmount>
+                                    <taxAmount>${CMS9313DataExcel#ccbListPriceTaxAmount}</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${CMS9313DataExcel#ccbListPriceTaxCodeCmsCode}</cmsCode>
+                                    </taxCode>
+                                 </listPrice>
+                                 <salePrice>
+                                    <grossAmount>${CMS9313DataExcel#ccbSalePriceGrossAmount}</grossAmount>
+                                    <netAmount>${CMS9313DataExcel#ccbSalePriceNetAmount}</netAmount>
+                                    <taxAmount>${CMS9313DataExcel#ccbSalePriceTaxAmount}</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${CMS9313DataExcel#ccbSalePriceTaxCodeCmsCode}</cmsCode>
+                                    </taxCode>
+                                 </salePrice>
+                                 <totalCost>${CMS9313DataExcel#ccbSalePriceTotalCost}</totalCost>
+                                 <registrationNumber>${#TestSuite#regNum}</registrationNumber>
+                                 <registrationDate>${#TestSuite#processingDate}</registrationDate>
+                                 <vin>${#TestSuite#vin}</vin>
+                                 <vehicle>
+                                    <makeDesc>${CMS9313DataExcel#ccbVehicleMakeDesc}</makeDesc>
+                                    <modelDesc>${CMS9313DataExcel#ccbVehicleModelDesc}</modelDesc>
+                                    <variantDesc>${CMS9313DataExcel#ccbVehicleVariantDesc}</variantDesc>
+                                    <externalVehicleCode>
+                                       <cmsCode>${CMS9313DataExcel#ccbVehicleExternalVehicleCodeCmsCode}</cmsCode>
+                                    </externalVehicleCode>
+                                    <deliveryDate>${#TestSuite#processingDate}</deliveryDate>
+                                    <colour>${CMS9313DataExcel#ccbVehicleColour}</colour>
+                                 </vehicle>
+                                 <depreciationOptions>
+                                    <!--<depreciationOption>-->
+                                    <assetLife>${CMS9313DataExcel#ccbDepreciationOptionAssetLife}</assetLife>
+                                    <!--</depreciationOption>-->
+                                 </depreciationOptions>
+                                 <optionsAndExtras>
+                                    <optionsAndExtra>
+                                       <type>${CMS9313DataExcel#ccbOptionsAndExtraType}</type>
+                                       <optionsExternalRef>${CMS9313DataExcel#ccboptionsAndExtraoptionsExternalRef}</optionsExternalRef>
+                                       <optionsDescription>${CMS9313DataExcel#ccboptionsAndExtraoptionsDescription}</optionsDescription>
+                                       <priceGross>
+                                          <grossAmount>${CMS9313DataExcel#OptionsAndExtrasGrossPrice}</grossAmount>
+                                          <netAmount>${CMS9313DataExcel#OptionsAndExtrasNetPrice}</netAmount>
+                                          <taxAmount>${CMS9313DataExcel#OptionsAndExtrasTaxAmount}</taxAmount>
+                                          <taxCode>
+                                             <cmsCode>${CMS9313DataExcel#OptionsAndExtrasTaxCode}</cmsCode>
+                                          </taxCode>
+                                          <taxRate>${CMS9313DataExcel#OptionsAndExtrasTaxRate}</taxRate>
+                                       </priceGross>
+                                    </optionsAndExtra>
+                                 </optionsAndExtras>
+                                 <saleCondition>
+                                    <cmsCode>${CMS9313DataExcel#ccbSaleConditionCmsCode}</cmsCode>
+                                 </saleCondition>
+                                 <damageCondition>
+                                    <cmsCode>${CMS9313DataExcel#ccbDamageConditionCmsCode}</cmsCode>
+                                 </damageCondition>
+                                 <usage>
+                                    <initialMileage>${CMS9313DataExcel#ccbusageInitialMileage}</initialMileage>
+                                    <annualMileage>${CMS9313DataExcel#ccbUsageAnnualMileage}</annualMileage>
+                                    <usageCharges>
+                                       <chargeDetails>
+                                          <chargeType>${CMS9313DataExcel#ccbusageChargesChargeDetailsChargeType}</chargeType>
+                                          <amount>${CMS9313DataExcel#ccbusageChargesChargeDetailsAmount}</amount>
+                                          <tolerance>${CMS9313DataExcel#ccbusageChargesChargeDetailsTolerance}</tolerance>
+                                          <toleranceBasis>${CMS9313DataExcel#ccbUsageChargesChargeDetailsToleranceBasis}</toleranceBasis>
+                                       </chargeDetails>
+                                       <chargeDetails>
+                                          <chargeType>${CMS9313DataExcel#ccbusageChargesChargeDetailsChrgTyp}</chargeType>
+                                          <amount>${CMS9313DataExcel#ccbusageChargesChargeDetailsAmnt}</amount>
+                                          <tolerance>${CMS9313DataExcel#ccbusageChargesChargeDetlsTolerance}</tolerance>
+                                          <toleranceBasis>${CMS9313DataExcel#ccbUsageChargesChargeDetlsTolrnceBasis}</toleranceBasis>
+                                       </chargeDetails>
+                                    </usageCharges>
+                                 </usage>
+                              </asset>
+                           </assets>
+                        </contract>
+                     </contracts>
+                  </bundle>
+               </bundles>
+               <!--<links>-->
+               <!--Zero or more repetitions:-->
+               <!--<link>-->
+               <!--<linkId>1</linkId>-->
+               <!--<linkType>CUST</linkType>-->
+               <!--</link>-->
+               <!--</links>-->
+               <notes>
+                  <!--Zero or more repetitions:-->
+                  <note>
+                     <!--Optional:-->
+                     <noteDate>${#TestSuite#processingDate}</noteDate>
+                     <!--Optional:-->
+                     <noteText>${CMS9313DataExcel#ccbNotesNoteNoteText}</noteText>
+                  </note>
+                  <note>
+                     <!--Optional:-->
+                     <noteDate>${#TestSuite#processingDate}</noteDate>
+                     <!--Optional:-->
+                     <noteText>${CMS9313DataExcel#ccbNoteText}</noteText>
+                  </note>
+               </notes>
+            </masterContract>
+         </contractBundleData>
+         <applicationInfo>
+            <cmn:securityAudit>
+               <cmn:messageId>${CMS9313DataExcel#ccbMsgId}</cmn:messageId>
+               <cmn:timestamp>${CMS9313DataExcel#ccbTimestmp}</cmn:timestamp>
+               <cmn:clientAppId>${CMS9313DataExcel#ccbclientAppId}</cmn:clientAppId>
+               <cmn:userId>${CMS9313DataExcel#ccbUserId}</cmn:userId>
+               <cmn:clientLanguage>${CMS9313DataExcel#ccbClientLanguage}</cmn:clientLanguage>
+            </cmn:securityAudit>
+         </applicationInfo>
+      </createContractBundle>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="e849ab1b-7340-4f98-84e0-4fbd91941411"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="320f4cd4-8e0d-4f07-9bf5-8f6a477967f9"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="9510a289-eeaf-4f53-b130-71b247e62fec"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="groovy" name="setResponseContractNumber" id="4ca4cc0a-4009-4ed0-953f-5167996640d2"><con:settings/><con:config><script>
+def responseContractNumber = null
+def env = testRunner.testCase.testSuite.project.activeEnvironment.name
+if (env == "BMWTEST03" || env == "BMWTEST01" || env == "DFSTEST01" || env == "BMWINT01" || env == "DFSINT01"){
+	responseContractNumber = context.expand( '${CreateContractBundleAddTaxDetails_BMWTEST03#Response#declare namespace ns4=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation\'; //ns4:contractBundleResponse[1]/ns4:contractBundleDataResponse[1]/ns4:responseData[1]/ns4:contractNumber[1]/ns4:cmsId[1]}' )
+log.info(responseContractNumber)
+testRunner.testCase.setPropertyValue("ContractNumber",responseContractNumber)
+}
+if(env == "BMWDEV01"){
+	responseContractNumber = context.expand( '${CreateContractBundleAddTaxDetails_BMWDEV01#Response#declare namespace ns4=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation\'; //ns4:contractBundleResponse[1]/ns4:contractBundleDataResponse[1]/ns4:responseData[1]/ns4:contractNumber[1]/ns4:cmsId[1]}' )
+log.info(responseContractNumber)
+testRunner.testCase.setPropertyValue("ContractNumber",responseContractNumber)
+	}
+</script></con:config></con:testStep><con:testStep type="datasource" name="DataSourceOptionsAndExtras" id="f2134409-5451-4821-bb79-8e6b35cddda7"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;xml-fragment/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBCALMS2CMS( Default environment )</Connection><query>select assetopt_loan_num,assetopt_gross_price,assetopt_net_price,assetopt_tax_amount,assetopt_tax_rate,assetopt_tax_code from LASSETOPT where assetopt_loan_num='${#TestCase#ContractNumber}'  </query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>assetopt_loan_num</con:property><con:property>assetopt_gross_price</con:property><con:property>assetopt_net_price</con:property><con:property>assetopt_tax_amount</con:property><con:property>assetopt_tax_rate</con:property><con:property>assetopt_tax_code</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="DataSourceCommissions" id="c8c419fb-048a-4682-a75a-fb25bdf07819"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;xml-fragment/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBCALMS2CMS( Default environment )</Connection><query>select commexp_loan_num, commexp_gross_amt,commexp_net_amt,commexp_tax_amt,commexp_tax_code  from LCOMMEXP where commexp_loan_num='${#TestCase#ContractNumber}'  </query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>commexp_loan_num</con:property><con:property>commexp_gross_amt</con:property><con:property>commexp_net_amt</con:property><con:property>commexp_tax_amt</con:property><con:property>commexp_tax_code</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="DataSourceSubsidies" id="6b47c7eb-e24a-4b77-aae5-80026304f65a"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;xml-fragment/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBCALMS2CMS( Default environment )</Connection><query>select subsdtyp_loan_num, subsdtyp_gross_amt,subsdtyp_net_amt,subsdtyp_tax_amt,subsdtyp_tax_code from LSUBSDTYP where subsdtyp_loan_num='${#TestCase#ContractNumber}'  </query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>subsdtyp_loan_num</con:property><con:property>subsdtyp_gross_amt</con:property><con:property>subsdtyp_net_amt</con:property><con:property>subsdtyp_tax_amt</con:property><con:property>subsdtyp_tax_code</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="DataSourceDisburse" id="cd900e3b-3152-4416-bc0a-f56084a7bd8b"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;xml-fragment/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBCALMS2CMS( Default environment )</Connection><query>select disburse_loan_num, disburse_gross_amount,disburse_net_amount,disburse_tax_amount,disburse_tax_code,disburse_tax_rate  from LDISBURSE where disburse_loan_num='${#TestCase#ContractNumber}'  </query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>disburse_loan_num</con:property><con:property>disburse_gross_amount</con:property><con:property>disburse_net_amount</con:property><con:property>disburse_tax_amount</con:property><con:property>disburse_tax_code</con:property><con:property>disburse_tax_rate</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="groovy" name="Validation" id="35b08f34-e9c5-4b60-b714-e66e27d0cc0e"><con:settings/><con:config><script><![CDATA[import com.eviware.soapui.model.testsuite.TestRunner.Status
+import com.eviware.soapui.support.XmlHolder
+
+def env = testRunner.testCase.testSuite.project.activeEnvironment.name
+
+def responseXML = null
+def requestXML = null
+
+if (env == "BMWTEST03" || env == "BMWTEST01" || env == "DFSTEST01" || env == "BMWINT01" || env == "DFSINT01"){
+	 responseXML = context.expand('${CreateContractBundleAddTaxDetails_BMWTEST03#Response}')
+	 requestXML = context.expand('${CreateContractBundleAddTaxDetails_BMWTEST03#Request}')
+}
+if(env == "BMWDEV01"){
+	 responseXML = context.expand('${CreateContractBundleAddTaxDetails_BMWDEV01#Response}')
+	 requestXML = context.expand('${CreateContractBundleAddTaxDetails_BMWDEV01#Request}')
+	}
+
+def response = new XmlHolder(responseXML)
+def request = new XmlHolder(requestXML)
+
+request.namespaces["NS1"]="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation"
+
+response.namespaces["ns4"]="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation" 
+response.namespaces["ns3"]="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ErrorTypes"
+response.namespaces["ns2"]="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes" 
+
+def responseStatus=response.getNodeValue('//ns4:status')
+
+//Error values
+def responseErrorCode=response.getNodeValue('//ns4:error[2]/ns4:code[1]')
+
+def expectedErrorCode = context.expand('${CMS9313DataExcel#expectedErrorCode}')
+
+def responseExternalContractNumber = response.getNodeValue('//ns4:externalContractNumber')
+def responseCMSId = response.getNodeValue('//ns4:cmsId')
+
+def db_assetopt_loan_num = context.expand( '${DataSourceOptionsAndExtras#assetopt_loan_num}' )
+def commexp_loan_num = context.expand( '${DataSourceCommissions#commexp_loan_num}' )
+def dbsubsdtyp_loan_num = context.expand( '${DataSourceSubsidies#subsdtyp_loan_num}' )
+
+def disburse_loan_num = context.expand( '${DataSourceDisburse#disburse_loan_num}' )
+
+log.info("response cms id---->"+responseExternalContractNumber)
+
+
+log.info("response status-->"+responseStatus)
+
+log.info("rockit--------------------------------------------->")
+
+def testResult = 'PASS'
+
+def TCName = testRunner.testCase.testSuite.getPropertyValue("TestCaseName")
+
+//options and extras validation when is lease is true
+if(TCName == "CMS-9313-AddTaxOptionsAndExtrasIsLeaseTrue" )
+{
+def boptionsAndExtrasGrossPrice = context.expand( '${CMS9313DataExcel#OptionsAndExtrasGrossPrice}' ).toBigDecimal()
+def boptionsAndExtrasNetPrice = context.expand( '${CMS9313DataExcel#OptionsAndExtrasNetPrice}' ).toBigDecimal()
+def boptionsAndExtrasTaxAmount = context.expand( '${CMS9313DataExcel#OptionsAndExtrasTaxAmount}' ).toBigDecimal()
+def boptionsAndExtrasTaxRate = context.expand( '${CMS9313DataExcel#OptionsAndExtrasTaxRate}' ).toBigDecimal()
+def boptionsAndExtrasTaxCode = context.expand( '${CMS9313DataExcel#OptionsAndExtrasTaxCode}' ).toBigDecimal()
+
+def db_assetopt_gross_price = context.expand( '${DataSourceOptionsAndExtras#assetopt_gross_price}' ).toBigDecimal()
+def db_assetopt_net_price = context.expand( '${DataSourceOptionsAndExtras#assetopt_net_price}' ).toBigDecimal()
+def db_assetopt_tax_amount = context.expand( '${DataSourceOptionsAndExtras#assetopt_tax_amount}' ).toBigDecimal()
+def db_assetopt_tax_rate = context.expand( '${DataSourceOptionsAndExtras#assetopt_tax_rate}' ).toBigDecimal()
+def db_assetopt_tax_code = context.expand( '${DataSourceOptionsAndExtras#assetopt_tax_code}' ).toBigDecimal()
+
+BigDecimal optionsAndExtrasGrossPrice = boptionsAndExtrasGrossPrice.stripTrailingZeros()
+BigDecimal optionsAndExtrasNetPrice = boptionsAndExtrasNetPrice.stripTrailingZeros()
+BigDecimal optionsAndExtrasTaxAmount = boptionsAndExtrasTaxAmount.stripTrailingZeros()
+BigDecimal optionsAndExtrasTaxRate = boptionsAndExtrasTaxRate.stripTrailingZeros()
+BigDecimal optionsAndExtrasTaxCode = boptionsAndExtrasTaxCode.stripTrailingZeros()
+
+log.info("TCName--->" + TCName)
+
+if(responseStatus=="Success" && responseCMSId == db_assetopt_loan_num && optionsAndExtrasGrossPrice == db_assetopt_gross_price && optionsAndExtrasNetPrice == db_assetopt_net_price &&
+optionsAndExtrasTaxAmount == db_assetopt_tax_amount && optionsAndExtrasTaxRate == db_assetopt_tax_rate && optionsAndExtrasTaxCode == db_assetopt_tax_code)
+
+
+{
+
+	testResult = 'PASS'
+
+	log.info("Inside the successful validations")
+	}
+	else
+	{
+
+	faultString =  response.getNodeValue('//faultstring[1]/text()')
+	log.error "Issue with API response First Valid case : " + faultString
+	testResult = 'FAIL'
+	}
+
+}
+
+
+//options and extras validation when is lease is false
+
+else if(TCName == "CMS-9313-AddTaxOptionsAndExtrasIsLeaseFalse")
+{
+
+def boptionsAndExtrasGrossPrice = context.expand( '${CMS9313DataExcel#OptionsAndExtrasGrossPrice}' ).toBigDecimal()
+def db_assetopt_gross_price = context.expand( '${DataSourceOptionsAndExtras#assetopt_gross_price}' ).toBigDecimal()
+BigDecimal optionsAndExtrasGrossPrice = boptionsAndExtrasGrossPrice.stripTrailingZeros()
+
+	if(responseStatus=="Success" && responseCMSId == db_assetopt_loan_num && optionsAndExtrasGrossPrice == db_assetopt_gross_price)
+	{
+	testResult = 'PASS'
+
+	log.info("Inside the successful validations")
+	}
+	else
+	{
+
+	faultString =  response.getNodeValue('//faultstring[1]/text()')
+	log.error "Issue with API response First Valid case : " + faultString
+	testResult = 'FAIL'
+	}
+}
+
+//Commissions validation when is lease is true
+
+else if(TCName == "CMS-9313-AddTaxCommissionsIsLeaseTrue")
+{
+
+def bcommissionsGrossAmnt = context.expand( '${CreateContractBundleAddTaxDetails_BMWTEST03_old#Request#declare namespace ns1=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation\'; //ns1:createContractBundle[1]/ns1:contractBundleData[1]/ns1:masterContract[1]/ns1:bundles[1]/ns1:bundle[1]/ns1:contracts[1]/ns1:contract[1]/ns1:commissions[1]/ns1:commission[1]/ns1:amount[1]/ns1:grossAmount[1]}' ).toBigDecimal()
+def bcommissionsNetAmount = context.expand( '${CreateContractBundleAddTaxDetails_BMWTEST03_old#Request#declare namespace ns1=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation\'; //ns1:createContractBundle[1]/ns1:contractBundleData[1]/ns1:masterContract[1]/ns1:bundles[1]/ns1:bundle[1]/ns1:contracts[1]/ns1:contract[1]/ns1:commissions[1]/ns1:commission[1]/ns1:amount[1]/ns1:netAmount[1]}' ).toBigDecimal()
+def bcommissionsTaxAmount = context.expand( '${CreateContractBundleAddTaxDetails_BMWTEST03_old#Request#declare namespace ns1=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation\'; //ns1:createContractBundle[1]/ns1:contractBundleData[1]/ns1:masterContract[1]/ns1:bundles[1]/ns1:bundle[1]/ns1:contracts[1]/ns1:contract[1]/ns1:commissions[1]/ns1:commission[1]/ns1:amount[1]/ns1:taxAmount[1]}' ).toBigDecimal()
+def bCommissionsTaxCode = context.expand( '${CreateContractBundleAddTaxDetails_BMWTEST03_old#Request#declare namespace ns1=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation\'; //ns1:createContractBundle[1]/ns1:contractBundleData[1]/ns1:masterContract[1]/ns1:bundles[1]/ns1:bundle[1]/ns1:contracts[1]/ns1:contract[1]/ns1:commissions[1]/ns1:commission[1]/ns1:amount[1]/ns1:taxCode[1]/ns1:cmsCode[1]}' ).toBigDecimal()
+
+def commexp_gross_amt = context.expand( '${DataSourceCommissions#commexp_gross_amt}' ).toBigDecimal()
+def commexp_net_amt = context.expand( '${DataSourceCommissions#commexp_net_amt}' ).toBigDecimal()
+def commexp_tax_amt = context.expand( '${DataSourceCommissions#commexp_tax_amt}' ).toBigDecimal()
+def commexp_tax_code = context.expand( '${DataSourceCommissions#commexp_tax_code}' ).toBigDecimal()
+
+BigDecimal commissionsGrossAmnt = bcommissionsGrossAmnt.stripTrailingZeros()
+BigDecimal commissionsNetAmount = bcommissionsNetAmount.stripTrailingZeros()
+BigDecimal commissionsTaxAmount = bcommissionsTaxAmount.stripTrailingZeros()
+BigDecimal CommissionsTaxCode = bCommissionsTaxCode.stripTrailingZeros()
+
+if(responseStatus=="Success" && responseCMSId == commexp_loan_num && commissionsGrossAmnt == commexp_gross_amt &&
+commissionsNetAmount == commexp_net_amt && commissionsTaxAmount == commexp_tax_amt && CommissionsTaxCode == commexp_tax_code)
+
+{
+
+	testResult = 'PASS'
+
+	log.info("Inside the successful validations")
+	}
+	else
+	{
+
+	faultString =  response.getNodeValue('//faultstring[1]/text()')
+	log.error "Issue with API response First Valid case : " + faultString
+	testResult = 'FAIL'
+	}
+
+}
+
+
+//Commissions validation when is lease is false
+ 
+else if(TCName == "CMS-9313-AddTaxCommissionsIsLeaseFalse")
+{
+
+def bcommissionsGrossAmnt = context.expand( '${CreateContractBundleAddTaxDetails_BMWTEST03_old#Request#declare namespace ns1=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation\'; //ns1:createContractBundle[1]/ns1:contractBundleData[1]/ns1:masterContract[1]/ns1:bundles[1]/ns1:bundle[1]/ns1:contracts[1]/ns1:contract[1]/ns1:commissions[1]/ns1:commission[1]/ns1:amount[1]/ns1:grossAmount[1]}' ).toBigDecimal()
+def commexp_gross_amt = context.expand( '${DataSourceCommissions#commexp_gross_amt}' ).toBigDecimal()
+BigDecimal commissionsGrossAmnt = bcommissionsGrossAmnt.stripTrailingZeros()
+
+	
+	if(responseStatus=="Success" && responseCMSId == commexp_loan_num && commissionsGrossAmnt == commexp_gross_amt)
+	{
+	testResult = 'PASS'
+
+	log.info("Inside the successful validations")
+	}
+	else
+	{
+
+	faultString =  response.getNodeValue('//faultstring[1]/text()')
+	log.error "Issue with API response First Valid case : " + faultString
+	testResult = 'FAIL'
+	}
+}
+
+//Subsidies validation when is lease is true
+
+else if(TCName == "CMS-9313-AddTaxSubsidiesIsLeaseTrue")
+{
+
+
+def bsubsidiesGrossAmnt = context.expand( '${CreateContractBundleAddTaxDetails_BMWTEST03_old#Request#declare namespace ns1=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation\'; //ns1:createContractBundle[1]/ns1:contractBundleData[1]/ns1:masterContract[1]/ns1:bundles[1]/ns1:bundle[1]/ns1:contracts[1]/ns1:contract[1]/ns1:subsidies[1]/ns1:subsidy[1]/ns1:amount[1]/ns1:grossAmount[1]}' ).toBigDecimal()
+def bsubsidiesNetamount = context.expand( '${CreateContractBundleAddTaxDetails_BMWTEST03_old#Request#declare namespace ns1=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation\'; //ns1:createContractBundle[1]/ns1:contractBundleData[1]/ns1:masterContract[1]/ns1:bundles[1]/ns1:bundle[1]/ns1:contracts[1]/ns1:contract[1]/ns1:subsidies[1]/ns1:subsidy[1]/ns1:amount[1]/ns1:netAmount[1]}' ).toBigDecimal()
+def bsubsidiesTaxAmnt = context.expand( '${CreateContractBundleAddTaxDetails_BMWTEST03_old#Request#declare namespace ns1=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation\'; //ns1:createContractBundle[1]/ns1:contractBundleData[1]/ns1:masterContract[1]/ns1:bundles[1]/ns1:bundle[1]/ns1:contracts[1]/ns1:contract[1]/ns1:subsidies[1]/ns1:subsidy[1]/ns1:amount[1]/ns1:taxAmount[1]}' ).toBigDecimal()
+def bsubsidiesTaxCmsCode = context.expand( '${CreateContractBundleAddTaxDetails_BMWTEST03_old#Request#declare namespace ns1=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation\'; //ns1:createContractBundle[1]/ns1:contractBundleData[1]/ns1:masterContract[1]/ns1:bundles[1]/ns1:bundle[1]/ns1:contracts[1]/ns1:contract[1]/ns1:subsidies[1]/ns1:subsidy[1]/ns1:amount[1]/ns1:taxCode[1]/ns1:cmsCode[1]}' ).toBigDecimal()
+
+def subsdtyp_gross_amt = context.expand( '${DataSourceSubsidies#subsdtyp_gross_amt}' ).toBigDecimal()
+def subsdtyp_net_amt = context.expand( '${DataSourceSubsidies#subsdtyp_net_amt}' ).toBigDecimal()
+def subsdtyp_tax_amt = context.expand( '${DataSourceSubsidies#subsdtyp_tax_amt}' ).toBigDecimal()
+def subsdtyp_tax_code = context.expand( '${DataSourceSubsidies#subsdtyp_tax_code}' ).toBigDecimal()
+
+BigDecimal subsidiesGrossAmnt = bsubsidiesGrossAmnt.stripTrailingZeros()
+BigDecimal subsidiesNetamount = bsubsidiesNetamount.stripTrailingZeros()
+BigDecimal subsidiesTaxAmnt = bsubsidiesTaxAmnt.stripTrailingZeros()
+BigDecimal subsidiesTaxCmsCode = bsubsidiesTaxCmsCode.stripTrailingZeros()
+
+if(responseStatus=="Success" && responseCMSId == dbsubsdtyp_loan_num && subsidiesGrossAmnt == subsdtyp_gross_amt && 
+subsidiesNetamount == subsdtyp_net_amt && subsidiesTaxAmnt == subsdtyp_tax_amt && subsidiesTaxCmsCode == subsdtyp_tax_code)
+
+{
+
+
+	testResult = 'PASS'
+
+	log.info("Inside the successful validations")
+	}
+	else
+	{
+
+	faultString =  response.getNodeValue('//faultstring[1]/text()')
+	log.error "Issue with API response First Valid case : " + faultString
+	testResult = 'FAIL'
+	}
+
+}
+
+//Subsidies validation when is lease is False
+
+else if(TCName == "CMS-9313-AddTaxSubsidiesIsLeaseFalse")
+{
+
+def bsubsidiesGrossAmnt = context.expand( '${CreateContractBundleAddTaxDetails_BMWTEST03_old#Request#declare namespace ns1=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation\'; //ns1:createContractBundle[1]/ns1:contractBundleData[1]/ns1:masterContract[1]/ns1:bundles[1]/ns1:bundle[1]/ns1:contracts[1]/ns1:contract[1]/ns1:subsidies[1]/ns1:subsidy[1]/ns1:amount[1]/ns1:grossAmount[1]}' ).toBigDecimal()
+def subsdtyp_gross_amt = context.expand( '${DataSourceSubsidies#subsdtyp_gross_amt}' ).toBigDecimal()
+BigDecimal subsidiesGrossAmnt = bsubsidiesGrossAmnt.stripTrailingZeros()
+	
+	if(responseStatus=="Success" && responseCMSId == dbsubsdtyp_loan_num && subsidiesGrossAmnt == subsdtyp_gross_amt)
+	{
+	testResult = 'PASS'
+
+	log.info("Inside the successful validations")
+	}
+	else
+	{
+
+	faultString =  response.getNodeValue('//faultstring[1]/text()')
+	log.error "Issue with API response First Valid case : " + faultString
+	testResult = 'FAIL'
+	}
+}
+
+//APPayments validation when is lease is true
+
+else if(TCName == "CMS-9313-AddTaxAPPaymentsIsLeaseTrue")
+{
+
+def bdisburseGrossAmount = context.expand( '${CreateContractBundleAddTaxDetails_BMWTEST03_old#Request#declare namespace ns1=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation\'; //ns1:createContractBundle[1]/ns1:contractBundleData[1]/ns1:masterContract[1]/ns1:bundles[1]/ns1:bundle[1]/ns1:contracts[1]/ns1:contract[1]/ns1:apPayments[1]/ns1:apPayment[1]/ns1:paymentAmount[1]/ns1:grossAmount[1]}' ).toBigDecimal()
+def bdisburseNetAmount = context.expand( '${CreateContractBundleAddTaxDetails_BMWTEST03_old#Request#declare namespace ns1=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation\'; //ns1:createContractBundle[1]/ns1:contractBundleData[1]/ns1:masterContract[1]/ns1:bundles[1]/ns1:bundle[1]/ns1:contracts[1]/ns1:contract[1]/ns1:apPayments[1]/ns1:apPayment[1]/ns1:paymentAmount[1]/ns1:netAmount[1]}' ).toBigDecimal()
+def bdisburseTaxAmount = context.expand( '${CreateContractBundleAddTaxDetails_BMWTEST03_old#Request#declare namespace ns1=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation\'; //ns1:createContractBundle[1]/ns1:contractBundleData[1]/ns1:masterContract[1]/ns1:bundles[1]/ns1:bundle[1]/ns1:contracts[1]/ns1:contract[1]/ns1:apPayments[1]/ns1:apPayment[1]/ns1:paymentAmount[1]/ns1:taxAmount[1]}' ).toBigDecimal()
+def bdisburseTaxCmsCode = context.expand( '${CreateContractBundleAddTaxDetails_BMWTEST03_old#Request#declare namespace ns1=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation\'; //ns1:createContractBundle[1]/ns1:contractBundleData[1]/ns1:masterContract[1]/ns1:bundles[1]/ns1:bundle[1]/ns1:contracts[1]/ns1:contract[1]/ns1:apPayments[1]/ns1:apPayment[1]/ns1:paymentAmount[1]/ns1:taxCode[1]/ns1:cmsCode[1]}' ).toBigDecimal()
+def bdisburseTaxRate = context.expand( '${CreateContractBundleAddTaxDetails_BMWTEST03_old#Request#declare namespace ns1=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation\'; //ns1:createContractBundle[1]/ns1:contractBundleData[1]/ns1:masterContract[1]/ns1:bundles[1]/ns1:bundle[1]/ns1:contracts[1]/ns1:contract[1]/ns1:apPayments[1]/ns1:apPayment[1]/ns1:paymentAmount[1]/ns1:taxRate[1]}' ).toBigDecimal()
+
+
+def disburse_gross_amount = context.expand( '${DataSourceDisburse#disburse_gross_amount}' ).toBigDecimal()
+def disburse_net_amount = context.expand( '${DataSourceDisburse#disburse_net_amount}' ).toBigDecimal()
+def disburse_tax_amount = context.expand( '${DataSourceDisburse#disburse_tax_amount}' ).toBigDecimal()
+def disburse_tax_code = context.expand( '${DataSourceDisburse#disburse_tax_code}' ).toBigDecimal()
+def disburse_tax_rate = context.expand( '${DataSourceDisburse#disburse_tax_rate}' ).toBigDecimal()
+
+
+BigDecimal disburseGrossAmount = bdisburseGrossAmount.stripTrailingZeros()
+BigDecimal disburseNetAmount = bdisburseNetAmount.stripTrailingZeros()
+BigDecimal disburseTaxAmount = bdisburseTaxAmount.stripTrailingZeros()
+BigDecimal disburseTaxCmsCode = bdisburseTaxCmsCode.stripTrailingZeros()
+BigDecimal disburseTaxRate = bdisburseTaxRate.stripTrailingZeros()
+
+if(responseStatus=="Success" && responseCMSId == disburse_loan_num && disburseGrossAmount == disburse_gross_amount &&
+disburseNetAmount == disburse_net_amount && disburseTaxAmount == disburse_tax_amount && disburseTaxCmsCode == disburse_tax_code && disburseTaxRate == disburse_tax_rate )
+
+{
+
+
+	testResult = 'PASS'
+
+	log.info("Inside the successful validations")
+	}
+	else
+	{
+
+	faultString =  response.getNodeValue('//faultstring[1]/text()')
+	log.error "Issue with API response First Valid case : " + faultString
+	testResult = 'FAIL'
+	}
+
+}
+
+
+//ApPayments validation when is lease is False
+else if(TCName == "CMS-9313-AddTaxAPPaymentsIsLeaseFalse")
+{
+
+def bdisburseGrossAmount = context.expand( '${CreateContractBundleAddTaxDetails_BMWTEST03_old#Request#declare namespace ns1=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation\'; //ns1:createContractBundle[1]/ns1:contractBundleData[1]/ns1:masterContract[1]/ns1:bundles[1]/ns1:bundle[1]/ns1:contracts[1]/ns1:contract[1]/ns1:apPayments[1]/ns1:apPayment[1]/ns1:paymentAmount[1]/ns1:grossAmount[1]}' ).toBigDecimal()
+def disburse_gross_amount = context.expand( '${DataSourceDisburse#disburse_gross_amount}' ).toBigDecimal()
+BigDecimal disburseGrossAmount = bdisburseGrossAmount.stripTrailingZeros()
+	
+	if(responseStatus=="Success" && responseCMSId == disburse_loan_num && disburseGrossAmount == disburse_gross_amount )
+	{
+	testResult = 'PASS'
+
+	log.info("Inside the successful validations")
+	}
+	else
+	{
+
+	faultString =  response.getNodeValue('//faultstring[1]/text()')
+	log.error "Issue with API response First Valid case : " + faultString
+	testResult = 'FAIL'
+	}
+}
+
+
+testRunner.testCase.testSuite.setPropertyValue('TestResult', testResult)]]></script></con:config></con:testStep><con:properties><con:property><con:name>ContractNumber</con:name><con:value/></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>f16fb382-829a-436e-874d-0eacb9698ccd</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>ca7f75f9-f0be-427b-a069-1abb5a30cdd1</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>ab0ed0fa-35f0-4715-b614-82e2d3cc97df</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>a16e1f73-3eaf-444e-814b-b6f94807eb90</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>53bf57b3-df65-4ac2-9b09-9fd962963b10</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>f61326f1-b7b7-44b2-9bef-7a4540b96ab6</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>6a391cac-a94a-4a1e-964a-078e3e6e118e</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>58b15c68-3124-41e0-805e-13544409f4f8</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>18fc46b9-3d53-471b-b67e-37d8d74b4fee</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>25bbbeb3-535e-4587-aaf2-e387cecb4484</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>2c37a84c-b7e0-4a62-b957-d973dc4fd1d4</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>7b4d265c-6952-4ce1-a61e-d306f1b24e45</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>efb1c8d4-6de8-4253-b2c2-a7a8b3e23664</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>d55c6d4f-d407-4f86-8ddb-2b898656b038</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>5ed65902-05f3-4dc7-8e1b-bc2293440bcd</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>c2c28496-d4d9-400e-a9bf-00c37717e2ee</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>77666488-d986-49c0-8e5e-4a160893775a</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>65f1656d-9822-4abb-876b-8b27676b53e4</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>09508180-2924-48b9-b28e-b081f613e485</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>6aa864c8-3167-4955-993a-abb3d2cb1a0f</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>07345599-b11d-4d28-acb0-b6387cafce70</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>

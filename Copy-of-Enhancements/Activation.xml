@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="4a6fd3d8-3da2-4d5c-82a3-a3c3457738d9" discardOkResults="false" failOnError="false" failTestCaseOnErrors="true" keepSession="false" name="Activation" searchProperties="true" timeout="0" maxResults="10000" wsrmEnabled="false" wsrmVersion="1.0" wsrmAckTo="" amfAuthorisation="false" amfEndpoint="" amfLogin="" amfPassword="" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="c0f77e22-44d1-4a2f-8cb5-f2caec108294fileName">Activation</con:setting><con:setting id="703d3449-d4db-4b3c-b349-1e0af9156cbdfileName">Activation</con:setting><con:setting id="4a6fd3d8-3da2-4d5c-82a3-a3c3457738d9fileName">Activation</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="GeneratingRandomVinNumber" id="494a6e94-4428-4aae-9c60-a3742b02b4cc"><con:settings/><con:config><script>int a = 9
+vin = ""
+for(i = 0; i &lt; 10; i++)
+{
+ random = new Random()
+ randomInteger= random.nextInt(a)
+ vin = vin + randomInteger
+}
+
+testRunner.testCase.testSuite.setPropertyValue("vin", vin );
+
+
+</script></con:config></con:testStep><con:testStep type="datasource" name="DataExcel" id="007d1029-e7d6-4235-801a-19e5a930c38f"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Excel"><con:configuration><file>${projectDir}/createContractBundle.xlsx</file><worksheet>DFS</worksheet><cell>${#TestSuite#rowNumber}</cell><ignoreEmpty>false</ignoreEmpty><evaluateFormulas>false</evaluateFormulas></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>testId</con:property><con:property>companyCode</con:property><con:property>businessUnit</con:property><con:property>financeProductCode</con:property><con:property>taxCode</con:property><con:property>countryCode</con:property><con:property>assetDamageCode</con:property><con:property>assetSalesCode</con:property><con:property>countryFlag</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="request" id="420eb21e-fee6-40fb-b281-0210e9cd95d8" name="createContractBundle"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>createContractBundle</con:operation><con:request name="createContractBundle" id="00e88e5e-4ac2-4120-88dd-30fc6497c261"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvbmwweb01/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation" xmlns:cmn="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <createContractBundle xsi:schemaLocation="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation file:///C:/Projects/CALMS2CMS/Calms2CMS/Calms2CmsInterfacesAndDtos/src/main/resources/xsd/BundledActivation.xsd" xmlns:ns0="http://message.motorpos.messaging.wcg.com">
+         <contractBundleData>
+            <application>
+               <userId>2401</userId>
+               <scoreBandCode>
+                  <cmsCode>1</cmsCode>
+               </scoreBandCode>
+            </application>
+            <dealer>
+               <dealerId>1</dealerId>
+            </dealer>
+            <customers>
+               <customer>
+                  <details>
+                     <type>I</type>
+                     <thirdPartyId>
+                        <bpmId>123602</bpmId>
+                     </thirdPartyId>
+                     <role>P</role>
+                     <commsChannels>
+                        <contactViaSMS>false</contactViaSMS>
+                        <phoneFaxNums>
+                           <telephoneFax>
+                              <phoneFaxNumber>+49891234567</phoneFaxNumber>
+                              <type>WO</type>
+                           </telephoneFax>
+                        </phoneFaxNums>
+                     </commsChannels>
+                     <bankAccounts>
+                        <bankAccountData>
+                           <branchCode>AUS00261</branchCode>
+                           <ibanNumber>DE89370400440532013000</ibanNumber>
+                           <swiftCode>COKSDE33XXX</swiftCode>
+                           <sortCode>12451</sortCode>
+                           <bankAccountName>Der Burscheider Latzel Reisen Rainer Lat</bankAccountName>
+                           <bankAccountNumber>489744544</bankAccountNumber>
+                        </bankAccountData>
+                     </bankAccounts>
+                     <addresses>
+                        <address>
+                           <addressType>
+                              <cmsCode>1</cmsCode>
+                           </addressType>
+                           <countryCode>
+                              <cmsCode>DE</cmsCode>
+                           </countryCode>
+                           <buildingNumber>1</buildingNumber>
+                           <street>Heidemannstrasse</street>
+                           <postTown>Munchen</postTown>
+                           <postCode>80939</postCode>
+                        </address>
+                     </addresses>
+                     <gender>M</gender>
+                     <dateOfBirth>1976-05-18</dateOfBirth>
+                     <firstName>testfirstname</firstName>
+                     <middleName>testmiddlename</middleName>
+                     <surname>testSurname</surname>
+                     <countryOfBirth>DE</countryOfBirth>
+                     <contactPerson>CMS-9378 System Test</contactPerson>
+                     <vatCode>1</vatCode>
+                     <salutation>Herr</salutation>
+                     <intraGrpConsldnCode>22</intraGrpConsldnCode>
+                  </details>
+               </customer>
+            </customers>
+            <masterContract>
+               <contractNumber/>
+               <bundles>
+                  <bundle>
+                     <identifier>1</identifier>
+                     <contracts>
+                        <contract>
+                           <identifier>1</identifier>
+                           <currency>EUR</currency>
+                           <masterContractPrimary>true</masterContractPrimary>
+                           <contractOptions>
+                              <paymentFacility>4</paymentFacility>
+                           </contractOptions>
+                           <reportingAndRelations>
+                              <country>${DataExcel#countryCode}</country>
+                              <company>
+                                 <cmsCode>${DataExcel#companyCode}</cmsCode>
+                              </company>
+                              <region>
+                                 <cmsCode>0001</cmsCode>
+                              </region>
+                              <branch>
+                                 <cmsCode>0001</cmsCode>
+                              </branch>
+                              <businessDivision>
+                                 <cmsCode>0001</cmsCode>
+                              </businessDivision>
+                              <businessUnit>
+                                 <externalCode>${DataExcel#businessUnit}</externalCode>
+                              </businessUnit>
+                           </reportingAndRelations>
+                           <dates>
+                              <startDate>2016-07-14+02:00</startDate>
+                              <quoteCreationDate>2016-07-14+02:00</quoteCreationDate>
+                           </dates>
+                           <billingDay>27</billingDay>
+                           <term>36</term>
+                           <interestRates>
+                              <customerTrueRate>3.93</customerTrueRate>
+                           </interestRates>
+                           <commissions>
+                              <commission>
+                                 <commissionType>
+                                    <cmsCode>2</cmsCode>
+                                 </commissionType>
+                                 <amount>
+                                    <grossAmount>325.68</grossAmount>
+                                    <netAmount>273.68</netAmount>
+                                    <taxAmount>52.00</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${DataExcel#taxCode}</cmsCode>
+                                    </taxCode>
+                                 </amount>
+                                 <commissionDate>2017-02-04+02:00</commissionDate>
+                                 <thirdPartyId>
+                                    <bpmId>12345</bpmId>
+                                 </thirdPartyId>
+                              </commission>
+                           </commissions>
+                           <subsidies>
+                              <subsidy>
+                                 <type>
+                                    <cmsCode>1</cmsCode>
+                                 </type>
+                                 <provider>
+                                    <bpmId>12345</bpmId>
+                                 </provider>
+                                 <amount>
+                                    <grossAmount>2651.14</grossAmount>
+                                    <netAmount>2651.14</netAmount>
+                                    <taxAmount>0.00</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${DataExcel#taxCode}</cmsCode>
+                                    </taxCode>
+                                 </amount>
+                              </subsidy>
+                           </subsidies>
+                           <finance>
+                              <financeProductCode>
+                                 <cmsCode>${DataExcel#financeProductCode}</cmsCode>
+                              </financeProductCode>
+                              <isArrears>true</isArrears>
+                              <isLease>true</isLease>
+                              <amounts>
+                                 <totalInterest>
+                                    <netAmount>5461.90</netAmount>
+                                 </totalInterest>
+                                 <grossCost>
+                                    <netAmount>68420.18</netAmount>
+                                 </grossCost>
+                                 <amountFinanced>
+                                    <netAmount>68420.18</netAmount>
+                                 </amountFinanced>
+                                 <residuals>
+                                    <residual>
+                                       <type>
+                                          <cmsCode>1</cmsCode>
+                                       </type>
+                                       <value>
+                                          <netAmount>24372.42</netAmount>
+                                       </value>
+                                    </residual>
+                                    <residual>
+                                       <type>
+                                          <cmsCode>2</cmsCode>
+                                       </type>
+                                       <value>
+                                          <netAmount>37285.31</netAmount>
+                                       </value>
+                                    </residual>
+                                 </residuals>
+                              </amounts>
+                              <taxTreatment>
+                                 <taxCode>${DataExcel#taxCode}</taxCode>
+                              </taxTreatment>
+                           </finance>
+                           <apPayments>
+                              <apPayment>
+                                 <paymentDate>2017-02-20+01:00</paymentDate>
+                                 <paymentType>0001</paymentType>
+                                 <payeeId>
+                                    <thirdPartyId>
+                                       <bpmId>12345</bpmId>
+                                    </thirdPartyId>
+                                 </payeeId>
+                                 <payerId>
+                                    <thirdPartyId>
+                                       <bpmId>12345</bpmId>
+                                    </thirdPartyId>
+                                 </payerId>
+                                 <paymentDescription>Vehicle Purchase</paymentDescription>
+                                 <paymentAmount>
+                                    <grossAmount>82300.00</grossAmount>
+                                    <netAmount>69159.66</netAmount>
+                                    <taxAmount>13140.34</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${DataExcel#taxCode}</cmsCode>
+                                    </taxCode>
+                                 </paymentAmount>
+                                 <referenceCode>300003-13</referenceCode>
+                              </apPayment>
+                              <apPayment>
+                                 <paymentDate>2017-03-01+02:00</paymentDate>
+                                 <paymentType>0002</paymentType>
+                                 <payeeId>
+                                    <thirdPartyId>
+                                       <bpmId>12345</bpmId>
+                                    </thirdPartyId>
+                                 </payeeId>
+                                 <payerId>
+                                    <thirdPartyId>
+                                       <bpmId>12345</bpmId>
+                                    </thirdPartyId>
+                                 </payerId>
+                                 <paymentDescription>Salesperson Commission</paymentDescription>
+                                 <paymentAmount>
+                                    <grossAmount>325.68</grossAmount>
+                                    <netAmount>273.68</netAmount>
+                                    <taxAmount>52.00</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${DataExcel#taxCode}</cmsCode>
+                                    </taxCode>
+                                 </paymentAmount>
+                              </apPayment>
+                              <apPayment>
+                                 <paymentDate>2017-03-01+02:00</paymentDate>
+                                 <paymentType>0004</paymentType>
+                                 <payeeId>
+                                    <thirdPartyId>
+                                       <bpmId>12345</bpmId>
+                                    </thirdPartyId>
+                                 </payeeId>
+                                 <payerId>
+                                    <thirdPartyId>
+                                       <bpmId>12345</bpmId>
+                                    </thirdPartyId>
+                                 </payerId>
+                                 <paymentDescription>Dealer Subsidy</paymentDescription>
+                                 <paymentAmount>
+                                    <grossAmount>2651.14</grossAmount>
+                                    <netAmount>2651.14</netAmount>
+                                    <taxAmount>0.00</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${DataExcel#taxCode}</cmsCode>
+                                    </taxCode>
+                                 </paymentAmount>
+                              </apPayment>
+                           </apPayments>
+                           <endOfContractOptions>
+                              <endOfContractOption>
+                                 <prolongLeadDays>10</prolongLeadDays>
+                                 <isBuyback>false</isBuyback>
+                                 <buybackValue>2300.00</buybackValue>
+                                 <buybacker>
+                                    <bpmId>12345</bpmId>
+                                 </buybacker>
+                              </endOfContractOption>
+                           </endOfContractOptions>
+                           <schedule>
+                              <payments>
+                                 <payment>
+                                    <type>1</type>
+                                    <numberOfPayments>36</numberOfPayments>
+                                    <frequency>1</frequency>
+                                    <amount>
+                                       <grossAmount>1661.00</grossAmount>
+                                       <netAmount>1395.00</netAmount>
+                                       <taxAmount>265.00</taxAmount>
+                                       <taxCode>
+                                          <cmsCode>${DataExcel#taxCode}</cmsCode>
+                                       </taxCode>
+                                    </amount>
+                                 </payment>
+                              </payments>
+                           </schedule>
+                           <assets>
+                              <asset>
+                                 <purpose>
+                                    <cmsCode>1</cmsCode>
+                                 </purpose>
+                                 <assetOrSecurity>A</assetOrSecurity>
+                                 <motorvehicle>true</motorvehicle>
+                                 <listPrice>
+                                    <netAmount>52521.02</netAmount>
+                                 </listPrice>
+                                 <salePrice>
+                                    <netAmount>68420.18</netAmount>
+                                 </salePrice>
+                                 <totalCost>76092.44</totalCost>
+                                 <!--<registrationNumber>start1917</registrationNumber>-->
+                                 <registrationDate>2017-02-12+02:00</registrationDate>
+                                 <!--<vin>start19175</vin>-->
+                                 <vin>${TestSuite#vin}</vin>
+                                 <vehicle>
+                                    <makeDesc>BMW</makeDesc>
+                                    <modelDesc>4</modelDesc>
+                                    <variantDesc>X6 xDrive30d SportsActivityVehicle</variantDesc>
+                                    <externalVehicleCode>
+                                       <cmsCode>FH61</cmsCode>
+                                    </externalVehicleCode>
+                                    <deliveryDate>2017-03-01+02:00</deliveryDate>
+                                    <colour>BLACK SAPPHIRE</colour>
+                                 </vehicle>
+                                 <depreciationOptions>
+                                    <depreciationOption>
+                                       <assetLife>72</assetLife>
+                                    </depreciationOption>
+                                 </depreciationOptions>
+                                 <optionsAndExtras>
+                                    <optionsAndExtra>
+                                       <type>FFO</type>
+                                       <optionsExternalRef>1</optionsExternalRef>
+                                       <optionsDescription>1</optionsDescription>
+                                       <priceGross>
+                                          <grossAmount>28915.00</grossAmount>
+                                          <netAmount>28915.00</netAmount>
+                                          <taxAmount>0.00</taxAmount>
+                                          <taxCode>
+                                             <cmsCode>${DataExcel#taxCode}</cmsCode>
+                                          </taxCode>
+                                       </priceGross>
+                                    </optionsAndExtra>
+                                 </optionsAndExtras>
+                                 <saleCondition>
+                                    <cmsCode>${DataExcel#assetSalesCode}</cmsCode>
+                                 </saleCondition>
+                                 <damageCondition>
+                                    <cmsCode>${DataExcel#assetDamageCode}</cmsCode>
+                                 </damageCondition>
+                                 <usage>
+                                    <initialMileage>60000</initialMileage>
+                                    <annualMileage>20000</annualMileage>
+                                    <usageCharges>
+                                       <chargeDetails>
+                                          <chargeType>1</chargeType>
+                                          <amount>0.11</amount>
+                                          <tolerance>2500.00</tolerance>
+                                          <toleranceBasis>D</toleranceBasis>
+                                       </chargeDetails>
+                                       <chargeDetails>
+                                          <chargeType>2</chargeType>
+                                          <amount>0.08</amount>
+                                          <tolerance>2500.00</tolerance>
+                                          <toleranceBasis>D</toleranceBasis>
+                                       </chargeDetails>
+                                    </usageCharges>
+                                 </usage>
+                              </asset>
+                           </assets>
+                        </contract>
+                     </contracts>
+                  </bundle>
+               </bundles>
+               <blendRate>3.25</blendRate>
+            </masterContract>
+         </contractBundleData>
+         <applicationInfo>
+            <cmn:securityAudit>
+               <cmn:messageId>14585822945001</cmn:messageId>
+               <cmn:timestamp>2016-03-21T17:44:51.691Z</cmn:timestamp>
+               <cmn:clientAppId>P021737905</cmn:clientAppId>
+               <cmn:userId>NA</cmn:userId>
+               <cmn:clientLanguage>en_AU</cmn:clientLanguage>
+            </cmn:securityAudit>
+         </applicationInfo>
+      </createContractBundle>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:username>admin</con:username><con:password>admin</con:password><con:selectedAuthProfile>Inherit From Parent</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig action="createContractBundle" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>New Basic</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>Inherit From Parent</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="groovy" name="GetTheContractDetails" id="7ce92625-b39a-4028-b7f7-186751b95082"><con:settings/><con:config><script>def groovyUtils = new com.eviware.soapui.support.GroovyUtils(context) ;
+
+def response = groovyUtils.getXmlHolder ("createContractBundle#Response");
+def request = groovyUtils.getXmlHolder ("createContractBundle#Request");
+
+def contractNumber = response.getNodeValue ("//*:cmsId") ;
+
+def countryCode = context.expand('${DataExcel#countryCode}')
+
+def countryFlag = context.expand('${DataExcel#countryFlag}')
+
+def vatCode = context.expand('${DataExcel#taxCode}')
+
+log.info("contractNumber " + contractNumber);
+log.info("Vat : " + vatCode)
+log.info(countryFlag)
+
+//Writing it to a file
+def resultDir = new File("C:/CMSTests"); 
+    
+if(!resultDir.exists()) 
+{
+   resultDir.mkdirs();
+}
+
+def inputFile = new File(resultDir, "ContractDetails.txt");
+fos = new FileOutputStream( inputFile, false );
+pw = new PrintWriter( fos );
+   
+// Check if a file with same name exisits in the folder.
+if(inputFile.exists())
+{
+	pw.write("contractNumber: " +  contractNumber);
+	pw.println("");
+	pw.append("country:" + countryFlag);
+	pw.println("");
+	pw.append("VatCode:" + vatCode)
+	pw.println("");
+	
+}
+
+pw.close();
+fos.close();</script></con:config></con:testStep><con:properties><con:property><con:name>vinFR</con:name><con:value>7850241884</con:value></con:property><con:property><con:name>vinGB</con:name><con:value>78502418841</con:value></con:property><con:property><con:name>vinDE</con:name><con:value>78502418842</con:value></con:property><con:property><con:name>vin</con:name><con:value>3102654625</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>96a46edb-8ef0-45be-bc0e-1dfef910d9ce</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>e3b12652-7237-4f83-be88-020307368805</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>

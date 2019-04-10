@@ -1,0 +1,2516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="8b065415-e20c-4e43-a9c1-6e97f37ade8a" discardOkResults="false" failOnError="false" failTestCaseOnErrors="true" keepSession="false" name="UpdateThirdPartyAPIInvalidDirectMarketingPost" searchProperties="true" timeout="0" maxResults="5000" wsrmEnabled="false" wsrmVersion="1.0" wsrmAckTo="" amfAuthorisation="false" amfEndpoint="" amfLogin="" amfPassword="" disabled="true" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="8e730d57-592d-437f-8a17-617f7e5af47ffileName">UpdateThirdPartyAPI</con:setting><con:setting id="2272485c-2e57-467f-a3d8-70cff6949022fileName">UpdateThirdPartyAPI</con:setting><con:setting id="7c047b4f-96b3-4460-ac97-0555eea42528fileName">UpdateThirdPartyAPIInvalidBaselCode</con:setting><con:setting id="3adceadf-354f-476b-b132-724ababdf438fileName">UpdateThirdPartyAPIInvalidPrivacyConsent</con:setting><con:setting id="2c40ed31-688c-4f9f-bf38-9ce21b270364fileName">UpdateThirdPartyAPIInvalidDirectMarketingPost</con:setting><con:setting id="8b065415-e20c-4e43-a9c1-6e97f37ade8afileName">UpdateThirdPartyAPIInvalidDirectMarketingPost</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="Information" id="6c9cfe6d-53ea-4452-b645-1a4377db6cac"><con:settings/><con:config><script>//Update Third Party - Dealer 
+
+//Table 1- Company, 2- Region, 3- Branch, 13- Loan Source Group, 14- loan Source Company, 138- Tenancy, 290- Partner code, 177- Account Customer Status, 325- Risk Classification Code has the details 
+
+//Select distinct l.SRCE_CODE as l_SRCE_CODE, l.SRCE_TERRITORY as l_SRCE_TERRITORY, l.SRCE_TYPE as l_SRCE_TYPE,
+//l.srce_group as l_srce_group, l.srce_company as l_srce_company, l.srce_reporting_region as l_srce_reporting_region,
+//l.srce_reporting_branch as l_srce_reporting_branch, l.srce_risk_classification_code as risk_classification_code, lm.acct_contact_person as acct_contact_person,
+//lm.acct_grp_consldn_code as acct_grp_consldn_code ,lm.acct_customer_status as acct_customer_status
+//From LSRCE l, lacmstr lm
+//Where l.SRCE_CODE Like '%1' And l.SRCE_TERRITORY In ('49')
+//order by l.SRCE_CODE desc
+
+//select  country_cms, country_iso, country_code from lctry where country_code='49'
+
+//SELECT ACCT_ACCOUNT_CONTACT, ACCT_CONTACT_PERSON, acct_grp_consldn_code, acct_customer_status FROM LACMSTR WHERE ACCT_BPMID= '26031'</script></con:config></con:testStep><con:testStep type="groovy" name="Set ExcelData Row" id="d969118f-e39a-4205-8f5a-a38197aa01d0"><con:settings/><con:config><script>testRunner.testCase.testSuite.setPropertyValue("TestStartCell", "A11")
+testCaseName = testRunner.testCase.getName()
+testRunner.testCase.testSuite.setPropertyValue("TestCaseName", testCaseName)</script></con:config></con:testStep><con:testStep type="datasource" name="CMS9378DataExcel" id="6f553c34-7bb9-4fa2-aeb3-d77c776d0b7b"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Excel"><con:configuration><file>${projectDir}/cms8323UpdateThirdPartyDealer.xlsx</file><worksheet>${#Project#workSheet}</worksheet><cell>${#TestSuite#TestStartCell}</cell><ignoreEmpty>true</ignoreEmpty><evaluateFormulas>false</evaluateFormulas></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>TestCaseId</con:property><con:property>TestCaseName</con:property><con:property>expectedResponseStatus</con:property><con:property>expectedErrorCode</con:property><con:property>expectedErrorDescription</con:property><con:property>expectedFaultCode</con:property><con:property>expectedFaultString</con:property><con:property>partnerType</con:property><con:property>bpmId</con:property><con:property>pmsId</con:property><con:property>cmsId</con:property><con:property>entityType</con:property><con:property>role</con:property><con:property>contactViaSMS</con:property><con:property>phoneFaxNumber</con:property><con:property>phoneType</con:property><con:property>phoneFaxNumberWO</con:property><con:property>phoneTypeWO</con:property><con:property>bankCode</con:property><con:property>branchCode</con:property><con:property>branchName</con:property><con:property>bankAccountType</con:property><con:property>ibanNumber</con:property><con:property>swiftCode</con:property><con:property>sortCode</con:property><con:property>mandateValid</con:property><con:property>mandateReference</con:property><con:property>mandateSignedDate</con:property><con:property>bankAccountName</con:property><con:property>bankAccountNumber</con:property><con:property>isDirectDebitBankAccount</con:property><con:property>externalSystemId</con:property><con:property>thirdPartyRepositoryId</con:property><con:property>addressIdCMSId</con:property><con:property>addressTypeCMSCode</con:property><con:property>addressTypeExternalCode</con:property><con:property>locality</con:property><con:property>buildingNumber</con:property><con:property>buildingName</con:property><con:property>subBuildingNumber</con:property><con:property>streetNumber</con:property><con:property>street</con:property><con:property>postTown</con:property><con:property>county</con:property><con:property>postCode</con:property><con:property>streetType</con:property><con:property>isPrimarymailing</con:property><con:property>addressTypeCMSCodee</con:property><con:property>externalCode</con:property><con:property>Localityy</con:property><con:property>BuildingNumberr</con:property><con:property>BuildingNamee</con:property><con:property>subbuildingNumberr</con:property><con:property>StreetNumberr</con:property><con:property>Streett</con:property><con:property>PostTownn</con:property><con:property>countyy</con:property><con:property>postCodee</con:property><con:property>streetTypee</con:property><con:property>IsPrimaryMailingg</con:property><con:property>gender</con:property><con:property>maritalStatus</con:property><con:property>dateOfBirth</con:property><con:property>firstName</con:property><con:property>middleName</con:property><con:property>surName</con:property><con:property>directMarketingPost</con:property><con:property>numberOfDependants</con:property><con:property>title</con:property><con:property>suffix</con:property><con:property>suffixcmsCode</con:property><con:property>suffixexternalCode</con:property><con:property>socialSecurityNumber</con:property><con:property>socialInsuranceNumber</con:property><con:property>maidenName</con:property><con:property>motabilityFlag</con:property><con:property>countryOfBirth</con:property><con:property>driversLic</con:property><con:property>employer</con:property><con:property>employmentStatus</con:property><con:property>occupation</con:property><con:property>occupationCMSCode</con:property><con:property>occupationExternalCode</con:property><con:property>annualIncome</con:property><con:property>industrySubCodecmsCode</con:property><con:property>industryExternalCode</con:property><con:property>baselClasscodecmsCode</con:property><con:property>baselClasscodeExternalCode</con:property><con:property>ctryNationalitycmsCode</con:property><con:property>ctryNationalityExternalCode</con:property><con:property>preferredLanguagecmsCode</con:property><con:property>preferredLanguageExternalCode</con:property><con:property>previousName</con:property><con:property>privacyConsent</con:property><con:property>IdentificationDocumentTypecmsCode</con:property><con:property>IdentificationDocumentTypeExternalCode</con:property><con:property>IdentificationDocumentissuedDate</con:property><con:property>IdentificationDocumentdateExpired</con:property><con:property>IdentificationDocumentNumber</con:property><con:property>issuingEntity</con:property><con:property>issuingCountryCodecmsCode</con:property><con:property>issuingCountryCodeExternalCode</con:property><con:property>identificationDocumentTypeCodecmsCode</con:property><con:property>identificationDocumentTypeCodeexternalCode</con:property><con:property>IdentificationDocumentissuedDatee</con:property><con:property>IdentificationDocumentdateExpiredd</con:property><con:property>IdentificationDocumentNumberr</con:property><con:property>issuingEntityy</con:property><con:property>issuingCountryCodecmsCodee</con:property><con:property>issuingCountryCodeExternalCodee</con:property><con:property>businessname</con:property><con:property>customerStatuscmsCode</con:property><con:property>customerStatusExternalCode</con:property><con:property>inCorporationDate</con:property><con:property>politicallyExposedPerson</con:property><con:property>isStaff</con:property><con:property>isDeceased</con:property><con:property>contactPerson</con:property><con:property>vatNumber</con:property><con:property>vatCode</con:property><con:property>isNegativeInfo</con:property><con:property>salutation</con:property><con:property>OrganisationTypecmsCode</con:property><con:property>OrganisationTypeExternalCode</con:property><con:property>taxNumber</con:property><con:property>partnerCodecmscode</con:property><con:property>partnerCodeExternalcode</con:property><con:property>industryCodecmsCode</con:property><con:property>industryCodeExternalCode</con:property><con:property>trustVatNo</con:property><con:property>certificateNumber</con:property><con:property>businessTypeDesc</con:property><con:property>businessTypeCodecmsCode</con:property><con:property>businessTypeCodeExternalCode</con:property><con:property>balanceSheetCodecmsCode</con:property><con:property>balanceSheetCodeExternalCode</con:property><con:property>dateOfDeath</con:property><con:property>isPaymentLocking</con:property><con:property>intraGrpConsldnCode</con:property><con:property>emailTypecmsCode</con:property><con:property>emailTypeExternalCode</con:property><con:property>emailAddress</con:property><con:property>isPrimaryMaillingg</con:property><con:property>isConsent</con:property><con:property>thirdPartDetailThirdPartyType</con:property><con:property>thirdPartDetailSourceTypecmsCode</con:property><con:property>thirdPartDetailSourceTypeExternalCode</con:property><con:property>thirdPartyDetailRegion</con:property><con:property>dealerGroupId</con:property><con:property>dealerCompanyId</con:property><con:property>riskClassificationCode</con:property><con:property>dealerBranch</con:property><con:property>tenantCode</con:property><con:property>messageId</con:property><con:property>timestamp</con:property><con:property>clientAppId</con:property><con:property>auditUserId</con:property><con:property>clientLanguage</con:property><con:property>ctryResidence</con:property><con:property>ctryResidenceCMSCode</con:property><con:property>ctryResidenceExternalCode</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="ThirdPartyIdfromDB" id="4db9833e-5b2b-4766-a749-704f7b661c31"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;xml-fragment/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBCALMS2CMS( Default environment )</Connection><query>Select distinct l.SRCE_CODE as l_SRCE_CODE, l.SRCE_TERRITORY as l_SRCE_TERRITORY, l.SRCE_TYPE as l_SRCE_TYPE,
+l.srce_group as l_srce_group, l.srce_company as l_srce_company, l.srce_reporting_region as l_srce_reporting_region,
+l.srce_reporting_branch as l_srce_reporting_branch, l.srce_risk_classification_code as risk_classification_code, lm.acct_contact_person as acct_contact_person,
+lm.acct_grp_consldn_code as acct_grp_consldn_code ,lm.acct_customer_status as acct_customer_status, lm.acct_bpmid as lm_acct_bpmid
+From LSRCE l, lacmstr lm
+Where l.SRCE_CODE Like '%1' And l.SRCE_TERRITORY In ('49')  --and l.srce_risk_classification_code is not null and l.srce_reporting_branch is not null order by l.SRCE_CODE desc fetch first 1 row only-- and lm.acct_bpmid='${#TestSuite#bpmid}'
+--order by l.SRCE_CODE fetch first 1 row only --desc</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>l_SRCE_CODE</con:property><con:property>l_SRCE_TERRITORY</con:property><con:property>l_SRCE_TYPE</con:property><con:property>l_srce_group</con:property><con:property>l_srce_company</con:property><con:property>l_srce_reporting_region</con:property><con:property>l_srce_reporting_branch</con:property><con:property>risk_classification_code</con:property><con:property>acct_contact_person</con:property><con:property>acct_grp_consldn_code</con:property><con:property>acct_customer_status</con:property><con:property>lm_acct_bpmid</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="ISOTenantCodefromDB" id="1f098225-b961-4497-94de-1bd3fb51e1df"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;xml-fragment/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBCALMS2CMS( Default environment )</Connection><query>select  country_cms, country_iso, country_code from lctry where country_code='49'</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>country_cms</con:property><con:property>country_iso</con:property><con:property>country_code</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="groovy" name="BPMIDforContactDetails" id="e5394688-c8fd-484c-babd-35f95be566a8"><con:settings/><con:config><script>import java.text.SimpleDateFormat
+
+def bpmId = context.expand( '${ThirdPartyIdfromDB#l_SRCE_CODE}' )
+log.info(bpmId)
+testRunner.testCase.setPropertyValue("ACCT_BPMID",bpmId)
+// passing time stamp
+testRunner.testCase.setPropertyValue("TimeStamp", new SimpleDateFormat("YYYY-MM-dd'T'HH:mm:ss").format(new Date()))
+</script></con:config></con:testStep><con:testStep type="datasource" name="DBNewCustomerFields" id="557eb0d4-354f-4b0a-bbcc-7dd9ff016aee"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;xml-fragment/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBCALMS2CMS( Default environment )</Connection><query>select acct_basel_class_code, acct_previous_name, acct_drivers_lic, acct_privacy_consent, acct_customer_status, acct_Deceased_Flag, acct_neg_info, acct_suffix_alpha, acct_Suffix, acct_maiden_name,
+acct_motability_flag, acct_ctry_Residence, acct_lit_request, acct_marketting from lacmstr where acct_bpmid='${#TestCase#ACCT_BPMID}' fetch first 1 row only</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>acct_basel_class_code</con:property><con:property>acct_previous_name</con:property><con:property>acct_drivers_lic</con:property><con:property>acct_privacy_consent</con:property><con:property>acct_customer_status</con:property><con:property>acct_Deceased_Flag</con:property><con:property>acct_neg_info</con:property><con:property>acct_suffix_alpha</con:property><con:property>acct_Suffix</con:property><con:property>acct_maiden_name</con:property><con:property>acct_motability_flag</con:property><con:property>acct_ctry_Residence</con:property><con:property>acct_lit_request</con:property><con:property>acct_marketting</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="ContactDetailsFromDB" id="b3435cbe-513f-447b-923e-a230bd0a482e"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;xml-fragment/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBCALMS2CMS( Default environment )</Connection><query>SELECT ACCT_ACCOUNT_CONTACT, ACCT_CONTACT_PERSON, acct_grp_consldn_code, acct_customer_status FROM LACMSTR WHERE ACCT_BPMID= '${#TestCase#ACCT_BPMID}' fetch first 1 row only</query><fetchSize>1</fetchSize><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>ACCT_CONTACT_PERSON</con:property><con:property>acct_grp_consldn_code</con:property><con:property>acct_customer_status</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="groovy" name="SetDealerDetails" id="7da0b1ca-d001-4353-b70c-d0d599a95527"><con:settings/><con:config><script>def TCName = testRunner.testCase.testSuite.getPropertyValue("TestCaseName")
+if(TCName == "UpdateThirdPartyAPI")
+{
+def dealerGroupId = context.expand( '${ThirdPartyIdfromDB#l_srce_group}' )
+def dealerCompanyId = context.expand( '${ThirdPartyIdfromDB#l_srce_company}' )
+def region = context.expand( '${ThirdPartyIdfromDB#l_srce_reporting_region}' )
+def dealerBranch = context.expand( '${ThirdPartyIdfromDB#l_srce_reporting_branch}' )
+def riskClassificationCode = context.expand( '${ThirdPartyIdfromDB#risk_classification_code}' )
+
+testRunner.testCase.testSuite.setPropertyValue("DealerGroupId",dealerGroupId )
+testRunner.testCase.testSuite.setPropertyValue("DealerCompanyId",dealerCompanyId )
+testRunner.testCase.testSuite.setPropertyValue("DealerBranch",dealerBranch )
+testRunner.testCase.testSuite.setPropertyValue("Region",region)
+testRunner.testCase.testSuite.setPropertyValue("RiskClassificationCode",riskClassificationCode)
+}
+
+	</script></con:config></con:testStep><con:testStep type="delay" name="1000" id="38c9dfee-188a-46f9-8d30-950a4ba9a50d"><con:settings/><con:config><delay>2000</delay></con:config></con:testStep><con:testStep type="request" name="UpdateThirdParty- Dealer" id="274001ba-14a1-4b1b-9562-647480960e38"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>updateThirdParty</con:operation><con:request name="UpdateThirdParty- Dealer" id="43d3b409-0060-42aa-bbdd-1a8bc8d8111c"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvbmwdev01:28080/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:thir="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <thir:updateThirdParty>
+         <thir:partner>
+            <thir:type>${CMS9378DataExcel#partnerType}</thir:type>
+            <thir:thirdPartyId>
+               <thir:bpmId>${ThirdPartyIdfromDB#l_SRCE_CODE}</thir:bpmId>
+
+            </thir:thirdPartyId>
+            <thir:role>${CMS9378DataExcel#role}</thir:role>
+            <thir:commsChannels>
+               <thir:contactViaSMS>${CMS9378DataExcel#contactViaSMS}</thir:contactViaSMS>
+               <thir:phoneFaxNums>
+                  <thir:telephoneFax>
+                     <thir:phoneFaxNumber>${CMS9378DataExcel#phoneFaxNumber}</thir:phoneFaxNumber>
+                     <thir:type>${CMS9378DataExcel#phoneType}</thir:type>
+                  </thir:telephoneFax>
+                  <thir:telephoneFax>
+                     <thir:phoneFaxNumber>${CMS9378DataExcel#phoneFaxNumberWO}</thir:phoneFaxNumber>
+                     <thir:type>${CMS9378DataExcel#phoneTypeWO}</thir:type>
+                  </thir:telephoneFax>
+               </thir:phoneFaxNums>
+            </thir:commsChannels>
+            <thir:bankAccounts>
+               <thir:bankAccountData>
+                  <thir:bankCode>${CMS9378DataExcel#bankCode}</thir:bankCode>
+                  <thir:branchCode>${CMS9378DataExcel#branchCode}</thir:branchCode>
+                  <thir:branchName>${CMS9378DataExcel#branchName}</thir:branchName>
+                  <thir:bankAccountType>${CMS9378DataExcel#bankAccountType}</thir:bankAccountType>
+                  <thir:ibanNumber>${CMS9378DataExcel#ibanNumber}</thir:ibanNumber>
+                  <thir:swiftCode>${CMS9378DataExcel#swiftCode}</thir:swiftCode>
+                  <thir:sortCode>${CMS9378DataExcel#sortCode}</thir:sortCode>
+                  <thir:mandate>
+                     <thir:valid>${CMS9378DataExcel#mandateValid}</thir:valid>
+                     <thir:reference>${CMS9378DataExcel#mandateReference}</thir:reference>
+<!--                     <thir:signedDate>${CMS9378DataExcel#mandateSignedDate}</thir:signedDate>-->
+                  </thir:mandate>
+                  <thir:bankAccountName>${CMS9378DataExcel#bankAccountName}</thir:bankAccountName>
+                  <thir:bankAccountNumber>${CMS9378DataExcel#bankAccountNumber}</thir:bankAccountNumber>
+                  <thir:isDirectDebitBankAccount>${CMS9378DataExcel#isDirectDebitBankAccount}</thir:isDirectDebitBankAccount>
+               </thir:bankAccountData>
+            </thir:bankAccounts>
+            <thir:addresses>
+               <thir:address>
+                  <thir:addressId>
+                     <thir:externalSystemId>${CMS9378DataExcel#externalSystemId}</thir:externalSystemId>
+                     <thir:thirdPartyRepositoryId>${CMS9378DataExcel#thirdPartyRepositoryId}</thir:thirdPartyRepositoryId>
+                  </thir:addressId>
+                  <thir:addressType>
+                     <thir:cmsCode>${CMS9378DataExcel#addressTypeCMSCode}</thir:cmsCode>
+                     <thir:externalCode>${CMS9378DataExcel#addressTypeExternalCode}</thir:externalCode>
+                  </thir:addressType>
+                  <thir:locality>${CMS9378DataExcel#locality}</thir:locality>
+                  <thir:buildingNumber>${CMS9378DataExcel#buildingNumber}</thir:buildingNumber>
+                  <thir:buildingName>${CMS9378DataExcel#buildingName}</thir:buildingName>
+                  <thir:subBuildingNumber>${CMS9378DataExcel#subBuildingNumber}</thir:subBuildingNumber>
+                  <thir:streetNumber>${CMS9378DataExcel#streetNumber}</thir:streetNumber>
+                  <thir:street>${CMS9378DataExcel#street}</thir:street>
+                  <thir:postTown>${CMS9378DataExcel#postTown}</thir:postTown>
+                  <thir:county>${CMS9378DataExcel#county}</thir:county>
+                  <thir:postCode>${CMS9378DataExcel#postCode}</thir:postCode>
+                  <thir:streetType>${CMS9378DataExcel#streetType}</thir:streetType>
+                  <thir:isPrimaryMailing>${CMS9378DataExcel#isPrimarymailing}</thir:isPrimaryMailing>
+               </thir:address>
+               <thir:address>
+                  <thir:addressType>
+                     <thir:cmsCode>${CMS9378DataExcel#addressTypeCMSCodee}</thir:cmsCode>
+                     <thir:externalCode>${CMS9378DataExcel#externalCode}</thir:externalCode>
+                  </thir:addressType>
+                  <thir:locality>${CMS9378DataExcel#Localityy}</thir:locality>
+                  <thir:buildingNumber>${CMS9378DataExcel#BuildingNumberr}</thir:buildingNumber>
+                  <thir:buildingName>${CMS9378DataExcel#BuildingNamee}</thir:buildingName>
+                  <thir:subBuildingNumber>${CMS9378DataExcel#subbuildingNumberr}</thir:subBuildingNumber>
+                  <thir:streetNumber>${CMS9378DataExcel#StreetNumberr}</thir:streetNumber>
+                  <thir:street>${CMS9378DataExcel#Streett}</thir:street>
+                  <thir:postTown>${CMS9378DataExcel#PostTownn}</thir:postTown>
+                  <thir:county>${CMS9378DataExcel#Countyy}</thir:county>
+                  <thir:postCode>${CMS9378DataExcel#PostCodee}</thir:postCode>
+                  <thir:streetType>${CMS9378DataExcel#StreetTypee}</thir:streetType>
+                  <thir:isPrimaryMailing>${CMS9378DataExcel#IsPrimaryMailingg}</thir:isPrimaryMailing>
+               </thir:address>
+            </thir:addresses>
+            <thir:gender>${CMS9378DataExcel#gender}</thir:gender>
+            <thir:maritalStatus>${CMS9378DataExcel#maritalStatus}</thir:maritalStatus>
+<!--            <thir:dateOfBirth>${CMS9378DataExcel#dateOfBirth}</thir:dateOfBirth>-->
+            <thir:firstName>${CMS9378DataExcel#firstName}</thir:firstName>
+            <thir:middleName>${CMS9378DataExcel#middleName}</thir:middleName>
+            <thir:surname>${CMS9378DataExcel#surName}</thir:surname>
+            <thir:directMarketingPost>${CMS9378DataExcel#directMarketingPost}</thir:directMarketingPost>
+            <thir:numberOfDependants>${CMS9378DataExcel#numberOfDependants}</thir:numberOfDependants>
+            <thir:title>${CMS9378DataExcel#title}</thir:title>
+            <thir:suffix>${CMS9378DataExcel#suffix}</thir:suffix>
+            <thir:suffixCode>
+               <thir:cmsCode>${CMS9378DataExcel#suffixcmsCode}</thir:cmsCode>
+               <thir:externalCode>${CMS9378DataExcel#suffixexternalCode}</thir:externalCode>
+            </thir:suffixCode>
+            <thir:socialSecurityNumber>${CMS9378DataExcel#socialSecurityNumber}</thir:socialSecurityNumber>
+            <thir:socialInsuranceNumber>${CMS9378DataExcel#socialInsuranceNumber}</thir:socialInsuranceNumber>
+            <thir:maidenName>${CMS9378DataExcel#maidenName}</thir:maidenName>
+            <thir:motabilityFlag>${CMS9378DataExcel#motabilityFlag}</thir:motabilityFlag>
+            <thir:countryOfBirth>${CMS9378DataExcel#countryOfBirth}</thir:countryOfBirth>
+            <thir:driversLic>${CMS9378DataExcel#driversLic}</thir:driversLic>
+            <thir:employer>${CMS9378DataExcel#employer}</thir:employer>
+            <thir:employmentStatus>${CMS9378DataExcel#employmentStatus}</thir:employmentStatus>
+            <thir:occupation>${CMS9378DataExcel#occupation}</thir:occupation>
+            <thir:occupationCode>
+               <thir:cmsCode>${CMS9378DataExcel#occupationCMSCode}</thir:cmsCode>
+            </thir:occupationCode>
+            <thir:annualIncome>${CMS9378DataExcel#annualIncome}</thir:annualIncome>
+            <thir:industrySubCode>
+               <thir:cmsCode>${CMS9378DataExcel#industrySubCodecmsCode}</thir:cmsCode>
+            </thir:industrySubCode>
+            <thir:baselClassCode>
+               <thir:cmsCode>${CMS9378DataExcel#baselClasscodecmsCode}</thir:cmsCode>
+            </thir:baselClassCode>
+<!--               <thir:ctryResidence>${CMS9378DataExcel#ctryResidence}</thir:ctryResidence>-->
+            <thir:ctryNationality>
+               <thir:cmsCode>${CMS9378DataExcel#ctryNationalitycmsCode}</thir:cmsCode>
+               <thir:externalCode>${CMS9378DataExcel#ctryNationalityExternalCode}</thir:externalCode>
+            </thir:ctryNationality>
+            <thir:preferredLanguage>
+               <thir:cmsCode>${CMS9378DataExcel#preferredLanguagecmsCode}</thir:cmsCode>
+            </thir:preferredLanguage>
+            <thir:previousName>${CMS9378DataExcel#previousName}</thir:previousName>
+            <thir:privacyConsent>${CMS9378DataExcel#privacyConsent}</thir:privacyConsent>
+            <!--<thir:email>test@gmail.com</thir:email>-->
+            <thir:identifications>
+               <thir:identification>
+                  <thir:identificationDocumentTypeCode>
+                     <thir:cmsCode>${CMS9378DataExcel#IdentificationDocumentTypecmsCode}</thir:cmsCode>
+                  </thir:identificationDocumentTypeCode>
+                  <thir:issuedDate>${CMS9378DataExcel#IdentificationDocumentissuedDate}</thir:issuedDate>
+                  <thir:dateExpired>${CMS9378DataExcel#IdentificationDocumentdateExpired}</thir:dateExpired>
+<!--                  <thir:identificationDocumentNumber>1</thir:identificationDocumentNumber>-->
+                  <thir:issuingEntity>${CMS9378DataExcel#issuingEntity}</thir:issuingEntity>
+                  <thir:issuingCountryCode>
+                     <thir:cmsCode>${CMS9378DataExcel#issuingCountryCodecmsCode}</thir:cmsCode>
+                     <thir:externalCode>${CMS9378DataExcel#issuingCountryCodeExternalCode}</thir:externalCode>
+                  </thir:issuingCountryCode>
+               </thir:identification>
+               <thir:identification>
+                  <thir:identificationDocumentTypeCode>
+                     <thir:cmsCode>${CMS9378DataExcel#identificationDocumentTypeCodecmsCode}</thir:cmsCode>
+                  </thir:identificationDocumentTypeCode>
+                  <thir:issuedDate>${CMS9378DataExcel#IdentificationDocumentissuedDatee}</thir:issuedDate>
+                  <thir:dateExpired>${CMS9378DataExcel#IdentificationDocumentdateExpiredd}</thir:dateExpired>
+<!--                  <thir:identificationDocumentNumber>1</thir:identificationDocumentNumber>-->
+                  <thir:issuingEntity>${CMS9378DataExcel#issuingEntityy}</thir:issuingEntity>
+                  <thir:issuingCountryCode>
+                     <thir:cmsCode>${CMS9378DataExcel#issuingCountryCodecmsCodee}</thir:cmsCode>
+                     <thir:externalCode>${CMS9378DataExcel#issuingCountryCodeExternalCodee}</thir:externalCode>
+                  </thir:issuingCountryCode>
+               </thir:identification>
+            </thir:identifications>
+            <thir:businessName>${CMS9378DataExcel#businessname}</thir:businessName>
+            <thir:customerStatus>
+               <thir:cmsCode>${CMS9378DataExcel#customerStatuscmsCode}</thir:cmsCode>
+            </thir:customerStatus>
+            <thir:incorporationDate>${CMS9378DataExcel#inCorporationDate}</thir:incorporationDate>
+            <thir:politicallyExposedPerson>${CMS9378DataExcel#politicallyExposedPerson}</thir:politicallyExposedPerson>
+            <thir:isStaff>${CMS9378DataExcel#isStaff}</thir:isStaff>
+            <!--Not mapped-->
+          
+
+
+            <thir:isDeceased>${CMS9378DataExcel#isDeceased}</thir:isDeceased>
+            <thir:contactPerson>${CMS9378DataExcel#contactPerson}</thir:contactPerson>
+            <thir:vatNumber>${CMS9378DataExcel#vatNumber}</thir:vatNumber>
+            <thir:vatCode>${CMS9378DataExcel#vatCode}</thir:vatCode>
+            <!--Not mapped-->
+            <thir:isNegativeinfo>${CMS9378DataExcel#isNegativeInfo}</thir:isNegativeinfo>
+            <thir:salutation>${CMS9378DataExcel#salutation}</thir:salutation>
+            <thir:organisationType>
+               <thir:cmsCode>${CMS9378DataExcel#OrganisationTypecmsCode}</thir:cmsCode>
+            </thir:organisationType>
+            <thir:taxNumber>${CMS9378DataExcel#taxNumber}</thir:taxNumber>
+            <thir:partnerCode>
+               <thir:cmsCode>${CMS9378DataExcel#partnerCodecmscode}</thir:cmsCode>
+            </thir:partnerCode>
+            <thir:industryCode>
+               <thir:cmsCode>${CMS9378DataExcel#industryCodecmsCode}</thir:cmsCode>
+            </thir:industryCode>
+            <thir:trustVatNo>${CMS9378DataExcel#trustVatNo}</thir:trustVatNo>
+            <thir:certificateNumber>${CMS9378DataExcel#certificateNumber}</thir:certificateNumber>
+            <thir:businessTypeDesc>${CMS9378DataExcel#businessTypeDesc}</thir:businessTypeDesc>
+            <thir:businessTypeCode>
+               <thir:cmsCode>${CMS9378DataExcel#businessTypeCodecmsCode}</thir:cmsCode>
+            </thir:businessTypeCode>
+            <thir:balanceSheetCode>
+               <thir:cmsCode>${CMS9378DataExcel#balanceSheetCodecmsCode}</thir:cmsCode>
+            </thir:balanceSheetCode>
+            <thir:dateOfDeath>${CMS9378DataExcel#dateOfDeath}</thir:dateOfDeath>
+            <thir:isPaymentLocking>${CMS9378DataExcel#isPaymentLocking}</thir:isPaymentLocking>
+            <thir:intraGrpConsldnCode>${CMS9378DataExcel#intraGrpConsldnCode}</thir:intraGrpConsldnCode>
+            <thir:emails>
+               <thir:email>
+                  <thir:emailType>
+                     <thir:cmsCode>${CMS9378DataExcel#emailTypecmsCode}</thir:cmsCode>
+                  </thir:emailType>
+                  <thir:emailAddress>${CMS9378DataExcel#emailAddress}</thir:emailAddress>
+                  <thir:isPrimaryMailing>${CMS9378DataExcel#isPrimaryMaillingg}</thir:isPrimaryMailing>
+                  <thir:isConsent>${CMS9378DataExcel#isConsent}</thir:isConsent>
+               </thir:email>
+            </thir:emails>
+         </thir:partner>
+         <!--<thir:thirdPartyDetails>
+            <thir:thirdPartyDetail>
+               <thir:dealer>
+                  <thir:thirdPartyType>DEALER</thir:thirdPartyType>
+                  <thir:sourceType>
+                     <thir:cmsCode>1</thir:cmsCode>
+                     <thir:externalCode/>
+                  </thir:sourceType>
+                  <thir:region>02</thir:region>
+                  <thir:dealerGroupId>02</thir:dealerGroupId>
+                  <thir:dealerCompanyId>098</thir:dealerCompanyId>
+                  <thir:riskClassificationCode>1</thir:riskClassificationCode>
+               </thir:dealer>
+            </thir:thirdPartyDetail>
+         </thir:thirdPartyDetails>-->
+         <thir:thirdPartyDetails>
+            <thir:thirdPartyDetail>
+               <thir:dealer>
+                  <thir:thirdPartyType>${CMS9378DataExcel#thirdPartDetailThirdPartyType}</thir:thirdPartyType>
+	                  <thir:sourceType>
+	                   <thir:cmsCode>${ThirdPartyIdfromDB#l_SRCE_TYPE}</thir:cmsCode>
+<!--	                <thir:cmsCode>11</thir:cmsCode>-->
+	                </thir:sourceType>
+<!--                  <thir:region>${ThirdPartyIdfromDB#l_srce_reporting_region}</thir:region>-->
+<!--                  <thir:dealerGroupId>${ThirdPartyIdfromDB#l_srce_group}</thir:dealerGroupId>-->
+<!--                  <thir:dealerCompanyId>${ThirdPartyIdfromDB#l_srce_company}</thir:dealerCompanyId>-->
+<!--                  <thir:riskClassificationCode>${ThirdPartyIdfromDB#risk_classification_code}</thir:riskClassificationCode>-->
+<!--                  <thir:dealerBranch>${ThirdPartyIdfromDB#l_srce_reporting_branch}</thir:dealerBranch>-->
+
+                  <thir:region>${#TestSuite#Region}</thir:region>
+<!--                  <thir:dealerGroupId>${#TestSuite#DealerGroupId}</thir:dealerGroupId>-->
+<!--                  <thir:dealerCompanyId>${#TestSuite#DealerCompanyId}</thir:dealerCompanyId>-->
+<!--                  <thir:riskClassificationCode>${#TestSuite#RiskClassificationCode}</thir:riskClassificationCode>-->
+                  <thir:dealerBranch>${#TestSuite#DealerBranch}</thir:dealerBranch>
+               </thir:dealer>
+            </thir:thirdPartyDetail>
+         </thir:thirdPartyDetails>
+         <thir:applicationInfo>
+            <com:tenantInfo>
+               <com:tenantCode>${CMS9378DataExcel#tenantCode}</com:tenantCode>
+            </com:tenantInfo>
+            <com:securityAudit>
+               <com:messageId>${CMS9378DataExcel#messageId}</com:messageId>
+            <!--  <com:timestamp>${CMS9378DataExcel#timestamp}</com:timestamp>-->
+             <com:timestamp>${#TestCase#TimeStamp}</com:timestamp>
+               <com:clientAppId>${CMS9378DataExcel#clientAppId}</com:clientAppId>
+               <com:userId>${CMS9378DataExcel#auditUserId}</com:userId>
+               <com:clientLanguage>${CMS9378DataExcel#clientLanguage}</com:clientLanguage>
+            </com:securityAudit>
+         </thir:applicationInfo>
+      </thir:updateThirdParty>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="6394b8a0-a469-44b2-9f67-7a2e39e20663"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="7633308a-d75f-4225-8100-803c5525f67e"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="cd3cbf16-7bf6-452d-aa43-d58a7794473d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d74599af-5d7c-498a-b762-50be3808d879"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="42e903b6-cb05-4346-91ba-5ce7dfd12804"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="0c4de42d-09a1-4460-b14b-9a570291d6d7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="delay" name="2000" id="5655d8cd-b271-4a9b-b23f-aeca29afdfbc" disabled="true"><con:settings/><con:config><delay>2000</delay></con:config></con:testStep><con:testStep type="groovy" name="Validation" id="708d275c-7b25-46b0-8eab-236797b82ba7"><con:settings/><con:config><script><![CDATA[import com.eviware.soapui.model.testsuite.TestRunner.Status
+import com.eviware.soapui.support.XmlHolder
+
+def responseXML = context.expand('${UpdateThirdParty- Dealer#Response}')
+def response = new XmlHolder(responseXML)
+
+response.namespaces["ns10"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty" 
+response.namespaces["ns2"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes"  
+response.namespaces["ns3"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ErrorTypes" 
+
+def responseErrorCode=response.getNodeValue('//ns3:errorCode')
+def expectedErrorCode = context.expand('${CMS9378DataExcel#expectedErrorCode}')
+
+def requestBPMID = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:thirdPartyId[1]/thir:bpmId[1]}' )
+
+log.info("requestBPMID     :" + requestBPMID)
+
+def responseStatus=response.getNodeValue('//ns10:status')
+def responseTenantCode=response.getNodeValue('//ns2:tenantCode')
+
+def dbTenantCode = context.expand( '${ISOTenantCodefromDB#country_cms}' )
+
+def db_l_SRCE_CODE = context.expand( '${ThirdPartyIdfromDB#l_SRCE_CODE}' )
+
+//def requestDealerGroup = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:thirdPartyDetails[1]/thir:thirdPartyDetail[1]/thir:dealer[1]/thir:dealerGroupId[1]}' )
+//def db_l_srce_group = context.expand( '${ThirdPartyIdfromDB#l_srce_group}' )
+
+def requestRegion = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:thirdPartyDetails[1]/thir:thirdPartyDetail[1]/thir:dealer[1]/thir:region[1]}' )
+def db_l_srce_reporting_region = context.expand( '${ThirdPartyIdfromDB#l_srce_reporting_region}' )
+
+//def requestCompany = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:thirdPartyDetails[1]/thir:thirdPartyDetail[1]/thir:dealer[1]/thir:dealerCompanyId[1]}' )
+//def db_l_srce_company = context.expand( '${ThirdPartyIdfromDB#l_srce_company}' )
+
+//def requestRiskClassificationCode = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:thirdPartyDetails[1]/thir:thirdPartyDetail[1]/thir:dealer[1]/thir:riskClassificationCode[1]}' )
+//def db_risk_classification_code = context.expand( '${ThirdPartyIdfromDB#risk_classification_code}' )
+
+def requestDealerBranch = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:thirdPartyDetails[1]/thir:thirdPartyDetail[1]/thir:dealer[1]/thir:dealerBranch[1]}' )
+def db_l_srce_reporting_branch = context.expand( '${ThirdPartyIdfromDB#l_srce_reporting_branch}' )
+
+def requestContactPerson = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:contactPerson[1]}' )
+def db_acct_contact_person = context.expand( '${ContactDetailsFromDB#ACCT_CONTACT_PERSON}' )
+
+log.info  db_acct_contact_person
+
+def requestIntraGroupConsolidationCode = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:intraGrpConsldnCode[1]}' )
+def db_acct_grp_consldn_code = context.expand( '${ContactDetailsFromDB#acct_grp_consldn_code}' )
+
+def requestCustomerStatus = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:customerStatus[1]/thir:cmsCode[1]}' )
+def db_acct_customer_status = context.expand( '${ContactDetailsFromDB#acct_customer_status}' )
+def requestTimeStamp = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace com=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes\'; declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:applicationInfo[1]/com:securityAudit[1]/com:timestamp[1]}' )
+
+
+// execute the following after the service is ok from env perspective
+//def requestLSRCCode = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:thirdPartyId[1]/thir:bpmId[1]}' )
+//def l_SRCE_CODE_db_UpdateThirdParty = context.expand( '${ThirdPartyIdfromDB#l_SRCE_CODE}' )
+
+def requestBaselClassCode = context.expand( '${#[UpdateThirdPartyAPIs-BMW Enhancements#UpdateThirdPartyAPI#UpdateThirdParty- Dealer]#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:baselClassCode[1]/thir:cmsCode[1]}' )
+def db_acct_basel_class_code = context.expand( '${DBNewCustomerFields#acct_basel_class_code}' )
+
+def requestPreviousName = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:previousName[1]}' )
+def db_acct_previous_name = context.expand( '${DBNewCustomerFields#acct_previous_name}' )
+
+def requestDriversLicense = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:driversLic[1]}' )
+def db_acct_drivers_lic = context.expand( '${DBNewCustomerFields#acct_drivers_lic}' )
+
+def requestPrivacyConsent = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:privacyConsent[1]}' )
+def db_acct_privacy_consent = context.expand( '${DBNewCustomerFields#acct_privacy_consent}' )
+
+log.info("***********************************db_acct_privacy_consent"+db_acct_privacy_consent)
+log.info("***********************************requestPrivacyConsent"+requestPrivacyConsent)
+ if (requestPrivacyConsent == "true" && db_acct_privacy_consent == "Y")
+ 
+ 	requestPrivacyConsent = "Y"
+ else
+ 		requestPrivacyConsent = "N"
+ 	
+
+log.info("---------------------------------------reqprivacy"+requestPrivacyConsent)
+//def requestCustomerStatus = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:customerStatus[1]/thir:cmsCode[1]}' )
+//def db_acct_customer_status = context.expand( '${DBNewCustomerFields#acct_customer_status}' )
+
+def requestDeceased = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:isDeceased[1]}' )
+def db_acct_Deceased_Flag = context.expand( '${DBNewCustomerFields#acct_Deceased_Flag}' )
+
+if (requestDeceased == "true" && db_acct_Deceased_Flag == "Y")
+ 
+ 	requestDeceased = "Y"
+ else
+ 		requestDeceased = "N"
+
+
+def requestIsNegativeInfo = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:isNegativeinfo[1]}' )
+def db_acct_neg_info = context.expand( '${DBNewCustomerFields#acct_neg_info}' )
+
+if (requestIsNegativeInfo == "true" && db_acct_neg_info == "Y")
+ 
+ 	requestIsNegativeInfo = "Y"
+ else
+ 		requestIsNegativeInfo = "N"
+
+def requestDirectMarketingPost = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:directMarketingPost[1]}' )
+def db_acct_marketting = context.expand( '${DBNewCustomerFields#acct_marketting}' )
+
+def requestSuffix = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:suffix[1]}' )
+def db_acct_suffix_alpha = context.expand( '${DBNewCustomerFields#acct_suffix_alpha}' )
+
+def requestSuffixCode = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:suffixCode[1]/thir:cmsCode[1]}' )
+def db_acct_Suffix = context.expand( '${DBNewCustomerFields#acct_Suffix}' )
+
+def requestMaidenName = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:maidenName[1]}' )
+def db_acct_maiden_name = context.expand( '${DBNewCustomerFields#acct_maiden_name}' )
+
+def requestMotabilityFlag = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:motabilityFlag[1]}' )
+def db_acct_motability_flag = context.expand( '${DBNewCustomerFields#acct_motability_flag}' )
+
+ if (requestMotabilityFlag == "true" && db_acct_motability_flag == "Y")
+ 
+ 	requestMotabilityFlag = "Y"
+ else
+ 		requestMotabilityFlag = "N"
+
+def requestCountryResidence = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:ctryResidence[1]}' )
+def db_acct_ctry_Residence = context.expand( '${DBNewCustomerFields#acct_ctry_Residence}' )
+
+
+//**********************************************End of Validation for Update Third Party API
+
+def responseTimeStamp = response.getNodeValue('//ns2:timestamp')
+
+def testResult = 'PASS' 
+
+// validate response for Valid Dealer
+def TCName = testRunner.testCase.testSuite.getPropertyValue("TestCaseName")
+log.info "responseStatus"+responseStatus
+log.info("TCName--->"+ TCName)
+	log.info("responseTenantCode---->"+ responseTenantCode )	
+	log.info("dbTenantCode---->" + dbTenantCode)
+	
+	log.info("requestBPMID---->" + requestBPMID)
+	log.info("db_l_SRCE_CODE---->" + db_l_SRCE_CODE)
+	
+//	log.info("requestDealerGroup---->" + requestDealerGroup)
+//	log.info("db_l_srce_group---->" + db_l_srce_group)
+	
+	log.info("requestRegion---->" + requestRegion)
+	log.info("db_l_srce_reporting_region---->" + db_l_srce_reporting_region)
+//	
+//	log.info("requestCompany---->" + requestCompany)
+//	log.info("db_l_srce_company---->" + db_l_srce_company)
+//	
+//	log.info("requestRiskClassificationCode---->" + requestRiskClassificationCode)
+//	log.info("db_risk_classification_code---->" + db_risk_classification_code)
+	
+	log.info("requestDealerBranch---->" + requestDealerBranch)
+	log.info("db_l_srce_reporting_branch---->" + db_l_srce_reporting_branch)
+	
+	log.info("requestContactPerson---->" + requestContactPerson)
+	log.info("db_acct_contact_person---->" + db_acct_contact_person)
+	
+	log.info("requestIntraGroupConsolidationCode---->" + requestIntraGroupConsolidationCode)
+	log.info("db_acct_grp_consldn_code---->" + db_acct_grp_consldn_code)
+	
+	log.info("requestCustomerStatus---->" + requestCustomerStatus)
+	log.info("db_acct_customer_status---->" + db_acct_customer_status)
+	
+	log.info("reqTimestamp----->" + requestTimeStamp)
+	log.info("responseTimestamp-->" + responseTimeStamp)
+
+	
+log.info("requestBPMID"+requestBPMID)
+log.info("db_l_SRCE_CODE"+db_l_SRCE_CODE)
+
+log.info("requestBaselClassCode"+requestBaselClassCode)
+log.info("db_acct_basel_class_code"+db_acct_basel_class_code)
+
+log.info("requestPreviousName"+requestPreviousName)
+log.info("db_acct_previous_name"+db_acct_previous_name)
+
+log.info("requestDriversLicense"+requestDriversLicense)
+log.info("db_acct_drivers_lic"+db_acct_drivers_lic)
+
+log.info("requestPrivacyConsent"+requestPrivacyConsent)
+log.info("db_acct_privacy_consent"+db_acct_privacy_consent)
+
+log.info("requestCustomerStatus"+requestCustomerStatus)
+log.info("db_acct_customer_status"+db_acct_customer_status)
+
+log.info("requestDeceased"+requestDeceased)
+log.info("db_acct_Deceased_Flag"+db_acct_Deceased_Flag)
+
+log.info("requestIsNegativeInfo"+requestIsNegativeInfo)
+log.info("db_acct_neg_info"+db_acct_neg_info)
+
+log.info("requestDirectMarketingPost"+requestDirectMarketingPost)
+log.info("db_acct_marketting"+db_acct_marketting)
+
+log.info("requestSuffix"+requestSuffix)
+log.info("db_acct_suffix_alpha"+db_acct_suffix_alpha)
+
+log.info("requestSuffixCode"+requestSuffixCode)
+log.info("db_acct_Suffix"+db_acct_Suffix)
+
+log.info("requestMaidenName"+requestMaidenName)
+log.info("db_acct_maiden_name"+db_acct_maiden_name)
+
+log.info("requestMotabilityFlag"+requestMotabilityFlag)
+log.info("db_acct_motability_flag"+db_acct_motability_flag)
+
+log.info("requestCountryResidence"+requestCountryResidence)
+log.info("db_acct_ctry_Residence"+db_acct_ctry_Residence)
+
+if (TCName == "UpdateThirdPartyAPI"){
+
+
+if ( responseStatus == "Success" && responseTenantCode == dbTenantCode && requestBPMID == db_l_SRCE_CODE  && requestRegion == db_l_srce_reporting_region  && requestDealerBranch == db_l_srce_reporting_branch && requestContactPerson == db_acct_contact_person &&
+requestIntraGroupConsolidationCode == db_acct_grp_consldn_code && requestCustomerStatus == db_acct_customer_status && requestTimeStamp == responseTimeStamp && requestBaselClassCode == db_acct_basel_class_code && requestPreviousName==db_acct_previous_name &&
+ requestDriversLicense == db_acct_drivers_lic &&  requestCustomerStatus == db_acct_customer_status && requestSuffix == db_acct_suffix_alpha && requestSuffixCode == db_acct_Suffix && requestMaidenName == db_acct_maiden_name &&
+ requestPrivacyConsent == db_acct_privacy_consent && requestMotabilityFlag == db_acct_motability_flag && requestIsNegativeInfo == db_acct_neg_info && requestDeceased == db_acct_Deceased_Flag)
+
+
+
+
+// if(requestDirectMarketingPost == "true" && db_acct_marketting == "Y" || requestDirectMarketingPost == "false" && db_acct_marketting == "N")
+
+ //**************************************************
+ // this is throwing error if added in request
+ //*&& requestCountryResidence == db_acct_ctry_Residence
+//requestDirectMarketingPost == db_acct_marketting
+//requestPrivacyConsent == db_acct_privacy_consent
+//*****************************************************
+ 
+//**********************************************//
+// because of bad data in db removed these fields for validation purpose
+//requestCompany == db_l_srce_company && requestRiskClassificationCode == db_risk_classification_code && requestDealerGroup == db_l_srce_group
+//*********************************************//
+
+//requestLSRCCode == db_l_SRCE_CODE_db && requestBaselClassCode == db_acct_basel_class_code && requestPreviousName==db_acct_previous_name &&
+// requestDriversLicense == db_acct_drivers_lic && requestPrivacyConsent == db_acct_privacy_consent && requestCustomerStatus == db_acct_customer_status &&
+// requestDeceased == db_acct_Deceased_Flag && requestIsNegativeInfo == db_acct_neg_info && requestDirectMarketingPost == db_acct_marketting &&
+// requestSuffix == db_acct_suffix_alpha && requestSuffixCode == db_acct_Suffix && requestMaidenName == db_acct_maiden_name &&
+// requestMotabilityFlag == db_acct_motability_flag && requestCountryResidence == db_acct_ctry_Residence
+//
+
+
+
+	log.info("TCName--->"+ TCName)
+	log.info("responseTenantCode---->"+ responseTenantCode )	
+	log.info("dbTenantCode---->" + dbTenantCode)
+	
+	log.info("requestBPMID---->" + requestBPMID)
+	log.info("db_l_SRCE_CODE---->" + db_l_SRCE_CODE)
+	
+//	log.info("requestDealerGroup---->" + requestDealerGroup)
+//	log.info("db_l_srce_group---->" + db_l_srce_group)
+	
+	log.info("requestRegion---->" + requestRegion)
+	log.info("db_l_srce_reporting_region---->" + db_l_srce_reporting_region)
+	
+//	log.info("requestCompany---->" + requestCompany)
+//	log.info("db_l_srce_company---->" + db_l_srce_company)
+	
+//	log.info("requestRiskClassificationCode---->" + requestRiskClassificationCode)
+//	log.info("db_risk_classification_code---->" + db_risk_classification_code)
+	
+	log.info("requestDealerBranch---->" + requestDealerBranch)
+	log.info("db_l_srce_reporting_branch---->" + db_l_srce_reporting_branch)
+	
+	log.info("requestContactPerson---->" + requestContactPerson)
+	log.info("db_acct_contact_person---->" + db_acct_contact_person)
+	
+	log.info("requestIntraGroupConsolidationCode---->" + requestIntraGroupConsolidationCode)
+	log.info("db_acct_grp_consldn_code---->" + db_acct_grp_consldn_code)
+	
+	log.info("requestCustomerStatus---->" + requestCustomerStatus)
+	log.info("db_acct_customer_status---->" + db_acct_customer_status)
+	
+	log.info("reqTimestamp----->" + requestTimeStamp)
+	log.info("responseTimestamp-->" + responseTimeStamp)
+
+
+log.info("requestBPMID"+requestBPMID)
+log.info("db_l_SRCE_CODE"+db_l_SRCE_CODE)
+
+log.info("requestBaselClassCode"+requestBaselClassCode)
+log.info("db_acct_basel_class_code"+db_acct_basel_class_code)
+
+log.info("requestPreviousName"+requestPreviousName)
+log.info("db_acct_previous_name"+db_acct_previous_name)
+
+log.info("requestDriversLicense"+requestDriversLicense)
+log.info("db_acct_drivers_lic"+db_acct_drivers_lic)
+
+log.info("requestPrivacyConsent"+requestPrivacyConsent)
+log.info("db_acct_privacy_consent"+db_acct_privacy_consent)
+
+log.info("requestCustomerStatus"+requestCustomerStatus)
+log.info("db_acct_customer_status"+db_acct_customer_status)
+
+log.info("requestDeceased"+requestDeceased)
+log.info("db_acct_Deceased_Flag"+db_acct_Deceased_Flag)
+
+log.info("requestIsNegativeInfo"+requestIsNegativeInfo)
+log.info("db_acct_neg_info"+db_acct_neg_info)
+
+log.info("requestDirectMarketingPost"+requestDirectMarketingPost)
+log.info("db_acct_marketting"+db_acct_marketting)
+
+log.info("requestSuffix"+requestSuffix)
+log.info("db_acct_suffix_alpha"+db_acct_suffix_alpha)
+
+log.info("requestSuffixCode"+requestSuffixCode)
+log.info("db_acct_Suffix"+db_acct_Suffix)
+
+log.info("requestMaidenName"+requestMaidenName)
+log.info("db_acct_maiden_name"+db_acct_maiden_name)
+
+log.info("requestMotabilityFlag"+requestMotabilityFlag)
+log.info("db_acct_motability_flag"+db_acct_motability_flag)
+
+log.info("requestCountryResidence"+requestCountryResidence)
+log.info("db_acct_ctry_Residence"+db_acct_ctry_Residence)
+
+
+	log.info("response as expected")
+	testResult = 'PASS'
+
+}else{
+
+	faultString =  response.getNodeValue('//faultstring[1]/text()')
+	log.error "Issue with API response First Valid case : " + faultString
+	testResult = 'FAIL'
+}	
+
+
+
+ if(TCName == "UpdateThirdPartyAPIInvalidDirectMarketingPost"){
+if (responseErrorCode == expectedErrorCode)
+{
+testResult = 'PASS'
+}else{
+	faultString =  response.getNodeValue('//faultstring[1]/text()')
+	log.error "Issue with API response invalid : " + faultString
+	testResult = 'FAIL'
+}
+}
+// validating Invalid TenantCode, Invalid Risk ClassificationCode, Invalid CustomerStatus, Invalid Intra group consolidation code, Invalid Dealer Branch, invalid region, invalid source company
+// invalid source group, empty tenant code.
+
+//else if(TCName == "CMS-9378-UpdateThirdParty -DealerInValidTenantCode" || TCName == "CMS-9378-UpdateThirdParty -DealerInValidRiskClassificationCode" || TCName == "CMS-9378-UpdateThirdParty -DealerInValidCustomerStatus" ||
+//TCName == "CMS-9378-UpdateThirdParty -DealerInValidIntraGrpConsldnCode" || TCName == "CMS-9378-UpdateThirdParty -DealerInValidRegion" ||
+//TCName == "CMS-9378-UpdateThirdParty -DealerInValidSourceCompany" || TCName == "CMS-9378-UpdateThirdParty -DealerInValidSourceGroup" || TCName == "CMS-9378-UpdateThirdParty -DealerEmptyTenantCode" ||  TCName == "CMS-9378-UpdateThirdParty -DealerInValidDealerBranch" ){
+//	
+//log.info("inside the TC " + TCName)
+//	
+//// validate response
+//
+//log.info responseErrorCode
+//if (responseErrorCode == expectedErrorCode)
+//{	
+//	log.info("responseErrorCode" + responseErrorCode)
+//	log.info("expectedErrorCode " + expectedErrorCode)
+//
+//	log.info("responseStatus" + responseStatus)
+//		
+//	log.info("responseTenantCode---->" + responseTenantCode)
+//	log.info("dbTenantCode---->" + dbTenantCode)
+//
+//	log.info("requestBPMID---->" + requestBPMID)
+//	log.info("db_l_SRCE_CODE---->" + db_l_SRCE_CODE)
+//	
+//	log.info("requestDealerGroup---->" + requestDealerGroup)
+//	log.info("db_l_srce_group---->" + db_l_srce_group)
+//	
+//	log.info("requestRegion---->" + requestRegion)
+//	log.info("db_l_srce_reporting_region---->" + db_l_srce_reporting_region)
+//	
+//	log.info("requestCompany---->" + requestCompany)
+//	log.info("db_l_srce_company---->" + db_l_srce_company)
+//	
+//	log.info("requestRiskClassificationCode---->" + requestRiskClassificationCode)
+//	log.info("db_risk_classification_code---->" + db_risk_classification_code)
+//	
+//	log.info("requestDealerBranch---->" + requestDealerBranch)
+//	log.info("db_l_srce_reporting_branch---->" + db_l_srce_reporting_branch)
+//	
+//	log.info("requestContactPerson---->" + requestContactPerson)
+//	log.info("db_acct_contact_person---->" + db_acct_contact_person)
+//
+//	log.info("requestIntraGroupConsolidationCode---->" + requestIntraGroupConsolidationCode)
+//	log.info("db_acct_grp_consldn_code---->" + db_acct_grp_consldn_code)
+//	
+//	log.info("requestCustomerStatus---->" + requestCustomerStatus)
+//	log.info("db_acct_customer_status---->" + db_acct_customer_status)
+//	
+//	log.info("Response as expected")
+//	testResult = 'PASS'
+//}else{
+//	faultString =  response.getNodeValue('//faultstring[1]/text()')
+//	log.error "Issue with API response invalid : " + faultString
+//	testResult = 'FAIL'
+//}
+//
+//}
+
+log.info (testResult)
+testRunner.testCase.testSuite.setPropertyValue('TestResult', testResult)
+
+]]></script></con:config></con:testStep><con:testStep type="request" name="Copy of UpdateThirdParty- Dealer" id="39b57410-ecee-4e69-a7bc-3551d543dbad" disabled="true"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>updateThirdParty</con:operation><con:request name="Copy of UpdateThirdParty- Dealer" id="43d3b409-0060-42aa-bbdd-1a8bc8d8111c"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvbmwdev01:28080/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:thir="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <thir:updateThirdParty>
+         <thir:partner>
+            <thir:type>I</thir:type>
+            
+            <thir:role>A</thir:role>
+            <thir:commsChannels>
+               <thir:contactViaSMS>false</thir:contactViaSMS>
+               <thir:phoneFaxNums>
+                  <thir:telephoneFax>
+                     <thir:phoneFaxNumber>02 - 040404040404</thir:phoneFaxNumber>
+                     <thir:type>HO</thir:type>
+                  </thir:telephoneFax>
+                  <thir:telephoneFax>
+                     <thir:phoneFaxNumber>0421387984</thir:phoneFaxNumber>
+                     <thir:type>WO</thir:type>
+                  </thir:telephoneFax>
+               </thir:phoneFaxNums>
+            </thir:commsChannels>
+            <thir:bankAccounts>
+               <thir:bankAccountData>
+                  <thir:bankCode>12</thir:bankCode>
+                  <thir:branchCode>122</thir:branchCode>
+                  <thir:branchName>AutomationBranch</thir:branchName>
+                  <thir:bankAccountType>AutoAcctType</thir:bankAccountType>
+                  <thir:ibanNumber>12345678</thir:ibanNumber>
+                  <thir:swiftCode>123456-487</thir:swiftCode>
+                  <thir:sortCode>98999999</thir:sortCode>
+                  <thir:mandate>
+                     <thir:valid>true</thir:valid>
+                     <thir:reference>MandateReferenceAuto</thir:reference>
+                     <!--<thir:signedDate>2000-01-10</thir:signedDate>-->
+                  </thir:mandate>
+                  <thir:bankAccountName>MandateAcctAutomation</thir:bankAccountName>
+                  <thir:bankAccountNumber>525252696969</thir:bankAccountNumber>
+                  <thir:isDirectDebitBankAccount>true</thir:isDirectDebitBankAccount>
+               </thir:bankAccountData>
+            </thir:bankAccounts>
+            <thir:addresses>
+               <thir:address>
+                  <thir:addressId>
+                     <thir:externalSystemId>24</thir:externalSystemId>
+                     <thir:thirdPartyRepositoryId>22</thir:thirdPartyRepositoryId>
+                  </thir:addressId>
+                  <thir:addressType>
+                     <thir:cmsCode>25</thir:cmsCode>
+                     <thir:externalCode>25</thir:externalCode>
+                  </thir:addressType>
+                  <thir:locality>locality</thir:locality>
+                  <thir:buildingNumber>12-189-1</thir:buildingNumber>
+                  <thir:buildingName>BMWBuildingName</thir:buildingName>
+                  <thir:subBuildingNumber>15</thir:subBuildingNumber>
+                  <thir:streetNumber>101</thir:streetNumber>
+                  <thir:street>Miller Steert</thir:street>
+                  <thir:postTown>Sydney</thir:postTown>
+                  <thir:county>NorthSydney</thir:county>
+                  <thir:postCode>2065</thir:postCode>
+                  <thir:streetType>Avenue</thir:streetType>
+                  <thir:isPrimaryMailing>false</thir:isPrimaryMailing>
+               </thir:address>
+               <thir:address>
+                  <thir:addressType>
+                     <thir:cmsCode>12</thir:cmsCode>
+                     <thir:externalCode>12</thir:externalCode>
+                  </thir:addressType>
+                  <thir:locality>locality</thir:locality>
+                  <thir:buildingNumber>7</thir:buildingNumber>
+                  <thir:buildingName>BMWBuildingName</thir:buildingName>
+                  <thir:subBuildingNumber>8</thir:subBuildingNumber>
+                  <thir:streetNumber>88</thir:streetNumber>
+                  <thir:street>Miller Stret</thir:street>
+                  <thir:postTown>town</thir:postTown>
+                  <thir:county>county</thir:county>
+                  <thir:postCode>BT75 NSW</thir:postCode>
+                  <thir:streetType>Street</thir:streetType>
+                  <thir:isPrimaryMailing>false</thir:isPrimaryMailing>
+               </thir:address>
+            </thir:addresses>
+            <thir:gender>F</thir:gender>
+            <thir:maritalStatus>D</thir:maritalStatus>
+            <!--<thir:dateOfBirth>1973-08-08</thir:dateOfBirth>-->
+            <thir:firstName>TestFirstNameAPI</thir:firstName>
+            <thir:middleName>TestMiddlename</thir:middleName>
+            <thir:surname>TestSurnameAutoA</thir:surname>
+            <thir:directMarketingPost>false</thir:directMarketingPost>
+            <thir:numberOfDependants>78</thir:numberOfDependants>
+            <thir:title>Mrs</thir:title>
+            <thir:suffix>suffix</thir:suffix>
+            <thir:suffixCode>
+               <thir:cmsCode>1</thir:cmsCode>
+               <thir:externalCode>1</thir:externalCode>
+            </thir:suffixCode>
+            <thir:socialSecurityNumber>12366347</thir:socialSecurityNumber>
+            <thir:socialInsuranceNumber>189566399LL8774</thir:socialInsuranceNumber>
+            <thir:maidenName>MaidenNameAutoApi</thir:maidenName>
+            <thir:motabilityFlag>false</thir:motabilityFlag>
+            <thir:countryOfBirth>GB</thir:countryOfBirth>
+            <thir:driversLic>6767676767</thir:driversLic>
+            <thir:employer>WhiteClarkeGroupAUTO API</thir:employer>
+            <thir:employmentStatus>2</thir:employmentStatus>
+            <thir:occupation>EngineerAutoAPI</thir:occupation>
+            <thir:occupationCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:occupationCode>
+            <thir:annualIncome>7878787878</thir:annualIncome>
+            <thir:industrySubCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:industrySubCode>
+            <thir:baselClassCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:baselClassCode>
+            <thir:ctryNationality>
+               <thir:cmsCode>GB</thir:cmsCode>
+               <thir:externalCode>GB</thir:externalCode>
+            </thir:ctryNationality>
+            <thir:preferredLanguage>
+               <thir:cmsCode>2</thir:cmsCode>
+            </thir:preferredLanguage>
+            <thir:previousName>PreviousnameBMWAUTOAPI</thir:previousName>
+            <thir:privacyConsent>true</thir:privacyConsent>
+            <!--<thir:email>test@gmail.com</thir:email>-->
+            <thir:identifications>
+               <thir:identification>
+                  <thir:identificationDocumentTypeCode>
+                     <thir:cmsCode>1212</thir:cmsCode>
+                  </thir:identificationDocumentTypeCode>
+                  <thir:issuedDate>1991-03-15</thir:issuedDate>
+                  <thir:dateExpired>2007-03-15</thir:dateExpired>
+                  <!--<thir:identificationDocumentNumber>1</thir:identificationDocumentNumber>-->
+                  <thir:issuingEntity>DHS</thir:issuingEntity>
+                  <thir:issuingCountryCode>
+                     <thir:cmsCode>GB</thir:cmsCode>
+                     <thir:externalCode>extCode_IdentiIssuingCountry</thir:externalCode>
+                  </thir:issuingCountryCode>
+               </thir:identification>
+               <thir:identification>
+                  <thir:identificationDocumentTypeCode>
+                     <thir:cmsCode>1212</thir:cmsCode>
+                  </thir:identificationDocumentTypeCode>
+                  <thir:issuedDate>1991-03-15</thir:issuedDate>
+                  <thir:dateExpired>2010-03-15</thir:dateExpired>
+                  <!--<thir:identificationDocumentNumber>1</thir:identificationDocumentNumber>-->
+                  <thir:issuingEntity>GOV</thir:issuingEntity>
+                  <thir:issuingCountryCode>
+                     <thir:cmsCode>GB</thir:cmsCode>
+                     <thir:externalCode>extCode_IdentiIssuingCountry</thir:externalCode>
+                  </thir:issuingCountryCode>
+               </thir:identification>
+            </thir:identifications>
+            <thir:businessName>oldname</thir:businessName>
+            <thir:customerStatus>
+               <thir:cmsCode>2</thir:cmsCode>
+            </thir:customerStatus>
+            <thir:incorporationDate>1963-02-14Z</thir:incorporationDate>
+            <thir:politicallyExposedPerson>true</thir:politicallyExposedPerson>
+            <thir:isStaff>true</thir:isStaff>
+            <!--Not mapped-->
+            
+            <thir:isDeceased>true</thir:isDeceased>
+            <thir:contactPerson>VamcAutomationTest</thir:contactPerson>
+            <thir:vatNumber>14797</thir:vatNumber>
+            <thir:vatCode>12345</thir:vatCode>
+            <!--Not mapped-->
+            <thir:isNegativeinfo>false</thir:isNegativeinfo>
+            <thir:salutation>Mr</thir:salutation>
+            <thir:organisationType>
+               <thir:cmsCode>C</thir:cmsCode>
+            </thir:organisationType>
+            <thir:taxNumber>123645</thir:taxNumber>
+            <thir:partnerCode>
+            <thir:cmsCode>1</thir:cmsCode>
+            </thir:partnerCode>
+            <thir:industryCode>
+               <thir:cmsCode>852</thir:cmsCode>
+            </thir:industryCode>
+            <thir:trustVatNo>798</thir:trustVatNo>
+            <thir:certificateNumber>1236</thir:certificateNumber>
+            <thir:businessTypeDesc>Business Type Description</thir:businessTypeDesc>
+            <thir:businessTypeCode>
+               <thir:cmsCode>2</thir:cmsCode>
+            </thir:businessTypeCode>
+            <thir:balanceSheetCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:balanceSheetCode>
+            <thir:dateOfDeath>2015-04-02</thir:dateOfDeath>
+            <thir:isPaymentLocking>true</thir:isPaymentLocking>
+            <thir:intraGrpConsldnCode>555555</thir:intraGrpConsldnCode>
+<!--            <thir:ctryResidence>GB</thir:ctryResidence>-->
+            <thir:emails>
+               <thir:email>
+                  <thir:emailType>
+                     <thir:cmsCode>1</thir:cmsCode>
+                  </thir:emailType>
+                  <thir:emailAddress>anitha@gmail.com</thir:emailAddress>
+                  <thir:isPrimaryMailing>false</thir:isPrimaryMailing>
+                  <thir:isConsent>false</thir:isConsent>
+               </thir:email>
+            </thir:emails>
+         </thir:partner>
+         <!--<thir:thirdPartyDetails>
+            <thir:thirdPartyDetail>
+               <thir:dealer>
+                  <thir:thirdPartyType>DEALER</thir:thirdPartyType>
+                  <thir:sourceType>
+                     <thir:cmsCode>1</thir:cmsCode>
+                     <thir:externalCode/>
+                  </thir:sourceType>
+                  <thir:region>02</thir:region>
+                  <thir:dealerGroupId>02</thir:dealerGroupId>
+                  <thir:dealerCompanyId>098</thir:dealerCompanyId>
+                  <thir:riskClassificationCode>1</thir:riskClassificationCode>
+               </thir:dealer>
+            </thir:thirdPartyDetail>
+         </thir:thirdPartyDetails>-->
+         <thir:thirdPartyDetails>
+            <thir:thirdPartyDetail>
+               <thir:dealer>
+                  <thir:thirdPartyType>DEALER</thir:thirdPartyType>
+                  <thir:sourceType>
+                     
+                     <!--<thir:cmsCode>11</thir:cmsCode>-->
+                  </thir:sourceType>
+                  <!--<thir:region></thir:region>-->
+                  <!--<thir:dealerGroupId></thir:dealerGroupId>-->
+                  <!--<thir:dealerCompanyId></thir:dealerCompanyId>-->
+                  <!--<thir:riskClassificationCode></thir:riskClassificationCode>-->
+                  <!--<thir:dealerBranch></thir:dealerBranch>-->
+                  
+                  
+                  
+                  <thir:riskClassificationCode>1</thir:riskClassificationCode>
+                  <thir:dealerBranch>1</thir:dealerBranch>
+            
+               </thir:dealer>
+            </thir:thirdPartyDetail>
+         </thir:thirdPartyDetails>
+         <thir:applicationInfo>
+            <com:tenantInfo>
+               <com:tenantCode>44</com:tenantCode>
+            </com:tenantInfo>
+            <com:securityAudit>
+               <com:messageId>123456789</com:messageId>
+               <!--<com:timestamp>2017-07-30T08:06:33.271Z</com:timestamp>-->
+               <com:timestamp>2017-08-15T09:55:15</com:timestamp>
+               <com:clientAppId>appId</com:clientAppId>
+               <com:userId>SYSTEM</com:userId>
+               <com:clientLanguage>en_AU</com:clientLanguage>
+            </com:securityAudit>
+         </thir:applicationInfo>
+      </thir:updateThirdParty>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="6394b8a0-a469-44b2-9f67-7a2e39e20663"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="7633308a-d75f-4225-8100-803c5525f67e"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="cd3cbf16-7bf6-452d-aa43-d58a7794473d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d74599af-5d7c-498a-b762-50be3808d879"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="42e903b6-cb05-4346-91ba-5ce7dfd12804"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="0c4de42d-09a1-4460-b14b-9a570291d6d7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="request" name="Copy of Copy of UpdateThirdParty- Dealer" id="c9083415-f52d-441c-bd3f-88fe7f7ce66a" disabled="true"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>updateThirdParty</con:operation><con:request name="Copy of Copy of UpdateThirdParty- Dealer" id="43d3b409-0060-42aa-bbdd-1a8bc8d8111c"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvbmwdev01:28080/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:thir="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <thir:updateThirdParty>
+         <thir:partner>
+            <thir:type>I</thir:type>
+            <thir:thirdPartyId>
+              <thir:bpmId>2141</thir:bpmId>
+            </thir:thirdPartyId>
+            <thir:role>A</thir:role>
+            <thir:commsChannels>
+               <thir:contactViaSMS>false</thir:contactViaSMS>
+               <thir:phoneFaxNums>
+                  <thir:telephoneFax>
+                     <thir:phoneFaxNumber>02 - 040404040404</thir:phoneFaxNumber>
+                     <thir:type>HO</thir:type>
+                  </thir:telephoneFax>
+                  <thir:telephoneFax>
+                     <thir:phoneFaxNumber>0421387984</thir:phoneFaxNumber>
+                     <thir:type>WO</thir:type>
+                  </thir:telephoneFax>
+               </thir:phoneFaxNums>
+            </thir:commsChannels>
+            <thir:bankAccounts>
+               <thir:bankAccountData>
+                  <thir:bankCode>12</thir:bankCode>
+                  <thir:branchCode>122</thir:branchCode>
+                  <thir:branchName>AutomationBranch</thir:branchName>
+                  <thir:bankAccountType>AutoAcctType</thir:bankAccountType>
+                  <thir:ibanNumber>12345678</thir:ibanNumber>
+                  <thir:swiftCode>123456-487</thir:swiftCode>
+                  <thir:sortCode>98999999</thir:sortCode>
+                  <thir:mandate>
+                     <thir:valid>true</thir:valid>
+                     <thir:reference>MandateReferenceAuto</thir:reference>
+                     <!--<thir:signedDate>2000-01-10</thir:signedDate>-->
+                  </thir:mandate>
+                  <thir:bankAccountName>MandateAcctAutomation</thir:bankAccountName>
+                  <thir:bankAccountNumber>525252696969</thir:bankAccountNumber>
+                  <thir:isDirectDebitBankAccount>true</thir:isDirectDebitBankAccount>
+               </thir:bankAccountData>
+            </thir:bankAccounts>
+            <thir:addresses>
+               <thir:address>
+                  <thir:addressId>
+                     <thir:externalSystemId>24</thir:externalSystemId>
+                     <thir:thirdPartyRepositoryId>22</thir:thirdPartyRepositoryId>
+                  </thir:addressId>
+                  <thir:addressType>
+                     <thir:cmsCode>25</thir:cmsCode>
+                     <thir:externalCode>25</thir:externalCode>
+                  </thir:addressType>
+                  <thir:locality>locality</thir:locality>
+                  <thir:buildingNumber>12-189-1</thir:buildingNumber>
+                  <thir:buildingName>BMWBuildingName</thir:buildingName>
+                  <thir:subBuildingNumber>15</thir:subBuildingNumber>
+                  <thir:streetNumber>101</thir:streetNumber>
+                  <thir:street>Miller Steert</thir:street>
+                  <thir:postTown>Sydney</thir:postTown>
+                  <thir:county>NorthSydney</thir:county>
+                  <thir:postCode>2065</thir:postCode>
+                  <thir:streetType>Avenue</thir:streetType>
+                  <thir:isPrimaryMailing>false</thir:isPrimaryMailing>
+               </thir:address>
+               <thir:address>
+                  <thir:addressType>
+                     <thir:cmsCode>12</thir:cmsCode>
+                     <thir:externalCode>12</thir:externalCode>
+                  </thir:addressType>
+                  <thir:locality>locality</thir:locality>
+                  <thir:buildingNumber>7</thir:buildingNumber>
+                  <thir:buildingName>BMWBuildingName</thir:buildingName>
+                  <thir:subBuildingNumber>8</thir:subBuildingNumber>
+                  <thir:streetNumber>88</thir:streetNumber>
+                  <thir:street>Miller Stret</thir:street>
+                  <thir:postTown>town</thir:postTown>
+                  <thir:county>county</thir:county>
+                  <thir:postCode>BT75 NSW</thir:postCode>
+                  <thir:streetType>Street</thir:streetType>
+                  <thir:isPrimaryMailing>false</thir:isPrimaryMailing>
+               </thir:address>
+            </thir:addresses>
+            <thir:gender>F</thir:gender>
+            <thir:maritalStatus>D</thir:maritalStatus>
+            <!--<thir:dateOfBirth>1973-08-08</thir:dateOfBirth>-->
+            <thir:firstName>TestFirstNameAPI</thir:firstName>
+            <thir:middleName>TestMiddlename</thir:middleName>
+            <thir:surname>TestSurnameAutoA</thir:surname>
+            <thir:directMarketingPost>false</thir:directMarketingPost>
+            <thir:numberOfDependants>78</thir:numberOfDependants>
+            <thir:title>Mrs</thir:title>
+            <thir:suffix>suffix</thir:suffix>
+            <thir:suffixCode>
+               <thir:cmsCode>1</thir:cmsCode>
+               <thir:externalCode>1</thir:externalCode>
+            </thir:suffixCode>
+            <thir:socialSecurityNumber>12366347</thir:socialSecurityNumber>
+            <thir:socialInsuranceNumber>189566399LL8774</thir:socialInsuranceNumber>
+            <thir:maidenName>MaidenNameAutoApi</thir:maidenName>
+            <thir:motabilityFlag>false</thir:motabilityFlag>
+            <thir:countryOfBirth>DE</thir:countryOfBirth>
+            <thir:driversLic>6767676767</thir:driversLic>
+            <thir:employer>WhiteClarkeGroupAUTO API</thir:employer>
+            <thir:employmentStatus>2</thir:employmentStatus>
+            <thir:occupation>EngineerAutoAPI</thir:occupation>
+            <thir:occupationCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:occupationCode>
+            <thir:annualIncome>7878787878</thir:annualIncome>
+            <thir:industrySubCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:industrySubCode>
+            <thir:baselClassCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:baselClassCode>
+            <thir:ctryNationality>
+               <thir:cmsCode>DE</thir:cmsCode>
+               <thir:externalCode>DE</thir:externalCode>
+            </thir:ctryNationality>
+            <thir:preferredLanguage>
+               <thir:cmsCode>2</thir:cmsCode>
+            </thir:preferredLanguage>
+            <thir:previousName>PreviousnameBMWAUTOAPI</thir:previousName>
+            <thir:privacyConsent>true</thir:privacyConsent>
+            <!--<thir:email>test@gmail.com</thir:email>-->
+            <thir:identifications>
+               <thir:identification>
+                  <thir:identificationDocumentTypeCode>
+                     <thir:cmsCode>1212</thir:cmsCode>
+                  </thir:identificationDocumentTypeCode>
+                  <thir:issuedDate>1991-03-15</thir:issuedDate>
+                  <thir:dateExpired>2007-03-15</thir:dateExpired>
+                  <!--<thir:identificationDocumentNumber>1</thir:identificationDocumentNumber>-->
+                  <thir:issuingEntity>DHS</thir:issuingEntity>
+                  <thir:issuingCountryCode>
+                     <thir:cmsCode>DE</thir:cmsCode>
+                     <thir:externalCode>extCode_IdentiIssuingCountry</thir:externalCode>
+                  </thir:issuingCountryCode>
+               </thir:identification>
+               <thir:identification>
+                  <thir:identificationDocumentTypeCode>
+                     <thir:cmsCode>1212</thir:cmsCode>
+                  </thir:identificationDocumentTypeCode>
+                  <thir:issuedDate>1991-03-15</thir:issuedDate>
+                  <thir:dateExpired>2010-03-15</thir:dateExpired>
+                  <!--<thir:identificationDocumentNumber>1</thir:identificationDocumentNumber>-->
+                  <thir:issuingEntity>GOV</thir:issuingEntity>
+                  <thir:issuingCountryCode>
+                     <thir:cmsCode>DE</thir:cmsCode>
+                     <thir:externalCode>extCode_IdentiIssuingCountry</thir:externalCode>
+                  </thir:issuingCountryCode>
+               </thir:identification>
+            </thir:identifications>
+            <thir:businessName>oldname</thir:businessName>
+            <thir:customerStatus>
+               <thir:cmsCode>2</thir:cmsCode>
+            </thir:customerStatus>
+            <thir:incorporationDate>1963-02-14Z</thir:incorporationDate>
+            <thir:politicallyExposedPerson>true</thir:politicallyExposedPerson>
+            <thir:isStaff>true</thir:isStaff>
+            <!--Not mapped-->
+            
+            <thir:isDeceased>true</thir:isDeceased>
+            <thir:contactPerson>VamcAutomationTest</thir:contactPerson>
+            <thir:vatNumber>14797</thir:vatNumber>
+            <thir:vatCode>12345</thir:vatCode>
+            <!--Not mapped-->
+            <thir:isNegativeinfo>false</thir:isNegativeinfo>
+            <thir:salutation>Mr</thir:salutation>
+            <thir:organisationType>
+               <thir:cmsCode>C</thir:cmsCode>
+            </thir:organisationType>
+            <thir:taxNumber>123645</thir:taxNumber>
+            <thir:partnerCode>
+            <thir:cmsCode>1</thir:cmsCode>
+            </thir:partnerCode>
+            <thir:industryCode>
+               <thir:cmsCode>852</thir:cmsCode>
+            </thir:industryCode>
+            <thir:trustVatNo>798</thir:trustVatNo>
+            <thir:certificateNumber>1236</thir:certificateNumber>
+            <thir:businessTypeDesc>Business Type Description</thir:businessTypeDesc>
+            <thir:businessTypeCode>
+               <thir:cmsCode>2</thir:cmsCode>
+            </thir:businessTypeCode>
+            <thir:balanceSheetCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:balanceSheetCode>
+            <thir:dateOfDeath>2015-04-02</thir:dateOfDeath>
+            <thir:isPaymentLocking>true</thir:isPaymentLocking>
+            <thir:intraGrpConsldnCode>555555</thir:intraGrpConsldnCode>
+<!--            <thir:ctryResidence>GB</thir:ctryResidence>-->
+            <thir:emails>
+               <thir:email>
+                  <thir:emailType>
+                     <thir:cmsCode>1</thir:cmsCode>
+                  </thir:emailType>
+                  <thir:emailAddress>anitha@gmail.com</thir:emailAddress>
+                  <thir:isPrimaryMailing>false</thir:isPrimaryMailing>
+                  <thir:isConsent>false</thir:isConsent>
+               </thir:email>
+            </thir:emails>
+         </thir:partner>
+         <!--<thir:thirdPartyDetails>
+            <thir:thirdPartyDetail>
+               <thir:dealer>
+                  <thir:thirdPartyType>DEALER</thir:thirdPartyType>
+                  <thir:sourceType>
+                     <thir:cmsCode>1</thir:cmsCode>
+                     <thir:externalCode/>
+                  </thir:sourceType>
+                  <thir:region>02</thir:region>
+                  <thir:dealerGroupId>02</thir:dealerGroupId>
+                  <thir:dealerCompanyId>098</thir:dealerCompanyId>
+                  <thir:riskClassificationCode>1</thir:riskClassificationCode>
+               </thir:dealer>
+            </thir:thirdPartyDetail>
+         </thir:thirdPartyDetails>-->
+         <thir:thirdPartyDetails>
+            <thir:thirdPartyDetail>
+               <thir:dealer>
+                  <thir:thirdPartyType>DEALER</thir:thirdPartyType>
+                  <thir:sourceType>
+                     
+                     <!--<thir:cmsCode>11</thir:cmsCode>-->
+                  </thir:sourceType>
+                  <!--<thir:region></thir:region>-->
+                  <!--<thir:dealerGroupId></thir:dealerGroupId>-->
+                  <!--<thir:dealerCompanyId></thir:dealerCompanyId>-->
+                  <!--<thir:riskClassificationCode></thir:riskClassificationCode>-->
+                  <!--<thir:dealerBranch></thir:dealerBranch>-->
+                  
+                  
+                  
+                  <thir:riskClassificationCode>1</thir:riskClassificationCode>
+                  <thir:dealerBranch>1</thir:dealerBranch>
+            
+               </thir:dealer>
+            </thir:thirdPartyDetail>
+         </thir:thirdPartyDetails>
+         <thir:applicationInfo>
+            <com:tenantInfo>
+               <com:tenantCode>49</com:tenantCode>
+            </com:tenantInfo>
+            <com:securityAudit>
+               <com:messageId>123456789</com:messageId>
+               <!--<com:timestamp>2017-07-30T08:06:33.271Z</com:timestamp>-->
+               <com:timestamp>2017-08-15T09:55:15</com:timestamp>
+               <com:clientAppId>appId</com:clientAppId>
+               <com:userId>SYSTEM</com:userId>
+               <com:clientLanguage>en_AU</com:clientLanguage>
+            </com:securityAudit>
+         </thir:applicationInfo>
+      </thir:updateThirdParty>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="6394b8a0-a469-44b2-9f67-7a2e39e20663"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="7633308a-d75f-4225-8100-803c5525f67e"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="cd3cbf16-7bf6-452d-aa43-d58a7794473d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d74599af-5d7c-498a-b762-50be3808d879"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="42e903b6-cb05-4346-91ba-5ce7dfd12804"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="0c4de42d-09a1-4460-b14b-9a570291d6d7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="request" name="Copy of Copy of Copy of UpdateThirdParty- Dealer" id="5d9ec4d0-0e32-41a6-b552-8e46bf0c32a9" disabled="true"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>updateThirdParty</con:operation><con:request name="Copy of Copy of Copy of UpdateThirdParty- Dealer" id="43d3b409-0060-42aa-bbdd-1a8bc8d8111c"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvbmwdev01:28080/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:thir="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <thir:updateThirdParty>
+         <thir:partner>
+            <thir:type>I</thir:type>
+            <thir:thirdPartyId>
+               <thir:bpmId>2141</thir:bpmId>
+            </thir:thirdPartyId>
+            <thir:role>A</thir:role>
+            <thir:commsChannels>
+               <thir:contactViaSMS>false</thir:contactViaSMS>
+               <thir:phoneFaxNums>
+                  <thir:telephoneFax>
+                     <thir:phoneFaxNumber>02 - 040404040404</thir:phoneFaxNumber>
+                     <thir:type>HO</thir:type>
+                  </thir:telephoneFax>
+                  <thir:telephoneFax>
+                     <thir:phoneFaxNumber>0421387984</thir:phoneFaxNumber>
+                     <thir:type>WO</thir:type>
+                  </thir:telephoneFax>
+               </thir:phoneFaxNums>
+            </thir:commsChannels>
+            <thir:bankAccounts>
+               <thir:bankAccountData>
+                  <thir:bankCode>12</thir:bankCode>
+                  <thir:branchCode>122</thir:branchCode>
+                  <thir:branchName>AutomationBranch</thir:branchName>
+                  <thir:bankAccountType>AutoAcctType</thir:bankAccountType>
+                  <thir:ibanNumber>12345678</thir:ibanNumber>
+                  <thir:swiftCode>123456-487</thir:swiftCode>
+                  <thir:sortCode>98999999</thir:sortCode>
+                  <thir:mandate>
+                     <thir:valid>true</thir:valid>
+                     <thir:reference>MandateReferenceAuto</thir:reference>
+<!--                     <thir:signedDate>2000-01-10</thir:signedDate>-->
+                  </thir:mandate>
+                  <thir:bankAccountName>MandateAcctAutomation</thir:bankAccountName>
+                  <thir:bankAccountNumber>525252696969</thir:bankAccountNumber>
+                  <thir:isDirectDebitBankAccount>true</thir:isDirectDebitBankAccount>
+               </thir:bankAccountData>
+            </thir:bankAccounts>
+            <thir:addresses>
+               <thir:address>
+                  <thir:addressId>
+                     <thir:externalSystemId>24</thir:externalSystemId>
+                     <thir:thirdPartyRepositoryId>22</thir:thirdPartyRepositoryId>
+                  </thir:addressId>
+                  <thir:addressType>
+                     <thir:cmsCode>25</thir:cmsCode>
+                     <thir:externalCode>25</thir:externalCode>
+                  </thir:addressType>
+                  <thir:locality>locality</thir:locality>
+                  <thir:buildingNumber>12-189-1</thir:buildingNumber>
+                  <thir:buildingName>BMWBuildingName</thir:buildingName>
+                  <thir:subBuildingNumber>15</thir:subBuildingNumber>
+                  <thir:streetNumber>101</thir:streetNumber>
+                  <thir:street>Miller Steert</thir:street>
+                  <thir:postTown>Sydney</thir:postTown>
+                  <thir:county>NorthSydney</thir:county>
+                  <thir:postCode>2065</thir:postCode>
+                  <thir:streetType>Avenue</thir:streetType>
+                  <thir:isPrimaryMailing>false</thir:isPrimaryMailing>
+               </thir:address>
+               <thir:address>
+                  <thir:addressType>
+                     <thir:cmsCode>12</thir:cmsCode>
+                     <thir:externalCode>12</thir:externalCode>
+                  </thir:addressType>
+                  <thir:locality>locality</thir:locality>
+                  <thir:buildingNumber>7</thir:buildingNumber>
+                  <thir:buildingName>BMWBuildingName</thir:buildingName>
+                  <thir:subBuildingNumber>8</thir:subBuildingNumber>
+                  <thir:streetNumber>88</thir:streetNumber>
+                  <thir:street>Miller Stret</thir:street>
+                  <thir:postTown>town</thir:postTown>
+                  <thir:county>county</thir:county>
+                  <thir:postCode>BT75 NSW</thir:postCode>
+                  <thir:streetType>Street</thir:streetType>
+                  <thir:isPrimaryMailing>false</thir:isPrimaryMailing>
+               </thir:address>
+            </thir:addresses>
+            <thir:gender>F</thir:gender>
+<thir:maritalStatus>D</thir:maritalStatus>
+
+<!--            <thir:dateOfBirth>1973-08-08</thir:dateOfBirth>-->
+            <thir:firstName>TestFirstNameAPI</thir:firstName>
+            <thir:middleName>TestMiddlename</thir:middleName>
+            <thir:surname>TestSurnameAutoA</thir:surname>
+            <thir:directMarketingPost>false</thir:directMarketingPost>
+            <thir:numberOfDependants>78</thir:numberOfDependants>
+            <thir:title>Mrs</thir:title>
+            <thir:suffix>Suffix</thir:suffix>
+            <thir:suffixCode>
+               <thir:cmsCode>1</thir:cmsCode>
+               <thir:externalCode>1</thir:externalCode>
+            </thir:suffixCode>
+            <thir:socialSecurityNumber>12366347</thir:socialSecurityNumber>
+            <thir:socialInsuranceNumber>189566399LL8774</thir:socialInsuranceNumber>
+            <thir:maidenName>MaidenNameAutoApi</thir:maidenName>
+            <thir:motabilityFlag>false</thir:motabilityFlag>
+            <thir:countryOfBirth>DE</thir:countryOfBirth>
+            <thir:driversLic>6767676767</thir:driversLic>
+            <thir:employer>WhiteClarkeGroupAUTO API</thir:employer>
+            <thir:employmentStatus>2</thir:employmentStatus>
+            <thir:occupation>EngineerAutoAPI</thir:occupation>
+            <thir:occupationCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:occupationCode>
+            <thir:annualIncome>7878787878</thir:annualIncome>
+            <thir:industrySubCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:industrySubCode>
+            <thir:baselClassCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:baselClassCode>
+            <thir:ctryNationality>
+               <thir:cmsCode>DE</thir:cmsCode>
+               <thir:externalCode>DE</thir:externalCode>
+            </thir:ctryNationality>
+            <thir:preferredLanguage>
+               <thir:cmsCode>2</thir:cmsCode>
+            </thir:preferredLanguage>
+            <thir:previousName>PreviousnameBMWAUTOAPI</thir:previousName>
+            <thir:privacyConsent>true</thir:privacyConsent>
+            <!--<thir:email>test@gmail.com</thir:email>-->
+            <thir:identifications>
+               <thir:identification>
+                  <thir:identificationDocumentTypeCode>
+                     <thir:cmsCode>1212</thir:cmsCode>
+                  </thir:identificationDocumentTypeCode>
+                  <thir:issuedDate>1991-03-15</thir:issuedDate>
+                  <thir:dateExpired>2007-03-15</thir:dateExpired>
+                  <!--<thir:identificationDocumentNumber>1</thir:identificationDocumentNumber>-->
+                  <thir:issuingEntity>DHS</thir:issuingEntity>
+                  <thir:issuingCountryCode>
+                     <thir:cmsCode>DE</thir:cmsCode>
+                     <thir:externalCode>extCode_IdentiIssuingCountry</thir:externalCode>
+                  </thir:issuingCountryCode>
+               </thir:identification>
+               <thir:identification>
+                  <thir:identificationDocumentTypeCode> 
+                  <thir:cmsCode>1212</thir:cmsCode>
+                  </thir:identificationDocumentTypeCode>
+                  <thir:issuedDate>1991-03-15</thir:issuedDate>
+                  <thir:dateExpired>2010-03-15</thir:dateExpired>
+                  
+                  <!--<thir:identificationDocumentNumber>1</thir:identificationDocumentNumber>-->
+                  <thir:issuingEntity>GOV</thir:issuingEntity>
+                  <thir:issuingCountryCode>
+                     <thir:cmsCode>DE</thir:cmsCode>
+                     <thir:externalCode>extCode_IdentiIssuingCountry</thir:externalCode>
+                  </thir:issuingCountryCode>
+               </thir:identification>
+          </thir:identifications>
+          <thir:businessName>oldname</thir:businessName>
+            <thir:customerStatus>
+               <thir:cmsCode>2</thir:cmsCode>
+            </thir:customerStatus>
+            <thir:incorporationDate>1963-02-14Z</thir:incorporationDate>
+            <thir:politicallyExposedPerson>true</thir:politicallyExposedPerson>
+            <thir:isStaff>true</thir:isStaff>
+            <!--Not mapped-->
+            <thir:isDeceased>false</thir:isDeceased>
+            <thir:contactPerson>VamcAutomationTest</thir:contactPerson>
+            <thir:vatNumber>14797</thir:vatNumber>
+            <thir:vatCode>12345</thir:vatCode>
+            <!--Not mapped-->
+            <thir:isNegativeinfo>false</thir:isNegativeinfo>
+            <thir:salutation>Mr</thir:salutation>
+            <thir:organisationType>
+               <thir:cmsCode>C</thir:cmsCode>
+            </thir:organisationType>
+            <thir:taxNumber>123645</thir:taxNumber>
+            <thir:partnerCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:partnerCode>
+            <thir:industryCode>
+               <thir:cmsCode>852</thir:cmsCode>
+            </thir:industryCode>
+            <thir:trustVatNo>798</thir:trustVatNo>
+            <thir:certificateNumber>1236</thir:certificateNumber>
+            <thir:businessTypeDesc>Business Type Description</thir:businessTypeDesc>
+            <thir:businessTypeCode>
+               <thir:cmsCode>2</thir:cmsCode>
+            </thir:businessTypeCode>
+            <thir:balanceSheetCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:balanceSheetCode>
+            <thir:dateOfDeath>2015-04-02</thir:dateOfDeath>
+            <thir:isPaymentLocking>true</thir:isPaymentLocking>
+            <thir:intraGrpConsldnCode>555555</thir:intraGrpConsldnCode>
+            <thir:emails>
+               <thir:email>
+                  <thir:emailType>
+                     <thir:cmsCode>1</thir:cmsCode>
+                  </thir:emailType>
+                  <thir:emailAddress>anitha@gmail.com</thir:emailAddress>
+                  <thir:isPrimaryMailing>false</thir:isPrimaryMailing>
+                  <thir:isConsent>false</thir:isConsent>
+               </thir:email>
+            </thir:emails>
+         </thir:partner>
+         <!--<thir:thirdPartyDetails>
+            <thir:thirdPartyDetail>
+               <thir:dealer>
+                  <thir:thirdPartyType>DEALER</thir:thirdPartyType>
+                  <thir:sourceType>
+                     <thir:cmsCode>1</thir:cmsCode>
+                     <thir:externalCode/>
+                  </thir:sourceType>
+                  <thir:region>02</thir:region>
+                  <thir:dealerGroupId>02</thir:dealerGroupId>
+                  <thir:dealerCompanyId>098</thir:dealerCompanyId>
+                  <thir:riskClassificationCode>1</thir:riskClassificationCode>
+               </thir:dealer>
+            </thir:thirdPartyDetail>
+         </thir:thirdPartyDetails>-->
+         <thir:thirdPartyDetails>
+            <thir:thirdPartyDetail>
+               <thir:dealer>
+                  <thir:thirdPartyType>DEALER</thir:thirdPartyType>
+                  <thir:sourceType>
+<!--                     <thir:cmsCode>1</thir:cmsCode>-->
+                  </thir:sourceType>
+                  <!--<thir:region>21</thir:region>-->
+                  <!--<thir:dealerGroupId>0</thir:dealerGroupId>-->
+                  <!--<thir:dealerCompanyId>0</thir:dealerCompanyId>-->
+                  <!--<thir:riskClassificationCode></thir:riskClassificationCode>-->
+              
+                  <thir:region>02</thir:region>
+                  <thir:dealerGroupId>02</thir:dealerGroupId>
+                  <thir:dealerCompanyId>098</thir:dealerCompanyId>
+<!--                 <thir:riskClassificationCode>1</thir:riskClassificationCode>-->
+<!--                <thir:dealerBranch>1</thir:dealerBranch>-->
+ 
+                  
+               </thir:dealer>
+            </thir:thirdPartyDetail>
+         </thir:thirdPartyDetails>
+         <thir:applicationInfo>
+            <com:tenantInfo>
+               <com:tenantCode>49</com:tenantCode>
+            </com:tenantInfo>
+            <com:securityAudit>
+               <com:messageId>123456789</com:messageId>
+<!--            <com:timestamp>2017-07-30T08:06:33.271Z</com:timestamp>-->
+               <com:timestamp>2017-08-15T11:20:22</com:timestamp>
+               <com:clientAppId>appId</com:clientAppId>
+               <com:userId>SYSTEM</com:userId>
+               <com:clientLanguage>en_AU</com:clientLanguage>
+            </com:securityAudit>
+         </thir:applicationInfo>
+      </thir:updateThirdParty>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="6394b8a0-a469-44b2-9f67-7a2e39e20663"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="7633308a-d75f-4225-8100-803c5525f67e"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="cd3cbf16-7bf6-452d-aa43-d58a7794473d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d74599af-5d7c-498a-b762-50be3808d879"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="42e903b6-cb05-4346-91ba-5ce7dfd12804"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="0c4de42d-09a1-4460-b14b-9a570291d6d7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="9510a289-eeaf-4f53-b130-71b247e62fec"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="request" name="SOAP Request" id="16ea3f2e-4dbe-4763-a460-ee2575ce65ba" disabled="true"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>updateThirdParty</con:operation><con:request name="SOAP Request" id="1885276e-309b-48e5-b557-84b57f560171"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvbmwdev01:28080/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:thir="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <thir:updateThirdParty>
+         <thir:partner>
+            <thir:type>I</thir:type>
+            <thir:thirdPartyId>
+               <thir:bpmId>97351</thir:bpmId>
+            </thir:thirdPartyId>
+            <thir:role>A</thir:role>
+            <thir:commsChannels>
+               <thir:contactViaSMS>false</thir:contactViaSMS>
+               <thir:phoneFaxNums>
+                  <thir:telephoneFax>
+                     <thir:phoneFaxNumber>02 - 040404040404</thir:phoneFaxNumber>
+                     <thir:type>HO</thir:type>
+                  </thir:telephoneFax>
+                  <thir:telephoneFax>
+                     <thir:phoneFaxNumber>0421387984</thir:phoneFaxNumber>
+                     <thir:type>WO</thir:type>
+                  </thir:telephoneFax>
+               </thir:phoneFaxNums>
+            </thir:commsChannels>
+            <thir:bankAccounts>
+               <thir:bankAccountData>
+                  <thir:bankCode>12</thir:bankCode>
+                  <thir:branchCode>122</thir:branchCode>
+                  <thir:branchName>AutomationBranch</thir:branchName>
+                  <thir:bankAccountType>AutoAcctType</thir:bankAccountType>
+                  <thir:ibanNumber>12345678</thir:ibanNumber>
+                  <thir:swiftCode>123456-487</thir:swiftCode>
+                  <thir:sortCode>98999999</thir:sortCode>
+                  <thir:mandate>
+                     <thir:valid>true</thir:valid>
+                     <thir:reference>MandateReferenceAuto</thir:reference>
+                     <!--<thir:signedDate>2000-01-10</thir:signedDate>-->
+                  </thir:mandate>
+                  <thir:bankAccountName>MandateAcctAutomation</thir:bankAccountName>
+                  <thir:bankAccountNumber>525252696969</thir:bankAccountNumber>
+                  <thir:isDirectDebitBankAccount>true</thir:isDirectDebitBankAccount>
+               </thir:bankAccountData>
+            </thir:bankAccounts>
+            <thir:addresses>
+               <thir:address>
+                  <thir:addressId>
+                     <thir:externalSystemId>24</thir:externalSystemId>
+                     <thir:thirdPartyRepositoryId>22</thir:thirdPartyRepositoryId>
+                  </thir:addressId>
+                  <thir:addressType>
+                     <thir:cmsCode>25</thir:cmsCode>
+                     <thir:externalCode>25</thir:externalCode>
+                  </thir:addressType>
+                  <thir:locality>locality</thir:locality>
+                  <thir:buildingNumber>12-189-1</thir:buildingNumber>
+                  <thir:buildingName>BMWBuildingName</thir:buildingName>
+                  <thir:subBuildingNumber>15</thir:subBuildingNumber>
+                  <thir:streetNumber>101</thir:streetNumber>
+                  <thir:street>Miller Steert</thir:street>
+                  <thir:postTown>Sydney</thir:postTown>
+                  <thir:county>NorthSydney</thir:county>
+                  <thir:postCode>2065</thir:postCode>
+                  <thir:streetType>Avenue</thir:streetType>
+                  <thir:isPrimaryMailing>false</thir:isPrimaryMailing>
+               </thir:address>
+               <thir:address>
+                  <thir:addressType>
+                     <thir:cmsCode>12</thir:cmsCode>
+                     <thir:externalCode>12</thir:externalCode>
+                  </thir:addressType>
+                  <thir:locality>locality</thir:locality>
+                  <thir:buildingNumber>7</thir:buildingNumber>
+                  <thir:buildingName>BMWBuildingName</thir:buildingName>
+                  <thir:subBuildingNumber>8</thir:subBuildingNumber>
+                  <thir:streetNumber>88</thir:streetNumber>
+                  <thir:street>Miller Stret</thir:street>
+                  <thir:postTown>town</thir:postTown>
+                  <thir:county>county</thir:county>
+                  <thir:postCode>BT75 NSW</thir:postCode>
+                  <thir:streetType>Street</thir:streetType>
+                  <thir:isPrimaryMailing>false</thir:isPrimaryMailing>
+               </thir:address>
+            </thir:addresses>
+            <thir:gender>F</thir:gender>
+            <thir:maritalStatus>D</thir:maritalStatus>
+            <!--<thir:dateOfBirth>1973-08-08</thir:dateOfBirth>-->
+            <thir:firstName>TestFirstNameAPI</thir:firstName>
+            <thir:middleName>TestMiddlename</thir:middleName>
+            <thir:surname>TestSurnameAutoA</thir:surname>
+            <thir:directMarketingPost>false</thir:directMarketingPost>
+            <thir:numberOfDependants>78</thir:numberOfDependants>
+            <thir:title>Mrs</thir:title>
+            <thir:suffix>suffix</thir:suffix>
+            <thir:suffixCode>
+               <thir:cmsCode>1</thir:cmsCode>
+               <thir:externalCode>1</thir:externalCode>
+            </thir:suffixCode>
+            <thir:socialSecurityNumber>12366347</thir:socialSecurityNumber>
+            <thir:socialInsuranceNumber>189566399LL8774</thir:socialInsuranceNumber>
+            <thir:maidenName>MaidenNameAutoApi</thir:maidenName>
+            <thir:motabilityFlag>false</thir:motabilityFlag>
+            <thir:countryOfBirth>GB</thir:countryOfBirth>
+            <thir:driversLic>6767676767</thir:driversLic>
+            <thir:employer>WhiteClarkeGroupAUTO API</thir:employer>
+            <thir:employmentStatus>2</thir:employmentStatus>
+            <thir:occupation>EngineerAutoAPI</thir:occupation>
+            <thir:occupationCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:occupationCode>
+            <thir:annualIncome>7878787878</thir:annualIncome>
+            <thir:industrySubCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:industrySubCode>
+            <thir:baselClassCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:baselClassCode>
+            <thir:ctryNationality>
+               <thir:cmsCode>GB</thir:cmsCode>
+               <thir:externalCode>GB</thir:externalCode>
+            </thir:ctryNationality>
+            <thir:preferredLanguage>
+               <thir:cmsCode>2</thir:cmsCode>
+            </thir:preferredLanguage>
+            <thir:previousName>PreviousnameBMWAUTOAPI</thir:previousName>
+            <thir:privacyConsent>true</thir:privacyConsent>
+            <!--<thir:email>test@gmail.com</thir:email>-->
+            <thir:identifications>
+               <thir:identification>
+                  <thir:identificationDocumentTypeCode>
+                     <thir:cmsCode>1212</thir:cmsCode>
+                  </thir:identificationDocumentTypeCode>
+                  <thir:issuedDate>1991-03-15</thir:issuedDate>
+                  <thir:dateExpired>2007-03-15</thir:dateExpired>
+                  <!--<thir:identificationDocumentNumber>1</thir:identificationDocumentNumber>-->
+                  <thir:issuingEntity>DHS</thir:issuingEntity>
+                  <thir:issuingCountryCode>
+                     <thir:cmsCode>GB</thir:cmsCode>
+                     <thir:externalCode>extCode_IdentiIssuingCountry</thir:externalCode>
+                  </thir:issuingCountryCode>
+               </thir:identification>
+               <thir:identification>
+                  <thir:identificationDocumentTypeCode>
+                     <thir:cmsCode>1212</thir:cmsCode>
+                  </thir:identificationDocumentTypeCode>
+                  <thir:issuedDate>1991-03-15</thir:issuedDate>
+                  <thir:dateExpired>2010-03-15</thir:dateExpired>
+                  <!--<thir:identificationDocumentNumber>1</thir:identificationDocumentNumber>-->
+                  <thir:issuingEntity>GOV</thir:issuingEntity>
+                  <thir:issuingCountryCode>
+                     <thir:cmsCode>GB</thir:cmsCode>
+                     <thir:externalCode>extCode_IdentiIssuingCountry</thir:externalCode>
+                  </thir:issuingCountryCode>
+               </thir:identification>
+            </thir:identifications>
+            <thir:businessName>oldname</thir:businessName>
+            <thir:customerStatus>
+               <thir:cmsCode>2</thir:cmsCode>
+            </thir:customerStatus>
+            <thir:incorporationDate>1963-02-14Z</thir:incorporationDate>
+            <thir:politicallyExposedPerson>true</thir:politicallyExposedPerson>
+            <thir:isStaff>true</thir:isStaff>
+            <!--Not mapped-->
+            <!--<thir:ctryResidence>GB</thir:ctryResidence>-->
+            <thir:isDeceased>false</thir:isDeceased>
+            <thir:contactPerson>VamcAutomationTest</thir:contactPerson>
+            <thir:vatNumber>14797</thir:vatNumber>
+            <thir:vatCode>12345</thir:vatCode>
+            <!--Not mapped-->
+            <thir:isNegativeinfo>false</thir:isNegativeinfo>
+            <thir:salutation>Mr</thir:salutation>
+            <thir:organisationType>
+               <thir:cmsCode>C</thir:cmsCode>
+            </thir:organisationType>
+            <thir:taxNumber>123645</thir:taxNumber>
+            <thir:partnerCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:partnerCode>
+            <thir:industryCode>
+               <thir:cmsCode>852</thir:cmsCode>
+            </thir:industryCode>
+            <thir:trustVatNo>798</thir:trustVatNo>
+            <thir:certificateNumber>1236</thir:certificateNumber>
+            <thir:businessTypeDesc>Business Type Description</thir:businessTypeDesc>
+            <thir:businessTypeCode>
+               <thir:cmsCode>2</thir:cmsCode>
+            </thir:businessTypeCode>
+            <thir:balanceSheetCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:balanceSheetCode>
+            <thir:dateOfDeath>2015-04-02</thir:dateOfDeath>
+            <thir:isPaymentLocking>true</thir:isPaymentLocking>
+            <thir:intraGrpConsldnCode>555555</thir:intraGrpConsldnCode>
+            <thir:emails>
+               <thir:email>
+                  <thir:emailType>
+                     <thir:cmsCode>1</thir:cmsCode>
+                  </thir:emailType>
+                  <thir:emailAddress>anitha@gmail.com</thir:emailAddress>
+                  <thir:isPrimaryMailing>false</thir:isPrimaryMailing>
+                  <thir:isConsent>false</thir:isConsent>
+               </thir:email>
+            </thir:emails>
+         </thir:partner>
+         <!--<thir:thirdPartyDetails>
+            <thir:thirdPartyDetail>
+               <thir:dealer>
+                  <thir:thirdPartyType>DEALER</thir:thirdPartyType>
+                  <thir:sourceType>
+                     <thir:cmsCode>1</thir:cmsCode>
+                     <thir:externalCode/>
+                  </thir:sourceType>
+                  <thir:region>02</thir:region>
+                  <thir:dealerGroupId>02</thir:dealerGroupId>
+                  <thir:dealerCompanyId>098</thir:dealerCompanyId>
+                  <thir:riskClassificationCode>1</thir:riskClassificationCode>
+               </thir:dealer>
+            </thir:thirdPartyDetail>
+         </thir:thirdPartyDetails>-->
+         <thir:thirdPartyDetails>
+            <thir:thirdPartyDetail>
+               <thir:dealer>
+                  <thir:thirdPartyType>DEALER</thir:thirdPartyType>
+                  <thir:sourceType>
+                     <thir:cmsCode></thir:cmsCode>
+                     <!--<thir:cmsCode>11</thir:cmsCode>-->
+                  </thir:sourceType>
+                  <!--<thir:region>2</thir:region>-->
+                  <!--<thir:dealerGroupId>0</thir:dealerGroupId>-->
+                  <!--<thir:dealerCompanyId>0</thir:dealerCompanyId>-->
+                  <!--<thir:riskClassificationCode>0</thir:riskClassificationCode>-->
+                  <!--<thir:dealerBranch>2</thir:dealerBranch>-->
+                  <thir:region>2</thir:region>
+                  <thir:dealerGroupId>0</thir:dealerGroupId>
+                  <thir:dealerCompanyId>0</thir:dealerCompanyId>
+                  <thir:riskClassificationCode>0</thir:riskClassificationCode>
+                  <thir:dealerBranch>2</thir:dealerBranch>
+               </thir:dealer>
+            </thir:thirdPartyDetail>
+         </thir:thirdPartyDetails>
+         <thir:applicationInfo>
+            <com:tenantInfo>
+               <com:tenantCode>49</com:tenantCode>
+            </com:tenantInfo>
+            <com:securityAudit>
+               <com:messageId>123456789</com:messageId>
+               <!--<com:timestamp>2017-07-30T08:06:33.271Z</com:timestamp>-->
+               <com:timestamp>2017-08-16T10:33:39</com:timestamp>
+               <com:clientAppId>appId</com:clientAppId>
+               <com:userId>SYSTEM</com:userId>
+               <com:clientLanguage>en_AU</com:clientLanguage>
+            </com:securityAudit>
+         </thir:applicationInfo>
+      </thir:updateThirdParty>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="f2278801-da5b-4629-ae4c-65b5cdc172f9"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="request" name="UpdateThirdParty- DealerSuccess" id="9ac202a4-8d15-42ae-bcc0-73adaf0d9528" disabled="true"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>updateThirdParty</con:operation><con:request name="UpdateThirdParty- DealerSuccess" id="43d3b409-0060-42aa-bbdd-1a8bc8d8111c"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvbmwdev01:28080/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[
+
+<soapenv:Envelope xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes" xmlns:thir="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+
+<soapenv:Header/>
+
+
+<soapenv:Body>
+
+
+<thir:updateThirdParty>
+
+
+<thir:partner>
+
+<thir:type>I</thir:type>
+
+
+<thir:thirdPartyId>
+
+<thir:bpmId>245651</thir:bpmId>
+
+</thir:thirdPartyId>
+
+<thir:role>A</thir:role>
+
+
+<thir:commsChannels>
+
+<thir:contactViaSMS>false</thir:contactViaSMS>
+
+
+<thir:phoneFaxNums>
+
+
+<thir:telephoneFax>
+
+<thir:phoneFaxNumber>02 - 040404040404</thir:phoneFaxNumber>
+
+<thir:type>HO</thir:type>
+
+</thir:telephoneFax>
+
+
+<thir:telephoneFax>
+
+<thir:phoneFaxNumber>0421387984</thir:phoneFaxNumber>
+
+<thir:type>WO</thir:type>
+
+</thir:telephoneFax>
+
+</thir:phoneFaxNums>
+
+</thir:commsChannels>
+
+
+<thir:bankAccounts>
+
+
+<thir:bankAccountData>
+
+<thir:bankCode>12</thir:bankCode>
+
+<thir:branchCode>122</thir:branchCode>
+
+<thir:branchName>AutomationBranch</thir:branchName>
+
+<thir:bankAccountType>AutoAcctType</thir:bankAccountType>
+
+<thir:ibanNumber>12345678</thir:ibanNumber>
+
+<thir:swiftCode>123456-487</thir:swiftCode>
+
+<thir:sortCode>98999999</thir:sortCode>
+
+
+<thir:mandate>
+
+<thir:valid>true</thir:valid>
+
+<thir:reference>MandateReferenceAuto</thir:reference>
+
+<thir:signedDate>2000-01-10</thir:signedDate>
+
+</thir:mandate>
+
+<thir:bankAccountName>MandateAcctAutomation</thir:bankAccountName>
+
+<thir:bankAccountNumber>525252696969</thir:bankAccountNumber>
+
+<thir:isDirectDebitBankAccount>true</thir:isDirectDebitBankAccount>
+
+</thir:bankAccountData>
+
+</thir:bankAccounts>
+
+
+<thir:addresses>
+
+
+<thir:address>
+
+
+<thir:addressId>
+
+<thir:externalSystemId>24</thir:externalSystemId>
+
+<thir:thirdPartyRepositoryId>22</thir:thirdPartyRepositoryId>
+
+</thir:addressId>
+
+
+<thir:addressType>
+
+<thir:cmsCode>25</thir:cmsCode>
+
+<thir:externalCode>25</thir:externalCode>
+
+</thir:addressType>
+
+<thir:locality>locality</thir:locality>
+
+<thir:buildingNumber>12-189-1</thir:buildingNumber>
+
+<thir:buildingName>BMWBuildingName</thir:buildingName>
+
+<thir:subBuildingNumber>15</thir:subBuildingNumber>
+
+<thir:streetNumber>101</thir:streetNumber>
+
+<thir:street>Miller Steert</thir:street>
+
+<thir:postTown>Sydney</thir:postTown>
+
+<thir:county>NorthSydney</thir:county>
+
+<thir:postCode>2065</thir:postCode>
+
+<thir:streetType>Avenue</thir:streetType>
+
+<thir:isPrimaryMailing>false</thir:isPrimaryMailing>
+
+</thir:address>
+
+
+<thir:address>
+
+
+<thir:addressType>
+
+<thir:cmsCode>12</thir:cmsCode>
+
+<thir:externalCode>12</thir:externalCode>
+
+</thir:addressType>
+
+<thir:locality>locality</thir:locality>
+
+<thir:buildingNumber>7</thir:buildingNumber>
+
+<thir:buildingName>BMWBuildingName</thir:buildingName>
+
+<thir:subBuildingNumber>8</thir:subBuildingNumber>
+
+<thir:streetNumber>88</thir:streetNumber>
+
+<thir:street>Miller Stret</thir:street>
+
+<thir:postTown>town</thir:postTown>
+
+<thir:county>county</thir:county>
+
+<thir:postCode>BT75 NSW</thir:postCode>
+
+<thir:streetType>Street</thir:streetType>
+
+<thir:isPrimaryMailing>false</thir:isPrimaryMailing>
+
+</thir:address>
+
+</thir:addresses>
+
+<thir:gender>F</thir:gender>
+
+<thir:maritalStatus>D</thir:maritalStatus>
+
+<thir:dateOfBirth>1973-08-08</thir:dateOfBirth>
+
+<thir:firstName>TestFirstNameAPI</thir:firstName>
+
+<thir:middleName>TestMiddlename</thir:middleName>
+
+<thir:surname>TestSurnameAutoA</thir:surname>
+
+<thir:directMarketingPost>false</thir:directMarketingPost>
+
+<thir:numberOfDependants>78</thir:numberOfDependants>
+
+<thir:title>Mrs</thir:title>
+
+<thir:suffix>123</thir:suffix>
+
+
+<thir:suffixCode>
+
+<thir:cmsCode>12</thir:cmsCode>
+
+<thir:externalCode>12</thir:externalCode>
+
+</thir:suffixCode>
+
+<thir:socialSecurityNumber>12366347</thir:socialSecurityNumber>
+
+<thir:socialInsuranceNumber>189566399LL8774</thir:socialInsuranceNumber>
+
+<thir:maidenName>MaidenNameAutoApi</thir:maidenName>
+
+<thir:motabilityFlag>false</thir:motabilityFlag>
+
+<thir:countryOfBirth>DE</thir:countryOfBirth>
+
+<thir:driversLic>6767676767</thir:driversLic>
+
+<thir:employer>WhiteClarkeGroupAUTO API</thir:employer>
+
+<thir:employmentStatus>2</thir:employmentStatus>
+
+<thir:occupation>EngineerAutoAPI</thir:occupation>
+
+
+<thir:occupationCode>
+
+<thir:cmsCode>1</thir:cmsCode>
+
+</thir:occupationCode>
+
+<thir:annualIncome>7878787878</thir:annualIncome>
+
+
+<thir:industrySubCode>
+
+<thir:cmsCode>1</thir:cmsCode>
+
+</thir:industrySubCode>
+
+
+<thir:baselClassCode>
+
+<thir:cmsCode>1</thir:cmsCode>
+
+</thir:baselClassCode>
+
+
+<thir:ctryNationality>
+
+<thir:cmsCode>DE</thir:cmsCode>
+
+<thir:externalCode>DE</thir:externalCode>
+
+</thir:ctryNationality>
+
+
+<thir:preferredLanguage>
+
+<thir:cmsCode>2</thir:cmsCode>
+
+</thir:preferredLanguage>
+
+<thir:previousName>PreviousnameBMWAUTOAPI</thir:previousName>
+
+<thir:privacyConsent>true</thir:privacyConsent>
+
+<!--<thir:email>test@gmail.com</thir:email>-->
+
+
+
+<thir:identifications>
+
+
+<thir:identification>
+
+
+<thir:identificationDocumentTypeCode>
+
+<thir:cmsCode>1212</thir:cmsCode>
+
+</thir:identificationDocumentTypeCode>
+
+<thir:issuedDate>1991-03-15</thir:issuedDate>
+
+<thir:dateExpired>2007-03-15</thir:dateExpired>
+
+<!--<thir:identificationDocumentNumber>1</thir:identificationDocumentNumber>-->
+
+
+<thir:issuingEntity>DHS</thir:issuingEntity>
+
+
+<thir:issuingCountryCode>
+
+<thir:cmsCode>DE</thir:cmsCode>
+
+<thir:externalCode>extCode_IdentiIssuingCountry</thir:externalCode>
+
+</thir:issuingCountryCode>
+
+</thir:identification>
+
+
+<thir:identification>
+
+
+<thir:identificationDocumentTypeCode>
+
+<thir:cmsCode>12121</thir:cmsCode>
+
+</thir:identificationDocumentTypeCode>
+
+<thir:issuedDate>1991-03-15</thir:issuedDate>
+
+<thir:dateExpired>2010-03-15</thir:dateExpired>
+
+<!--<thir:identificationDocumentNumber>1</thir:identificationDocumentNumber>-->
+
+
+<thir:issuingEntity>GOV</thir:issuingEntity>
+
+
+<thir:issuingCountryCode>
+
+<thir:cmsCode>DE</thir:cmsCode>
+
+<thir:externalCode>extCode_IdentiIssuingCountry</thir:externalCode>
+
+</thir:issuingCountryCode>
+
+</thir:identification>
+
+</thir:identifications>
+
+<thir:businessName>oldname</thir:businessName>
+
+
+<thir:customerStatus>
+
+<thir:cmsCode>2</thir:cmsCode>
+
+</thir:customerStatus>
+
+<thir:incorporationDate>1963-02-14Z</thir:incorporationDate>
+
+<thir:politicallyExposedPerson>true</thir:politicallyExposedPerson>
+
+<thir:isStaff>true</thir:isStaff>
+
+<!--Not mapped-->
+
+
+<thir:isDeceased>false</thir:isDeceased>
+
+<thir:contactPerson>VamcAutomationTest</thir:contactPerson>
+
+<thir:vatNumber>14797</thir:vatNumber>
+
+<thir:vatCode>12345</thir:vatCode>
+
+<!--Not mapped-->
+
+
+<thir:isNegativeinfo>false</thir:isNegativeinfo>
+
+<thir:salutation>Mr</thir:salutation>
+
+
+<thir:organisationType>
+
+<thir:cmsCode>C</thir:cmsCode>
+
+</thir:organisationType>
+
+<thir:taxNumber>123645</thir:taxNumber>
+
+
+<thir:partnerCode>
+
+<thir:cmsCode>137</thir:cmsCode>
+
+</thir:partnerCode>
+
+
+<thir:industryCode>
+
+<thir:cmsCode>852</thir:cmsCode>
+
+</thir:industryCode>
+
+<thir:trustVatNo>798</thir:trustVatNo>
+
+<thir:certificateNumber>1236</thir:certificateNumber>
+
+<thir:businessTypeDesc>Business Type Description</thir:businessTypeDesc>
+
+
+<thir:businessTypeCode>
+
+<thir:cmsCode>2</thir:cmsCode>
+
+</thir:businessTypeCode>
+
+
+<thir:balanceSheetCode>
+
+<thir:cmsCode>1</thir:cmsCode>
+
+</thir:balanceSheetCode>
+
+<thir:dateOfDeath>2015-04-02</thir:dateOfDeath>
+
+<thir:isPaymentLocking>true</thir:isPaymentLocking>
+
+<thir:intraGrpConsldnCode>555555</thir:intraGrpConsldnCode>
+
+
+<thir:emails>
+
+
+<thir:email>
+
+
+<thir:emailType>
+
+<thir:cmsCode>1</thir:cmsCode>
+
+</thir:emailType>
+
+<thir:emailAddress>anitha@gmail.com</thir:emailAddress>
+
+<thir:isPrimaryMailing>false</thir:isPrimaryMailing>
+
+<thir:isConsent>false</thir:isConsent>
+
+</thir:email>
+
+</thir:emails>
+
+</thir:partner>
+
+<!--<thir:thirdPartyDetails> <thir:thirdPartyDetail> <thir:dealer> <thir:thirdPartyType>DEALER</thir:thirdPartyType> <thir:sourceType> <thir:cmsCode>1</thir:cmsCode> <thir:externalCode/> </thir:sourceType> <thir:region>02</thir:region> <thir:dealerGroupId>02</thir:dealerGroupId> <thir:dealerCompanyId>098</thir:dealerCompanyId> <thir:riskClassificationCode>1</thir:riskClassificationCode> </thir:dealer> </thir:thirdPartyDetail> </thir:thirdPartyDetails>-->
+
+
+
+<thir:thirdPartyDetails>
+
+
+<thir:thirdPartyDetail>
+
+
+<thir:dealer>
+
+<thir:thirdPartyType>DEALER</thir:thirdPartyType>
+
+
+<thir:sourceType>
+
+<thir:cmsCode>3</thir:cmsCode>
+
+</thir:sourceType>
+
+<!--<thir:region>2</thir:region>-->
+
+
+<!--<thir:dealerGroupId>2</thir:dealerGroupId>-->
+
+
+<!--<thir:dealerCompanyId>2</thir:dealerCompanyId>-->
+
+
+<!--<thir:riskClassificationCode>11</thir:riskClassificationCode>-->
+
+
+<!--<thir:dealerBranch>-1</thir:dealerBranch>-->
+
+
+<thir:region>2</thir:region>
+
+<thir:dealerGroupId>2</thir:dealerGroupId>
+
+<thir:dealerCompanyId>2</thir:dealerCompanyId>
+
+<thir:riskClassificationCode>11</thir:riskClassificationCode>
+
+<thir:dealerBranch>-1</thir:dealerBranch>
+
+</thir:dealer>
+
+</thir:thirdPartyDetail>
+
+</thir:thirdPartyDetails>
+
+
+<thir:applicationInfo>
+
+
+<com:tenantInfo>
+
+<com:tenantCode>49</com:tenantCode>
+
+</com:tenantInfo>
+
+
+<com:securityAudit>
+
+<com:messageId>123456789</com:messageId>
+
+<!--<com:timestamp>2017-07-30T08:06:33.271Z</com:timestamp>-->
+
+
+<com:timestamp>2017-08-09T11:40:38</com:timestamp>
+
+<com:clientAppId>appId</com:clientAppId>
+
+<com:userId>SYSTEM</com:userId>
+
+<com:clientLanguage>en_AU</com:clientLanguage>
+
+</com:securityAudit>
+
+</thir:applicationInfo>
+
+</thir:updateThirdParty>
+
+</soapenv:Body>
+
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="6394b8a0-a469-44b2-9f67-7a2e39e20663"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="7633308a-d75f-4225-8100-803c5525f67e"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="cd3cbf16-7bf6-452d-aa43-d58a7794473d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d74599af-5d7c-498a-b762-50be3808d879"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="42e903b6-cb05-4346-91ba-5ce7dfd12804"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="0c4de42d-09a1-4460-b14b-9a570291d6d7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="request" name="Copy of UpdateThirdParty- DealerSuccess" id="95b654c8-973b-4f13-808a-7bded5247a13" disabled="true"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>updateThirdParty</con:operation><con:request name="Copy of UpdateThirdParty- DealerSuccess" id="43d3b409-0060-42aa-bbdd-1a8bc8d8111c"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvbmwdev01:28080/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:thir="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <thir:updateThirdParty>
+         <thir:partner>
+            <thir:type>I</thir:type>
+            <thir:thirdPartyId>
+               <thir:bpmId>97351</thir:bpmId>
+            </thir:thirdPartyId>
+            <thir:role>A</thir:role>
+            <thir:commsChannels>
+               <thir:contactViaSMS>false</thir:contactViaSMS>
+               <thir:phoneFaxNums>
+                  <thir:telephoneFax>
+                     <thir:phoneFaxNumber>02 - 040404040404</thir:phoneFaxNumber>
+                     <thir:type>HO</thir:type>
+                  </thir:telephoneFax>
+                  <thir:telephoneFax>
+                     <thir:phoneFaxNumber>0421387984</thir:phoneFaxNumber>
+                     <thir:type>WO</thir:type>
+                  </thir:telephoneFax>
+               </thir:phoneFaxNums>
+            </thir:commsChannels>
+            <thir:bankAccounts>
+               <thir:bankAccountData>
+                  <thir:bankCode>12</thir:bankCode>
+                  <thir:branchCode>122</thir:branchCode>
+                  <thir:branchName>AutomationBranch</thir:branchName>
+                  <thir:bankAccountType>AutoAcctType</thir:bankAccountType>
+                  <thir:ibanNumber>12345678</thir:ibanNumber>
+                  <thir:swiftCode>123456-487</thir:swiftCode>
+                  <thir:sortCode>98999999</thir:sortCode>
+                  <thir:mandate>
+                     <thir:valid>true</thir:valid>
+                     <thir:reference>MandateReferenceAuto</thir:reference>
+                     <!--<thir:signedDate>2000-01-10</thir:signedDate>-->
+                  </thir:mandate>
+                  <thir:bankAccountName>MandateAcctAutomation</thir:bankAccountName>
+                  <thir:bankAccountNumber>525252696969</thir:bankAccountNumber>
+                  <thir:isDirectDebitBankAccount>true</thir:isDirectDebitBankAccount>
+               </thir:bankAccountData>
+            </thir:bankAccounts>
+            <thir:addresses>
+               <thir:address>
+                  <thir:addressId>
+                     <thir:externalSystemId>24</thir:externalSystemId>
+                     <thir:thirdPartyRepositoryId>22</thir:thirdPartyRepositoryId>
+                  </thir:addressId>
+                  <thir:addressType>
+                     <thir:cmsCode>25</thir:cmsCode>
+                     <thir:externalCode>25</thir:externalCode>
+                  </thir:addressType>
+                  <thir:locality>locality</thir:locality>
+                  <thir:buildingNumber>12-189-1</thir:buildingNumber>
+                  <thir:buildingName>BMWBuildingName</thir:buildingName>
+                  <thir:subBuildingNumber>15</thir:subBuildingNumber>
+                  <thir:streetNumber>101</thir:streetNumber>
+                  <thir:street>Miller Steert</thir:street>
+                  <thir:postTown>Sydney</thir:postTown>
+                  <thir:county>NorthSydney</thir:county>
+                  <thir:postCode>2065</thir:postCode>
+                  <thir:streetType>Avenue</thir:streetType>
+                  <thir:isPrimaryMailing>false</thir:isPrimaryMailing>
+               </thir:address>
+               <thir:address>
+                  <thir:addressType>
+                     <thir:cmsCode>12</thir:cmsCode>
+                     <thir:externalCode>12</thir:externalCode>
+                  </thir:addressType>
+                  <thir:locality>locality</thir:locality>
+                  <thir:buildingNumber>7</thir:buildingNumber>
+                  <thir:buildingName>BMWBuildingName</thir:buildingName>
+                  <thir:subBuildingNumber>8</thir:subBuildingNumber>
+                  <thir:streetNumber>88</thir:streetNumber>
+                  <thir:street>Miller Stret</thir:street>
+                  <thir:postTown>town</thir:postTown>
+                  <thir:county>county</thir:county>
+                  <thir:postCode>BT75 NSW</thir:postCode>
+                  <thir:streetType>Street</thir:streetType>
+                  <thir:isPrimaryMailing>false</thir:isPrimaryMailing>
+               </thir:address>
+            </thir:addresses>
+            <thir:gender>F</thir:gender>
+            <thir:maritalStatus>D</thir:maritalStatus>
+            <!--<thir:dateOfBirth>1973-08-08</thir:dateOfBirth>-->
+            <thir:firstName>TestFirstNameAPI</thir:firstName>
+            <thir:middleName>TestMiddlename</thir:middleName>
+            <thir:surname>TestSurnameAutoA</thir:surname>
+            <thir:directMarketingPost>false</thir:directMarketingPost>
+            <thir:numberOfDependants>78</thir:numberOfDependants>
+            <thir:title>Mrs</thir:title>
+            <thir:suffix>suffix</thir:suffix>
+            <thir:suffixCode>
+               <thir:cmsCode>1</thir:cmsCode>
+               <thir:externalCode>1</thir:externalCode>
+            </thir:suffixCode>
+            <thir:socialSecurityNumber>12366347</thir:socialSecurityNumber>
+            <thir:socialInsuranceNumber>189566399LL8774</thir:socialInsuranceNumber>
+            <thir:maidenName>MaidenNameAutoApi</thir:maidenName>
+            <thir:motabilityFlag>false</thir:motabilityFlag>
+            <thir:countryOfBirth>GB</thir:countryOfBirth>
+            <thir:driversLic>6767676767</thir:driversLic>
+            <thir:employer>WhiteClarkeGroupAUTO API</thir:employer>
+            <thir:employmentStatus>2</thir:employmentStatus>
+            <thir:occupation>EngineerAutoAPI</thir:occupation>
+            <thir:occupationCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:occupationCode>
+            <thir:annualIncome>7878787878</thir:annualIncome>
+            <thir:industrySubCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:industrySubCode>
+            <thir:baselClassCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:baselClassCode>
+            <thir:ctryNationality>
+               <thir:cmsCode>GB</thir:cmsCode>
+               <thir:externalCode>GB</thir:externalCode>
+            </thir:ctryNationality>
+            <thir:preferredLanguage>
+               <thir:cmsCode>2</thir:cmsCode>
+            </thir:preferredLanguage>
+            <thir:previousName>PreviousnameBMWAUTOAPI</thir:previousName>
+            <thir:privacyConsent>true</thir:privacyConsent>
+            <!--<thir:email>test@gmail.com</thir:email>-->
+            <thir:identifications>
+               <thir:identification>
+                  <thir:identificationDocumentTypeCode>
+                     <thir:cmsCode>1212</thir:cmsCode>
+                  </thir:identificationDocumentTypeCode>
+                  <thir:issuedDate>1991-03-15</thir:issuedDate>
+                  <thir:dateExpired>2007-03-15</thir:dateExpired>
+                  <!--<thir:identificationDocumentNumber>1</thir:identificationDocumentNumber>-->
+                  <thir:issuingEntity>DHS</thir:issuingEntity>
+                  <thir:issuingCountryCode>
+                     <thir:cmsCode>GB</thir:cmsCode>
+                     <thir:externalCode>extCode_IdentiIssuingCountry</thir:externalCode>
+                  </thir:issuingCountryCode>
+               </thir:identification>
+               <thir:identification>
+                  <thir:identificationDocumentTypeCode>
+                     <thir:cmsCode>1212</thir:cmsCode>
+                  </thir:identificationDocumentTypeCode>
+                  <thir:issuedDate>1991-03-15</thir:issuedDate>
+                  <thir:dateExpired>2010-03-15</thir:dateExpired>
+                  <!--<thir:identificationDocumentNumber>1</thir:identificationDocumentNumber>-->
+                  <thir:issuingEntity>GOV</thir:issuingEntity>
+                  <thir:issuingCountryCode>
+                     <thir:cmsCode>GB</thir:cmsCode>
+                     <thir:externalCode>extCode_IdentiIssuingCountry</thir:externalCode>
+                  </thir:issuingCountryCode>
+               </thir:identification>
+            </thir:identifications>
+            <thir:businessName>oldname</thir:businessName>
+            <thir:customerStatus>
+               <thir:cmsCode>2</thir:cmsCode>
+            </thir:customerStatus>
+            <thir:incorporationDate>1963-02-14Z</thir:incorporationDate>
+            <thir:politicallyExposedPerson>true</thir:politicallyExposedPerson>
+            <thir:isStaff>true</thir:isStaff>
+            <!--Not mapped-->
+            <!--<thir:ctryResidence>GB</thir:ctryResidence>-->
+            <thir:isDeceased>false</thir:isDeceased>
+            <thir:contactPerson>VamcAutomationTest</thir:contactPerson>
+            <thir:vatNumber>14797</thir:vatNumber>
+            <thir:vatCode>12345</thir:vatCode>
+            <!--Not mapped-->
+            <thir:isNegativeinfo>false</thir:isNegativeinfo>
+            <thir:salutation>Mr</thir:salutation>
+            <thir:organisationType>
+               <thir:cmsCode>C</thir:cmsCode>
+            </thir:organisationType>
+            <thir:taxNumber>123645</thir:taxNumber>
+            <thir:partnerCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:partnerCode>
+            <thir:industryCode>
+               <thir:cmsCode>852</thir:cmsCode>
+            </thir:industryCode>
+            <thir:trustVatNo>798</thir:trustVatNo>
+            <thir:certificateNumber>1236</thir:certificateNumber>
+            <thir:businessTypeDesc>Business Type Description</thir:businessTypeDesc>
+            <thir:businessTypeCode>
+               <thir:cmsCode>2</thir:cmsCode>
+            </thir:businessTypeCode>
+            <thir:balanceSheetCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:balanceSheetCode>
+            <thir:dateOfDeath>2015-04-02</thir:dateOfDeath>
+            <thir:isPaymentLocking>true</thir:isPaymentLocking>
+            <thir:intraGrpConsldnCode>555555</thir:intraGrpConsldnCode>
+            <thir:emails>
+               <thir:email>
+                  <thir:emailType>
+                     <thir:cmsCode>1</thir:cmsCode>
+                  </thir:emailType>
+                  <thir:emailAddress>anitha@gmail.com</thir:emailAddress>
+                  <thir:isPrimaryMailing>false</thir:isPrimaryMailing>
+                  <thir:isConsent>false</thir:isConsent>
+               </thir:email>
+            </thir:emails>
+         </thir:partner>
+         <!--<thir:thirdPartyDetails>
+            <thir:thirdPartyDetail>
+               <thir:dealer>
+                  <thir:thirdPartyType>DEALER</thir:thirdPartyType>
+                  <thir:sourceType>
+                     <thir:cmsCode>1</thir:cmsCode>
+                     <thir:externalCode/>
+                  </thir:sourceType>
+                  <thir:region>02</thir:region>
+                  <thir:dealerGroupId>02</thir:dealerGroupId>
+                  <thir:dealerCompanyId>098</thir:dealerCompanyId>
+                  <thir:riskClassificationCode>1</thir:riskClassificationCode>
+               </thir:dealer>
+            </thir:thirdPartyDetail>
+         </thir:thirdPartyDetails>-->
+         <thir:thirdPartyDetails>
+            <thir:thirdPartyDetail>
+               <thir:dealer>
+                  <thir:thirdPartyType>DEALER</thir:thirdPartyType>
+                  <thir:sourceType>
+                     <thir:cmsCode>1</thir:cmsCode>
+                     <!--<thir:cmsCode>11</thir:cmsCode>-->
+                  </thir:sourceType>
+                  <!--<thir:region>2</thir:region>-->
+                  <!--<thir:dealerGroupId>0</thir:dealerGroupId>-->
+                  <!--<thir:dealerCompanyId>0</thir:dealerCompanyId>-->
+                  <!--<thir:riskClassificationCode>0</thir:riskClassificationCode>-->
+                  <!--<thir:dealerBranch>2</thir:dealerBranch>-->
+                  <thir:region>2</thir:region>
+                  <!--<thir:dealerGroupId>0</thir:dealerGroupId>-->
+                  <!--<thir:dealerCompanyId>0</thir:dealerCompanyId>-->
+                  <!--<thir:riskClassificationCode>0</thir:riskClassificationCode>-->
+                  <thir:dealerBranch>2</thir:dealerBranch>
+               </thir:dealer>
+            </thir:thirdPartyDetail>
+         </thir:thirdPartyDetails>
+         <thir:applicationInfo>
+            <com:tenantInfo>
+               <com:tenantCode>49</com:tenantCode>
+            </com:tenantInfo>
+            <com:securityAudit>
+               <com:messageId>123456789</com:messageId>
+               <!--<com:timestamp>2017-07-30T08:06:33.271Z</com:timestamp>-->
+               <com:timestamp>2017-08-16T10:58:50</com:timestamp>
+               <com:clientAppId>appId</com:clientAppId>
+               <com:userId>SYSTEM</com:userId>
+               <com:clientLanguage>en_AU</com:clientLanguage>
+            </com:securityAudit>
+         </thir:applicationInfo>
+      </thir:updateThirdParty>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="6394b8a0-a469-44b2-9f67-7a2e39e20663"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="7633308a-d75f-4225-8100-803c5525f67e"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="cd3cbf16-7bf6-452d-aa43-d58a7794473d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d74599af-5d7c-498a-b762-50be3808d879"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="42e903b6-cb05-4346-91ba-5ce7dfd12804"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="0c4de42d-09a1-4460-b14b-9a570291d6d7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="assertionteststep" name="Assertion" id="40bafa64-dad9-466d-8bd4-81a7fac3457f"><con:settings/><con:config xsi:type="con:AssertionTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:entry><con:id>e20d487d-6143-4bf0-b4fc-d1bd34a37830</con:id><con:isGroup>false</con:isGroup><con:sourceId>3e2dbc68-a1b1-429b-8957-e4999cb5bc2d</con:sourceId><con:propertyName>TestResult</con:propertyName><con:assertion type="Simple Equals" name="Equals" id="5180996a-0c8e-48e7-8c73-3a1cd1b3661c"><con:configuration><patternText>PASS</patternText><caseSensitive>true</caseSensitive></con:configuration></con:assertion></con:entry></con:config></con:testStep><con:properties><con:property><con:name>ACCT_BPMID</con:name><con:value>25301</con:value></con:property><con:property><con:name>TimeStamp</con:name><con:value>2017-08-16T16:37:35</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>0e50777a-f101-4a06-98ad-0ac99e5c6432</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>dacf0559-223d-40ca-983e-8e5b22b97c72</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>4859751e-3ad5-4a02-aafc-0b39b3a7e9f9</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>6fd8dd1d-22c5-400e-a705-65bdf5836bc7</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>683ac78c-f2db-4ba4-a610-7acccc6072dc</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>2938ebcf-9614-4c24-86ff-0fa4e74cd125</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>

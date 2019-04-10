@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:operation id="e328b6af-98e8-4a29-b0fb-f1d6b31a3694" isOneWay="false" action="updatePaymentBlock" name="updatePaymentBlock" bindingOperationName="updatePaymentBlock" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="001546bc-afda-48e7-a1f5-4709bb2fd338fileName">updatePaymentBlock</con:setting><con:setting id="e328b6af-98e8-4a29-b0fb-f1d6b31a3694fileName">updatePaymentBlock</con:setting></con:settings><con:call id="e4e19f62-8e15-45bd-a184-625425ec9f08" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvbmwdev01:28080/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cre="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CreatePaymentBlock" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <cre:createPaymentBlock>\r
+         <cre:listOfPaymentBlock>\r
+            <!--Zero or more repetitions:-->\r
+            <cre:paymentBlock>\r
+               <!--Optional:-->\r
+               <cre:contractNumber>\r
+                  <!--Optional:-->\r
+                  <com:externalContractNumber>?</com:externalContractNumber>\r
+                  <!--Optional:-->\r
+                  <com:internalContractNumber>?</com:internalContractNumber>\r
+               </cre:contractNumber>\r
+               <cre:invoiceNumber>?</cre:invoiceNumber>\r
+               <cre:paymentBlock>?</cre:paymentBlock>\r
+            </cre:paymentBlock>\r
+         </cre:listOfPaymentBlock>\r
+         <cre:applicationInfo>\r
+            <!--Optional:-->\r
+            <com:tenantInfo>\r
+               <com:tenantCode>?</com:tenantCode>\r
+            </com:tenantInfo>\r
+            <!--Optional:-->\r
+            <com:securityAudit>\r
+               <com:messageId>?</com:messageId>\r
+               <com:timestamp>?</com:timestamp>\r
+               <com:clientAppId>?</com:clientAppId>\r
+               <com:userId>?</com:userId>\r
+               <!--Optional:-->\r
+               <com:authorisingUserId>?</com:authorisingUserId>\r
+               <com:clientLanguage>?</com:clientLanguage>\r
+            </com:securityAudit>\r
+         </cre:applicationInfo>\r
+      </cre:createPaymentBlock>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508" action="updatePaymentBlock"/><con:environmentSpec><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:call><con:call id="658dd3e1-8cca-4428-803c-c7850ab687fe" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://mkvsudfsdock11:81/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cre="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CreatePaymentBlock" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <cre:createPaymentBlock>\r
+         <cre:listOfPaymentBlock>\r
+            <!--Zero or more repetitions:-->\r
+            <cre:paymentBlock>\r
+               <!--Optional:-->\r
+               <cre:contractNumber>\r
+                  <!--Optional:-->\r
+                  <com:externalContractNumber>?</com:externalContractNumber>\r
+                  <!--Optional:-->\r
+                  <com:internalContractNumber>?</com:internalContractNumber>\r
+               </cre:contractNumber>\r
+               <cre:invoiceNumber>?</cre:invoiceNumber>\r
+               <cre:paymentBlock>?</cre:paymentBlock>\r
+            </cre:paymentBlock>\r
+         </cre:listOfPaymentBlock>\r
+         <cre:applicationInfo>\r
+            <!--Optional:-->\r
+            <com:tenantInfo>\r
+               <com:tenantCode>?</com:tenantCode>\r
+            </com:tenantInfo>\r
+            <!--Optional:-->\r
+            <com:securityAudit>\r
+               <com:messageId>?</com:messageId>\r
+               <com:timestamp>?</com:timestamp>\r
+               <com:clientAppId>?</com:clientAppId>\r
+               <com:userId>?</com:userId>\r
+               <!--Optional:-->\r
+               <com:authorisingUserId>?</com:authorisingUserId>\r
+               <com:clientLanguage>?</com:clientLanguage>\r
+            </com:securityAudit>\r
+         </cre:applicationInfo>\r
+      </cre:createPaymentBlock>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508" action="updatePaymentBlock"/><con:environmentSpec><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:call><con:environmentSpec><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:operation>

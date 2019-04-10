@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="fbe4e219-dbe3-450f-922b-b2c24bcaf720" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Automated getContractNotes" searchProperties="true" timeout="0" wsrmEnabled="false" wsrmVersion="1.0" wsrmAckTo="" amfAuthorisation="false" amfEndpoint="" amfLogin="" amfPassword="" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.panels.testcase.JTestRunLog$OptionsForm@max_rows">1000</con:setting><con:setting id="com.eviware.soapui.impl.wsdl.panels.testcase.JTestRunLog$OptionsForm@errors_only">false</con:setting><con:setting id="IncludeOverview">true</con:setting><con:setting id="IncludeResults">true</con:setting><con:setting id="FlowLayout">false</con:setting><con:setting id="ErrorDetails">true</con:setting><con:setting id="IncludeCoverage">true</con:setting><con:setting id="c0e79f01-7902-4f86-bc18-cc87772dcf53fileName">Automated-getContractNotes</con:setting><con:setting id="fbe4e219-dbe3-450f-922b-b2c24bcaf720fileName">Automated-getContractNotes</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="datasource" name="getExceldata" id="85e820ce-7338-4b2f-874f-6789412d54f9"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Excel"><con:configuration><file>C:/CMS Automation/API New/new/apiregression/getContractNotes.xlsx</file><worksheet>${#Project#Worksheet}</worksheet><cell>A2</cell><ignoreEmpty>true</ignoreEmpty><evaluateFormulas>false</evaluateFormulas></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:preload>false</con:preload><con:property>Row</con:property><con:property>ExpectedAPIoutput</con:property><con:property>Scenario</con:property><con:property>contractNumber</con:property><con:property>messageId</con:property><con:property>timestamp</con:property><con:property>clientAppId</con:property><con:property>userId</con:property><con:startRow>0</con:startRow><con:endRow/><con:completeLastOperation>true</con:completeLastOperation><con:failOnEmpty>false</con:failOnEmpty><con:gotoLoopOnEmpty>false</con:gotoLoopOnEmpty><con:trimValues>false</con:trimValues><con:entitizeValues>false</con:entitizeValues><con:restartOnRun>true</con:restartOnRun><con:expandProperties>false</con:expandProperties></con:config></con:testStep><con:testStep type="groovy" name="resetIterationValueToOne" id="f8799ac3-dd82-4e4c-a250-9400979728fe"><con:settings/><con:config><script>log.info "**************TEST SCRIPT START : getContract Notes API**************"
+
+testRunner.testCase.setPropertyValue( "#TestCase#itervationValue", "1" )
+log.info "iterationValue is reset to 	--  1"
+def contractNumber = context.expand( '${getExceldata#contractNumber}' )
+log.info "contract number   "+ contractNumber
+testRunner.testCase.setPropertyValue( "contract", contractNumber )</script></con:config></con:testStep><con:testStep type="datasource" name="rowCountfromDatabase" id="5a5477ae-e22b-4dff-9fa5-246ef016b621"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;xml-fragment/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>Select COUNT(*)
+From LNOTEPAD
+Where LNOTEPAD.NOTEPAD_LOAN = ${#TestCase#contract}</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>COUNT(*)</con:property><con:startRow>0</con:startRow><con:endRow/><con:failOnEmpty>true</con:failOnEmpty><con:gotoLoopOnEmpty>true</con:gotoLoopOnEmpty><con:trimValues>true</con:trimValues><con:entitizeValues>false</con:entitizeValues><con:restartOnRun>true</con:restartOnRun><con:expandProperties>false</con:expandProperties></con:config></con:testStep><con:testStep type="datasource" name="getDataFromDatabase" id="2b8e314b-77c6-4208-9672-b6c0ecd38466"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;xml-fragment/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>Select LNOTEPAD.A4GLIDENTITY, LNOTEPAD.NOTEPAD_LOAN, LNOTEPAD.NOTEPAD_LONG_DATE,
+  LNOTEPAD.NOTEPAD_LINE, LNOTEPAD.NOTEPAD_DATA
+From LNOTEPAD
+Where LNOTEPAD.NOTEPAD_LOAN =${#TestCase#contract}  order by NOTEPAD_LONG_DATE desc</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>A4GLIDENTITY</con:property><con:property>NOTEPAD_LOAN</con:property><con:property>NOTEPAD_LONG_DATE</con:property><con:property>NOTEPAD_LINE</con:property><con:property>NOTEPAD_DATA</con:property><con:startRow>0</con:startRow><con:endRow/><con:completeLastOperation>true</con:completeLastOperation><con:failOnEmpty>true</con:failOnEmpty><con:gotoLoopOnEmpty>true</con:gotoLoopOnEmpty><con:trimValues>true</con:trimValues><con:entitizeValues>false</con:entitizeValues><con:restartOnRun>true</con:restartOnRun><con:expandProperties>false</con:expandProperties></con:config></con:testStep><con:testStep type="request" name="getContractNotes" id="1266866b-a7e1-497a-af31-d589c46ef85c"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>getContractNotes</con:operation><con:request name="getContractNotes" id="a55c7354-4477-492c-8c3b-5057bf2a1b68" defaultOutgoingWss="" defaultIncomingWss="" outgoingWss="" incomingWss=""><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@remove_empty_content">true</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvdfsdev01/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:con="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <con:getContractNotes>
+         
+         <con:externalContractNumber>${#TestCase#contract}</con:externalContractNumber><con:audit>
+            <com:messageId>${getExceldata#messageId}</com:messageId>
+            <com:timestamp>${getExceldata#timestamp}</com:timestamp>
+            <com:clientAppId>${getExceldata#clientAppId}</com:clientAppId>
+            <com:userId>${getExceldata#userId}</com:userId><com:clientLanguage>en_GB</com:clientLanguage>
+         </con:audit>
+      </con:getContractNotes>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="bc6c6f29-8af9-4afa-9b20-e4304ec1e604"/><con:assertion type="Schema Compliance" id="6553adf0-db12-467c-a223-b60d7684335d"><con:configuration/></con:assertion><con:assertion type="GroovyScriptAssertion" id="fcf59896-9c4c-4b4b-81ed-1ba2e7ba5539" name="Assert node [notedate]"><con:configuration><scriptText>import com.eviware.soapui.support.XmlHolder
+
+def holder = new XmlHolder( messageExchange.responseContentAsXml )
+//holder.namespaces["ns1"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract"
+//def node = holder.getDomNode( "//ns1:getContractNotesResponse[1]/ns1:listOfContractNotes[1]/ns1:contractNote[1]/ns1:notedate[1]" )
+//
+//assert node != null
+holder.namespaces["ns"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract"
+for( item in holder.getNodeValues( "//ns:item" ))
+log.info "Item : [$item]"</scriptText></con:configuration></con:assertion><con:assertion type="GroovyScriptAssertion" id="919740a2-7c52-49fa-8643-c696821069d1" name="Assert node [row Count from DB matches the XML node count]"><con:configuration><scriptText>import com.eviware.soapui.support.XmlHolder
+
+
+def holder = new XmlHolder( messageExchange.responseContentAsXml )
+holder.namespaces["ns1"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract"
+def node = holder.getDomNode( "//ns1:getContractNotesResponse[1]/ns1:listOfContractNotes[1]/ns1:contractNote[1]" )
+def numberOfData = holder["count(//ns1:notedate)"]
+treesize = holder.getNodeValues("//ns1:getContractNotesResponse[1]/ns1:listOfContractNotes[1]/ns1:contractNote[1]/count(*)")
+log.info "node count  from XML response node : " + numberOfData
+def cOUNT = context.expand( '${rowCountfromQuery#COUNT(*)}' )
+log.info "data from DB : " +  cOUNT
+if (numberOfData==cOUNT )
+{
+	log.info "passed"
+}
+</scriptText></con:configuration></con:assertion><con:assertion type="GroovyScriptAssertion" id="7cde3e55-ea1d-4ffb-afdf-2532cf5b63ed" name="Script Assertion" disabled="true"><con:configuration><scriptText>import com.eviware.soapui.support.XmlHolder
+
+
+def holder = new XmlHolder( messageExchange.responseContentAsXml )
+holder.namespaces["ns1"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract"
+def node3 = holder.getDomNode( "//ns1:getContractNotesResponse[1]/ns1:listOfContractNotes[1]/ns1:contractNote[1]" )
+def numberOfData = holder["count(//ns1:notedate)"]
+treesize = holder.getNodeValues("//ns1:getContractNotesResponse[1]/ns1:listOfContractNotes[1]/ns1:contractNote[1]/count(*)")
+log.info "Node count from XML : " + numberOfData
+def cOUNT = context.expand( '${rowCountfromQuery#COUNT(*)}' )
+log.info "Row Count  from datatable :  " +  cOUNT
+def MAX_SIZE = cOUNT
+def nodenotedate = new Object[MAX_SIZE]
+def nodenote = new Object[MAX_SIZE]
+def nodetype = new Object[MAX_SIZE]
+
+
+if (numberOfData==cOUNT )
+{
+
+def response = context.expand( '${getContractNotes#Response#declare namespace ns1=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract\'; //ns1:getContractNotesResponse[1]/ns1:retreiveContractNoteResponse[1]/ns1:listOfContractNotes[1]/ns1:contractNote[1]}' )
+//log.info response.valueOf("contractNote")
+//log.info response
+//for( notedate in holder.getNodeValues( "//ns1:notedate" ))
+//log.info "notedate : [$notedate]"
+//
+//
+//for( note in holder.getNodeValues( "//ns1:note" ))
+//log.info "note : [$note]"
+//
+//for(type in holder.getNodeValues( "//ns1:type" ))
+//log.info "type : [$type]"
+
+//for(int k=0;k&lt;10;k++){
+//log.info "for loop"
+
+//def noded = holder.getDomNode("//ns1:getContractNotesResponse[1]/ns1:retreiveContractNoteResponse[1]/ns1:listOfContractNotes[1]/ns1:contractNote[13]/ns1:note[1]".valueOf().toLocaleString()
+//log.info noded
+def expectedResultMessage = context.expand( '${getContractNotes DataSource#resultMessage}' )
+def node6 = holder.getNodeValues( "//ns1:getContractNotesResponse[1]/ns1:listOfContractNotes[1]/ns1:contractNote[1]")
+log.info  node6
+//use (groovy.xml.dom.DOMCategory) {
+//    for( node in holder.getNodeValues( "//ns1:notedate" )) {
+//        node.children().each { child ->
+//            log.info child
+//        }
+//    }
+//}
+
+//log.info  holder.getDomNode( "//ns1:getContractNotesResponse[1]/ns1:retreiveContractNoteResponse[1]/ns1:listOfContractNotes[1]/ns1:contractNote[+"k"+]/ns1:notedate[1]" )
+//log.info  holder.getDomNode( "//ns1:getContractNotesResponse[1]/ns1:retreiveContractNoteResponse[1]/ns1:listOfContractNotes[1]/ns1:contractNote[+"k"+]/ns1:note[1]" )
+//log.info holder.getDomNode( "//ns1:getContractNotesResponse[1]/ns1:retreiveContractNoteResponse[1]/ns1:listOfContractNotes[1]/ns1:contractNote[+"k"+]/ns1:type[1]" )
+
+//log.info nodenotedate
+//log.info nodenote
+//log.info nodetype
+
+//def nOTEPAD_LONG_DATE = context.expand( '${DataSource#NOTEPAD_LONG_DATE_$k}' )
+//DataSource#CMS_SCHEMA_LNOTEPAD_NOTEPAD_LONG_DATE_0
+//def nOTEPAD_DATA = context.expand( '${DataSource#NOTEPAD_DATA}' )
+//log.info nOTEPAD_LONG_DATE
+//}
+}
+
+</scriptText></con:configuration></con:assertion><con:assertion type="GroovyScriptAssertion" id="21af5065-39ae-4667-b1e0-e210ae300e4d" name="Assert node [notedate]" disabled="true"><con:configuration><scriptText>import com.eviware.soapui.support.XmlHolder
+
+def holder = new XmlHolder( messageExchange.responseContentAsXml )
+holder.namespaces["ns1"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract"
+def node = holder.getDomNode( "//ns1:getContractNotesResponse[1]/ns1:retreiveContractNoteResponse[1]/ns1:listOfContractNotes[1]/ns1:contractNote[1]/ns1:notedate[1]" )
+
+assert node != null
+</scriptText></con:configuration></con:assertion><con:assertion type="GroovyScriptAssertion" id="35e13af6-0d9e-4761-80e2-e85d0ffce378" name="Assert node [note]" disabled="true"><con:configuration><scriptText>import com.eviware.soapui.support.XmlHolder
+
+def holder = new XmlHolder( messageExchange.responseContentAsXml )
+holder.namespaces["ns1"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract"
+def node = holder.getDomNode( "//ns1:getContractNotesResponse[1]/ns1:retreiveContractNoteResponse[1]/ns1:listOfContractNotes[1]/ns1:contractNote[13]/ns1:note[1]" )
+
+assert node != null
+</scriptText></con:configuration></con:assertion><con:assertion type="GroovyScriptAssertion" id="a1ec45b8-bd4f-40ec-899d-6507495af184" name="Assert node [type]" disabled="true"><con:configuration><scriptText>import com.eviware.soapui.support.XmlHolder
+
+def holder = new XmlHolder( messageExchange.responseContentAsXml )
+holder.namespaces["ns1"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract"
+def node = holder.getDomNode( "//ns1:getContractNotesResponse[1]/ns1:retreiveContractNoteResponse[1]/ns1:listOfContractNotes[1]/ns1:contractNote[13]/ns1:type[1]" )
+
+assert node != null
+</scriptText></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="ba5f7dc0-e8db-409c-b494-16037c932774"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4afb3ac9-5034-4c9c-8880-fc76dd54bdc6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3413a0c0-76cc-4f43-9482-3efe9e972e81"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a32f4f82-e311-4f8a-ba4f-accdfcbdadcf"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1d61f86f-f9a2-4364-a52c-3d321cfb1a28"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="b796eeee-b2bf-40b2-9d2a-9d00c30d0dab"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="263f20f9-2653-4f33-8d66-1694d38c9931"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1f7152d8-1be5-485f-bc97-18cbc1aa4ba8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="3b0f4fd5-8397-4067-b032-ecfa22cfa5ff"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="02782eb4-ecaf-43ac-8f0c-0a1eeebbdd7a"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="15dff999-92e5-4da2-8a61-2a9da4ce2988"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script (Validates XML and DB data)" id="c55a5146-a973-49d1-a58a-9ed26ccb4e1b"><con:settings/><con:config><script>
+import com.eviware.soapui.model.testsuite.TestRunner.Status
+import com.eviware.soapui.support.XmlHolder
+import org.apache.log4j.Logger
+
+
+def response = context.expand('${getContractNotes#response}')
+def holder = new XmlHolder(response)
+holder.namespaces["ns1"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract"
+
+arr_dates= holder.getNodeValues('//ns1:notedate')
+arr_note = holder.getNodeValues('//ns1:note')
+arr_type = holder.getNodeValues('//ns1:type')
+def numberOfData = holder["count(//ns1:notedate)"]
+log.info "Count of Nodes notedate 		:" + numberOfData
+//log.info "array count 				:"+arr_dates.length
+
+def itervationValue = testRunner.testCase.getPropertyValue( "#TestCase#itervationValue" )
+def i= itervationValue.toInteger()
+log.info "Iteration value 			:" + i
+
+def arr_date1  = arr_dates[i-1].take(10)
+def xmlDate = arr_date1.replace("-","")
+def xmlNote = arr_note[i-1]
+log.info "Data from  xml 			:" + xmlDate +   "    "   +  xmlNote
+
+def rowCountFromDB = context.expand( '${rowCountfromDatabase#COUNT(*)}' )
+log.info "rowCountFromDataBase		:" + rowCountFromDB
+
+// ------ data from Database
+def nOTEPAD_LONG_DATE = context.expand( '${getDataFromDatabase#NOTEPAD_LONG_DATE}' )
+def nOTEPAD_DATA = context.expand( '${getDataFromDatabase#NOTEPAD_DATA}' )
+log.info "Data from data Base 		:" + nOTEPAD_LONG_DATE +"    " + nOTEPAD_DATA
+
+if (xmlDate.trim()==nOTEPAD_LONG_DATE.trim()){
+	log.info " Date Value from xml  MATCHES Date Value from Database *" + xmlDate.trim() +"*"+ nOTEPAD_LONG_DATE.trim()
+	assert xmlDate.trim() == nOTEPAD_LONG_DATE.trim()
+}else{
+	log.error " Date Value from xml  DOES NOT MATCH  Date Value from Database *" + xmlDate.trim() +"*"+ nOTEPAD_LONG_DATE.trim()
+	assert xmlDate.trim() == nOTEPAD_LONG_DATE.trim()
+}
+if (xmlNote.trim() == nOTEPAD_DATA.trim()){
+	log.info " Note Value from xml  MATCHES Note Value from Database *" + xmlNote.trim() +"*"+ nOTEPAD_DATA.trim()
+	assert xmlNote.trim() == nOTEPAD_DATA.trim()
+}else{
+	log.error " Note Value from xml  DOES NOT  MATCH  Note Value from Database *" + xmlNote.trim() +"*"+ nOTEPAD_DATA.trim()
+	assert xmlNote.trim() == nOTEPAD_DATA.trim()
+}
+
+if (i &lt;= rowCountFromDB.toInteger()){
+i=i+1
+}
+testRunner.testCase.setPropertyValue( "#TestCase#itervationValue", i.toString() )
+
+def itervationValue2 = testRunner.testCase.getPropertyValue( "#TestCase#itervationValue")
+//log.info "itervationValue after test loop ---------------" + itervationValue2
+log.info "**************TEST SCRIPT END : getContract Notes API**************"
+</script></con:config></con:testStep><con:testStep type="datasourceloop" name="DataSource Loop" id="e07a7669-a05b-4fd3-bec6-4427fd43200e"><con:settings/><con:config><dataSourceStep>getDataFromDatabase</dataSourceStep><targetStep>Groovy Script (Validates XML and DB data)</targetStep></con:config></con:testStep><con:testStep type="datasourceloop" name="Loop Excel" id="a6dad127-bc24-4875-8fe5-3e03534650c3"><con:settings/><con:config><dataSourceStep>getExceldata</dataSourceStep><targetStep>resetIterationValueToOne</targetStep></con:config></con:testStep><con:properties><con:property><con:name>rowCount</con:name><con:value/></con:property><con:property><con:name>#TestCase#itervationValue</con:name><con:value>10</con:value></con:property><con:property><con:name>contract</con:name><con:value>10066418</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>94418bea-4ca7-4a0f-81cf-39aaf35f3314</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>bc4e005d-ec0e-4302-a2a4-23f3fc805839</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>eb0c0e19-b7c2-465e-a74b-81c415e37e3b</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>f011d14e-af49-4553-8958-684481268b6a</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>b23a393c-0629-4874-a188-47b71596da46</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>fe88f5f4-a090-4c7c-8a4f-e75445f30b16</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>71e19d4f-a2b6-41c8-bea1-8e5a1446ccad</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>5fdf716b-082f-4675-8aa6-658d45e9bbb7</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="ba5f7dc0-e8db-409c-b494-16037c932774"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4afb3ac9-5034-4c9c-8880-fc76dd54bdc6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3413a0c0-76cc-4f43-9482-3efe9e972e81"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a32f4f82-e311-4f8a-ba4f-accdfcbdadcf"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="263f20f9-2653-4f33-8d66-1694d38c9931"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1f7152d8-1be5-485f-bc97-18cbc1aa4ba8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3b0f4fd5-8397-4067-b032-ecfa22cfa5ff"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="02782eb4-ecaf-43ac-8f0c-0a1eeebbdd7a"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="15dff999-92e5-4da2-8a61-2a9da4ce2988"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>

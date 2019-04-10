@@ -1,0 +1,1748 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:interface xsi:type="con:WsdlInterface" id="05c3e39a-670f-40dc-9d78-722babe5c679" wsaVersion="NONE" name="Calms2CMSServiceCustomerSOAP" type="wsdl" bindingName="{http://www.whiteclarkegroup.com/services/Calms2CMSCustomer}Calms2CMSServiceCustomerSOAP" soapVersion="1_1" anonymous="optional" definition="http://mkvsudfsdock11:81/calms2cms/services/Calms2CMSCustomer?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="c39b21c0-2340-44aa-9c7b-daf184d3a057fileName">Calms2CMSServiceCustomerSOAP</con:setting><con:setting id="05c3e39a-670f-40dc-9d78-722babe5c679fileName">Calms2CMSServiceCustomerSOAP</con:setting></con:settings><con:definitionCache type="TEXT" rootPart="http://mkvsudfsdock11:81/calms2cms/services/Calms2CMSCustomer?wsdl"><con:part><con:url>http://mkvsudfsdock11:81/calms2cms/services/Calms2CMSCustomer?wsdl</con:url><con:content><![CDATA[<definitions targetNamespace="http://www.whiteclarkegroup.com/services/Calms2CMSCustomer" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.whiteclarkegroup.com/services/Calms2CMSCustomer" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:customer="http://www.whiteclarkegroup.com/services/Calms2CMSCustomer/schema/Customer" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <documentation>This schema is intended for use by Lendmark only.</documentation>
+  <types>
+    <xsd:schema targetNamespace="http://www.whiteclarkegroup.com/services/Calms2CMSCustomer" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:import namespace="http://www.whiteclarkegroup.com/services/Calms2CMSCustomer/schema/Customer" schemaLocation="http://mkvsudfsdock11:81/calms2cms/services/Calms2CMSCustomer?xsd=xsd/Customer.xsd"/>
+    </xsd:schema>
+  </types>
+  <message name="getCustomerIdByDocumentRequest">
+    <part element="customer:getCustomerIdByDocument" name="inRQ"></part>
+  </message>
+  <message name="getCustomerIdByDocumentResponse">
+    <part element="customer:getCustomerIdByDocumentResponse" name="outRS"></part>
+  </message>
+  <message name="getCustomerExposureResponse">
+    <part element="customer:getCustomerExposureResponse" name="outRS"></part>
+  </message>
+  <message name="updateCustomerDetailsRequest">
+    <part element="customer:updateCustomerDetails" name="inRQ"></part>
+  </message>
+  <message name="getCustomerDetailsResponse">
+    <part element="customer:getCustomerDetailsResponse" name="outRS"></part>
+  </message>
+  <message name="systemFault">
+    <part element="customer:systemError" name="systemFault"></part>
+  </message>
+  <message name="searchCustomerRequest">
+    <part element="customer:searchCustomer" name="inRQ"></part>
+  </message>
+  <message name="businessFault">
+    <part element="customer:businessError" name="businessFault"></part>
+  </message>
+  <message name="updateCustomerDetailsResponse">
+    <part element="customer:updateCustomerDetailsResponse" name="outRS"></part>
+  </message>
+  <message name="getCustomerDetailsRequest">
+    <part element="customer:getCustomerDetails" name="inRQ"></part>
+  </message>
+  <message name="getCustomerExposureRequest">
+    <part element="customer:getCustomerExposure" name="inRQ"></part>
+  </message>
+  <message name="searchCustomerResponse">
+    <part element="customer:searchCustomerResponse" name="outRS"></part>
+  </message>
+  <portType name="Calms2CMSWebServiceCustomer">
+    <operation name="getCustomerExposure">
+      <input message="tns:getCustomerExposureRequest"></input>
+      <output message="tns:getCustomerExposureResponse"></output>
+      <fault message="tns:systemFault" name="SystemFault"></fault>
+      <fault message="tns:businessFault" name="BusinessFault"></fault>
+    </operation>
+    <operation name="searchCustomer">
+      <input message="tns:searchCustomerRequest"></input>
+      <output message="tns:searchCustomerResponse"></output>
+      <fault message="tns:systemFault" name="SystemFault"></fault>
+      <fault message="tns:businessFault" name="BusinessFault"></fault>
+    </operation>
+    <operation name="getCustomerDetails">
+      <input message="tns:getCustomerDetailsRequest"></input>
+      <output message="tns:getCustomerDetailsResponse"></output>
+      <fault message="tns:systemFault" name="SystemFault"></fault>
+      <fault message="tns:businessFault" name="BusinessFault"></fault>
+    </operation>
+    <operation name="getCustomerIdByDocument">
+      <input message="tns:getCustomerIdByDocumentRequest"></input>
+      <output message="tns:getCustomerIdByDocumentResponse"></output>
+      <fault message="tns:systemFault" name="SystemFault"></fault>
+      <fault message="tns:businessFault" name="BusinessFault"></fault>
+    </operation>
+    <operation name="updateCustomerDetails">
+      <input message="tns:updateCustomerDetailsRequest"></input>
+      <output message="tns:updateCustomerDetailsResponse"></output>
+      <fault message="tns:systemFault" name="SystemFault"></fault>
+      <fault message="tns:businessFault" name="BusinessFault"></fault>
+    </operation>
+  </portType>
+  <binding name="Calms2CMSServiceCustomerSOAP" type="tns:Calms2CMSWebServiceCustomer">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="getCustomerExposure">
+      <soap:operation soapAction="getCustomerExposure" style="document"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="SystemFault">
+        <soap:fault name="SystemFault" use="literal"/>
+      </fault>
+      <fault name="BusinessFault">
+        <soap:fault name="BusinessFault" use="literal"/>
+      </fault>
+    </operation>
+    <operation name="searchCustomer">
+      <soap:operation soapAction="searchCustomer" style="document"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="SystemFault">
+        <soap:fault name="SystemFault" use="literal"/>
+      </fault>
+      <fault name="BusinessFault">
+        <soap:fault name="BusinessFault" use="literal"/>
+      </fault>
+    </operation>
+    <operation name="getCustomerDetails">
+      <soap:operation soapAction="getCustomerDetails" style="document"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="SystemFault">
+        <soap:fault name="SystemFault" use="literal"/>
+      </fault>
+      <fault name="BusinessFault">
+        <soap:fault name="BusinessFault" use="literal"/>
+      </fault>
+    </operation>
+    <operation name="updateCustomerDetails">
+      <soap:operation soapAction="updateCustomerDetails" style="document"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="SystemFault">
+        <soap:fault name="SystemFault" use="literal"/>
+      </fault>
+      <fault name="BusinessFault">
+        <soap:fault name="BusinessFault" use="literal"/>
+      </fault>
+    </operation>
+    <operation name="getCustomerIdByDocument">
+      <soap:operation soapAction="getCustomerIdByDocument" style="document"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="SystemFault">
+        <soap:fault name="SystemFault" use="literal"/>
+      </fault>
+      <fault name="BusinessFault">
+        <soap:fault name="BusinessFault" use="literal"/>
+      </fault>
+    </operation>
+  </binding>
+  <service name="Calms2CMSWebServiceCustomer">
+    <documentation>Calms2CMS Customer Web Service Version 1.11</documentation>
+    <port binding="tns:Calms2CMSServiceCustomerSOAP" name="Calms2CMSWebServiceCustomer">
+      <soap:address location="http://mkvsudfsdock11:81/calms2cms/services/Calms2CMSCustomer"/>
+    </port>
+  </service>
+</definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>http://mkvsudfsdock11:81/calms2cms/services/Calms2CMSCustomer?xsd=xsd/Customer.xsd</con:url><con:content><![CDATA[<schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.whiteclarkegroup.com/services/Calms2CMSCustomer/schema/Customer" xmlns:tns="http://www.whiteclarkegroup.com/services/Calms2CMSCustomer/schema/Customer" xmlns:cmn="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes" xmlns:add="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Address" xmlns="http://www.w3.org/2001/XMLSchema">
+  <import namespace="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes" schemaLocation="http://mkvsudfsdock11:81/calms2cms/services/Calms2CMSCustomer?xsd=xsd/CommonTypes.xsd"/>
+  <import namespace="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Address" schemaLocation="http://mkvsudfsdock11:81/calms2cms/services/Calms2CMSCustomer?xsd=xsd/Address.xsd"/>
+  <annotation>
+    <documentation xml:lang="en">This schema is intended for use by Lendmark only.</documentation>
+  </annotation>
+  <complexType name="exposureCustomerIdType">
+    <choice>
+      <element name="customerId" type="string"/>
+      <element name="customerBpId" type="string"/>
+    </choice>
+  </complexType>
+  <element name="getCustomerExposure">
+    <complexType>
+      <sequence>
+        <element name="customerId" type="tns:exposureCustomerIdType"/>
+        <element name="audit" type="tns:SecurityAudit"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="getCustomerExposureResponse">
+    <complexType>
+      <sequence>
+        <element name="customerExposureResponse" type="tns:customerExposureResponse"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="searchCustomer">
+    <complexType>
+      <sequence>
+        <element minOccurs="0" name="cisCode" type="string"/>
+        <element minOccurs="0" name="socialSecNumber" type="int"/>
+        <element minOccurs="0" name="customerId" type="string"/>
+        <element minOccurs="0" name="customerName" type="string"/>
+        <element minOccurs="0" name="listOfCustomerCategory" type="tns:listOfCustomerCategory"/>
+        <element name="audit" nillable="false" type="tns:SecurityAudit"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="searchCustomerResponse">
+    <complexType>
+      <sequence>
+        <element maxOccurs="unbounded" minOccurs="0" name="customer" type="tns:customer"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="updateCustomerDetails">
+    <complexType>
+      <sequence>
+        <element name="customerDetail" nillable="false" type="tns:custDetails"/>
+        <element name="audit" nillable="false" type="tns:SecurityAudit"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="updateCustomerDetailsResponse">
+    <complexType>
+      <sequence>
+        <element name="customerID" type="int"/>
+      </sequence>
+    </complexType>
+  </element>
+  <complexType name="customerIdType">
+    <choice>
+      <element minOccurs="0" name="customerId" type="string"/>
+      <element minOccurs="0" name="socialSecNumber" type="int"/>
+    </choice>
+  </complexType>
+  <element name="getCustomerDetails">
+    <complexType>
+      <sequence>
+        <element name="customerId" type="tns:customerIdType"/>
+        <element minOccurs="0" name="audit" type="tns:SecurityAudit"/>
+        <element name="applicationInfo" nillable="false" type="cmn:ApplicationInfo">
+          <annotation>
+            <documentation/>
+          </annotation>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="getCustomerDetailsResponse">
+    <complexType>
+      <sequence>
+        <element name="customerDetail" type="tns:custDetails"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="getCustomerIdByDocument">
+    <complexType>
+      <sequence>
+        <element name="idValue" type="string"/>
+        <element name="idDocumentType" type="string"/>
+        <element name="issuingCountry" type="string"/>
+        <element name="audit" nillable="false" type="tns:SecurityAudit"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="getCustomerIdByDocumentResponse">
+    <complexType>
+      <sequence>
+        <element name="customerID" type="int"/>
+      </sequence>
+    </complexType>
+  </element>
+  <complexType name="exposure">
+    <sequence>
+      <element minOccurs="0" name="bpid" type="string"/>
+      <element name="listOfTrackRecord" type="tns:listOfTrackRecord"/>
+      <element name="totalAgreementExposure" type="decimal"/>
+      <element name="totalGuarantorExposure" type="decimal"/>
+      <element name="totalExposure" type="decimal"/>
+      <element name="totalArrears" type="decimal"/>
+    </sequence>
+  </complexType>
+  <complexType name="listOfTrackRecord">
+    <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="trackRecord" type="tns:trackRecord"/>
+    </sequence>
+  </complexType>
+  <complexType name="trackRecord">
+    <sequence>
+      <element minOccurs="0" name="agreementNumber" type="string"/>
+      <element minOccurs="0" name="category" type="string"/>
+      <element minOccurs="0" name="exposure" type="decimal"/>
+      <element minOccurs="0" name="arrears" type="decimal"/>
+      <element minOccurs="0" name="principleOutstanding" type="decimal"/>
+      <element minOccurs="0" name="type" type="string"/>
+      <element minOccurs="0" name="startDate" type="date"/>
+      <element minOccurs="0" name="closeDate" type="date"/>
+      <element minOccurs="0" name="maturityDate" type="date"/>
+      <element minOccurs="0" name="assetDescription" type="string"/>
+      <element minOccurs="0" name="assetCost" type="decimal"/>
+      <element minOccurs="0" name="amountFinanced" type="decimal"/>
+      <element minOccurs="0" name="rental" type="decimal"/>
+      <element minOccurs="0" name="term" type="int"/>
+      <element minOccurs="0" name="monthsRemain" type="int"/>
+      <element minOccurs="0" name="residual" type="decimal"/>
+      <element minOccurs="0" name="rate" type="double"/>
+      <element minOccurs="0" name="currency" type="string"/>
+      <element minOccurs="0" name="country" type="string"/>
+      <element minOccurs="0" name="financeType" type="tns:codeAndDescription"/>
+      <element minOccurs="0" name="mcr" type="int"/>
+      <element minOccurs="0" name="registrationNumber" type="string"/>
+      <element minOccurs="0" name="productCode" type="tns:codeAndDescription"/>
+      <element minOccurs="0" name="externalContractNumber" type="string"/>
+    </sequence>
+  </complexType>
+  <complexType name="listOfCustomer">
+    <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="customer" type="tns:customer"/>
+    </sequence>
+  </complexType>
+  <complexType name="customer">
+    <sequence>
+      <element minOccurs="0" name="id" type="string"/>
+      <element minOccurs="0" name="firstName" type="string"/>
+      <element minOccurs="0" name="middleName" type="string"/>
+      <element minOccurs="0" name="surname" type="string"/>
+      <element minOccurs="0" name="registeredName" type="string"/>
+      <element minOccurs="0" name="tradingName" type="string"/>
+      <element minOccurs="0" name="flatIdentifier" type="string"/>
+      <element minOccurs="0" name="houseName" type="string"/>
+      <element minOccurs="0" name="houseNumber" type="string"/>
+      <element minOccurs="0" name="street" type="string"/>
+      <element minOccurs="0" name="locality" type="string"/>
+      <element minOccurs="0" name="town" type="string"/>
+      <element minOccurs="0" name="county" type="string"/>
+      <element minOccurs="0" name="postCode" type="string"/>
+      <element minOccurs="0" name="postCode2" type="string"/>
+      <element minOccurs="0" name="country" type="string"/>
+      <element minOccurs="0" name="cisCode" type="string"/>
+      <element minOccurs="0" name="socialSecNumber" type="int"/>
+      <element minOccurs="0" name="companyRegNum" type="string"/>
+    </sequence>
+  </complexType>
+  <complexType name="listOfCustomerCategory">
+    <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="customerType" type="tns:CustomerCategory"/>
+    </sequence>
+  </complexType>
+  <complexType name="listOfIdentity">
+    <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="identity" type="tns:idDocument"/>
+    </sequence>
+  </complexType>
+  <simpleType name="CustomerCategory">
+    <restriction base="string">
+      <enumeration value="I"/>
+      <enumeration value="C"/>
+    </restriction>
+  </simpleType>
+  <complexType name="custDetails">
+    <sequence>
+      <element minOccurs="0" name="id" type="long"/>
+      <element minOccurs="0" name="cinNumber" type="string"/>
+      <element minOccurs="0" name="cisCode" type="string"/>
+      <element minOccurs="0" name="arrearsFlag" type="boolean"/>
+      <element minOccurs="0" name="person" type="tns:person"/>
+      <element minOccurs="0" name="organisation" type="tns:organisation"/>
+      <element minOccurs="0" name="identity" type="tns:idDocument"/>
+      <element minOccurs="0" name="listOfEmployment" type="tns:listOfEmployment"/>
+      <element minOccurs="0" name="listOfContact" type="tns:listOfContact"/>
+      <element minOccurs="0" name="listOfBankAccount" type="tns:listOfBankAccount"/>
+      <element minOccurs="0" name="customerAgreement" type="tns:customerAgreement"/>
+      <element minOccurs="0" name="relatedCustomer" type="string"/>
+      <element minOccurs="0" name="license" type="tns:customerLicence"/>
+      <element minOccurs="0" name="listOfNote" type="tns:listOfNote"/>
+      <element minOccurs="0" name="customerExposure" type="tns:exposure"/>
+      <element minOccurs="0" name="references" type="string"/>
+      <element minOccurs="0" name="sectorClassifier" type="string"/>
+      <element minOccurs="0" name="type" type="tns:CustomerCategory"/>
+      <element minOccurs="0" name="verifications" type="string"/>
+      <element minOccurs="0" name="listOfAddress" type="add:listOfAddressBP"/>
+      <element minOccurs="0" name="listOfPhone" type="tns:listOfPhone"/>
+      <element minOccurs="0" name="contactViaSms" type="boolean"/>
+      <element minOccurs="0" name="contactViaPhone" type="boolean"/>
+      <element minOccurs="0" name="applicantType" type="tns:ApplicantType"/>
+    </sequence>
+  </complexType>
+  <complexType name="person">
+    <sequence>
+      <element minOccurs="0" name="customerNumber" type="string"/>
+      <element minOccurs="0" name="bpmId" type="string"/>
+      <element minOccurs="0" name="staffInd" type="string"/>
+      <element minOccurs="0" name="id" type="long"/>
+      <element minOccurs="0" name="annualIncome" type="double"/>
+      <element minOccurs="0" name="dateOfBirth" type="dateTime"/>
+      <element minOccurs="0" name="cityOfBirth" type="string"/>
+      <element minOccurs="0" name="birthPlaceStateProvince" type="string"/>
+      <element minOccurs="0" name="dateOfDeath" type="dateTime"/>
+      <element minOccurs="0" name="dependentCount" type="long"/>
+      <element minOccurs="0" name="title" type="string"/>
+      <element minOccurs="0" name="firstName" type="string"/>
+      <element minOccurs="0" name="middleName" type="string"/>
+      <element minOccurs="0" name="lastName" type="string"/>
+      <element minOccurs="0" name="suffix" type="tns:SuffixType"/>
+      <element minOccurs="0" name="preferredName" type="string"/>
+      <element minOccurs="0" name="maidenName" type="string"/>
+      <element minOccurs="0" name="fullNameFather" type="string"/>
+      <element minOccurs="0" name="fullNameMother" type="string"/>
+      <element minOccurs="0" name="gender" type="tns:GenderType"/>
+      <element minOccurs="0" name="educationType" type="string"/>
+      <element minOccurs="0" name="maritalStatus" type="tns:MaritalStatusType"/>
+      <element minOccurs="0" name="residentialStatus" type="string"/>
+      <element minOccurs="0" name="nationality" type="string"/>
+      <element minOccurs="0" name="countryOfBirth" type="string"/>
+      <element minOccurs="0" name="isDeleted" type="long"/>
+      <element minOccurs="0" name="employerName" type="string"/>
+      <element minOccurs="0" name="employmentStatus" type="tns:EmploymentStatusType"/>
+      <element minOccurs="0" name="occupation" type="string"/>
+      <element minOccurs="0" name="occupationStartDate" type="dateTime"/>
+      <element minOccurs="0" name="email" type="string"/>
+      <element minOccurs="0" name="createdBy" type="string"/>
+      <element minOccurs="0" name="creationDate" type="dateTime"/>
+      <element minOccurs="0" name="lastupdatedate" type="dateTime"/>
+      <element minOccurs="0" name="lastupdatedby" type="string"/>
+      <element minOccurs="0" name="socialSecNumber" type="int"/>
+    </sequence>
+  </complexType>
+  <complexType name="organisation">
+    <sequence>
+      <element minOccurs="0" name="id" type="long"/>
+      <element minOccurs="0" name="companyNumber" type="string"/>
+      <element minOccurs="0" name="accountingReferenceDate" type="dateTime"/>
+      <element minOccurs="0" name="accountsAvailable" type="long"/>
+      <element minOccurs="0" name="administrationDate" type="dateTime"/>
+      <element minOccurs="0" name="annualTurnover" type="double"/>
+      <element minOccurs="0" name="businessDescription" type="string"/>
+      <element minOccurs="0" name="establishmentDate" type="dateTime"/>
+      <element minOccurs="0" name="incorporationdate" type="dateTime"/>
+      <element minOccurs="0" name="liquidationDate" type="dateTime"/>
+      <element minOccurs="0" name="registeredName" type="string"/>
+      <element minOccurs="0" name="tradingName" type="string"/>
+      <element minOccurs="0" name="tradingStartDate" type="dateTime"/>
+      <element minOccurs="0" name="vatNumber" type="string"/>
+      <element minOccurs="0" name="caeCode" type="string"/>
+      <element minOccurs="0" name="internalBusinessType" type="string"/>
+      <element minOccurs="0" name="monthlyIncome" type="double"/>
+      <element minOccurs="0" name="monthlyExpenses" type="double"/>
+      <element minOccurs="0" name="numberOfEmployees" type="int"/>
+      <element minOccurs="0" name="numberOfBranches" type="int"/>
+      <element minOccurs="0" name="registrationNumber" type="string"/>
+      <element minOccurs="0" name="registrationDate" type="dateTime"/>
+      <element minOccurs="0" name="registeredCapitalAmount" type="double"/>
+      <element minOccurs="0" name="capitalAmount" type="double"/>
+      <element minOccurs="0" name="liquidAssetsAmount" type="double"/>
+      <element minOccurs="0" name="stateOfIncorporation" type="string"/>
+      <element minOccurs="0" name="OtherAnnualIncome" type="double"/>
+      <element minOccurs="0" name="loanCardNumber" type="string"/>
+      <element minOccurs="0" name="loanCardPassword" type="string"/>
+      <element minOccurs="0" name="email" type="string"/>
+      <element minOccurs="0" name="createdBy" type="string"/>
+      <element minOccurs="0" name="creationDate" type="dateTime"/>
+      <element minOccurs="0" name="lastUpdateDate" type="dateTime"/>
+      <element minOccurs="0" name="lastUpdatedBy" type="string"/>
+      <element minOccurs="0" name="industryCode" type="string"/>
+      <element minOccurs="0" name="industrySubCode" type="string"/>
+      <element minOccurs="0" name="businessSector" type="string"/>
+      <element minOccurs="0" name="isDeleted" type="long"/>
+    </sequence>
+  </complexType>
+  <complexType name="idDocument">
+    <sequence>
+      <element minOccurs="0" name="id" type="long"/>
+      <element minOccurs="0" name="idType" type="string"/>
+      <element minOccurs="0" name="idTypeDesc" type="string"/>
+      <element minOccurs="0" name="idValue" type="string"/>
+      <element minOccurs="0" name="idValueCheck" type="string"/>
+      <element minOccurs="0" name="expiryDate" type="date"/>
+      <element minOccurs="0" name="issueDate" type="date"/>
+      <element minOccurs="0" name="issuingEntity" type="string"/>
+      <element minOccurs="0" name="issuingCountry" type="string"/>
+    </sequence>
+  </complexType>
+  <complexType name="listOfEmployment">
+    <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="employment" type="tns:employment"/>
+    </sequence>
+  </complexType>
+  <complexType name="employment">
+    <sequence>
+      <element minOccurs="0" name="id" type="long"/>
+      <element minOccurs="0" name="name" type="string"/>
+      <element minOccurs="0" name="basedAt" type="string"/>
+      <element minOccurs="0" name="costCentre" type="string"/>
+      <element minOccurs="0" name="payGroup" type="string"/>
+      <element minOccurs="0" name="jobTitle" type="string"/>
+      <element minOccurs="0" name="employeeNumber" type="string"/>
+      <element minOccurs="0" name="employmentDate" type="dateTime"/>
+      <element minOccurs="0" name="employmentEndDate" type="dateTime"/>
+      <element minOccurs="0" name="grade" type="long"/>
+      <element minOccurs="0" name="optedOut" type="long"/>
+      <element minOccurs="0" name="poolOwner" type="long"/>
+      <element minOccurs="0" name="isCurrentEmployment" type="long"/>
+      <element minOccurs="0" name="employerId" type="long"/>
+      <element minOccurs="0" name="employmentType" type="string"/>
+      <element minOccurs="0" name="investorType" type="string"/>
+      <element minOccurs="0" name="profession" type="string"/>
+      <element minOccurs="0" name="employerActivity" type="string"/>
+      <element minOccurs="0" name="numberOfEmployees" type="int"/>
+      <element minOccurs="0" name="industryCode" type="string"/>
+      <element minOccurs="0" name="industrySubCode" type="string"/>
+      <element minOccurs="0" name="businessSector" type="string"/>
+    </sequence>
+  </complexType>
+  <complexType name="listOfContact">
+    <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="contact" type="tns:contact"/>
+    </sequence>
+  </complexType>
+  <complexType name="contact">
+    <sequence>
+      <element minOccurs="0" name="listOfContactRef" type="tns:listOfContactRef"/>
+      <element minOccurs="0" name="forename" type="string"/>
+      <element minOccurs="0" name="gender" type="tns:GenderType"/>
+      <element name="id" nillable="false" type="long"/>
+      <element minOccurs="0" name="isdefaultcontact" type="long"/>
+      <element minOccurs="0" name="middlename" type="string"/>
+      <element minOccurs="0" name="narrative" type="string"/>
+      <element minOccurs="0" name="salutation" type="string"/>
+      <element minOccurs="0" name="surname" type="string"/>
+      <element minOccurs="0" name="title" type="string"/>
+      <element minOccurs="0" name="position" type="string"/>
+    </sequence>
+  </complexType>
+  <complexType name="listOfContactRef">
+    <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="contactReference" type="tns:contactReference"/>
+    </sequence>
+  </complexType>
+  <complexType name="contactReference">
+    <sequence>
+      <element minOccurs="0" name="contactReferenceTypeID" type="string"/>
+      <element minOccurs="0" name="id" type="long"/>
+      <element minOccurs="0" name="isverified" type="long"/>
+      <element minOccurs="0" name="validfrom" type="dateTime"/>
+      <element minOccurs="0" name="validto" type="dateTime"/>
+      <element minOccurs="0" name="value" type="string"/>
+    </sequence>
+  </complexType>
+  <complexType name="reference">
+    <sequence>
+      <element minOccurs="0" name="id" type="long"/>
+      <element minOccurs="0" name="isverified" type="long"/>
+      <element minOccurs="0" name="validfrom" type="dateTime"/>
+      <element minOccurs="0" name="validto" type="dateTime"/>
+      <element minOccurs="0" name="value" type="string"/>
+      <element minOccurs="0" name="referenceType" type="tns:ReferenceType"/>
+    </sequence>
+  </complexType>
+  <complexType name="listOfBankAccount">
+    <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="bankAccount" type="tns:bankAccount"/>
+    </sequence>
+  </complexType>
+  <complexType name="bankAccount">
+    <sequence>
+      <element minOccurs="0" name="accountname" type="string"/>
+      <element minOccurs="0" name="accountnumber" type="string"/>
+      <element minOccurs="0" name="internationalAccountNumber" type="string"/>
+      <element minOccurs="0" name="branch" type="string"/>
+      <element minOccurs="0" name="accountopeningdate" type="dateTime"/>
+      <element minOccurs="0" name="listOfBankAccntRef" type="tns:listOfBankAccountReference"/>
+      <element minOccurs="0" name="bankaccounttype" type="tns:BankAccountType"/>
+      <element minOccurs="0" name="bankType" type="tns:BankType"/>
+      <element minOccurs="0" name="bankname" type="string"/>
+      <element minOccurs="0" name="defaultpaymentmethod" type="tns:PaymentMethodType"/>
+      <element minOccurs="0" name="initialPaymentMethod" type="tns:PaymentMethodType"/>
+      <element minOccurs="0" name="buybackerPaymentMethod" type="tns:PaymentMethodType"/>
+      <element minOccurs="0" name="consolidatedBillingFlag" type="int"/>
+      <element name="id" nillable="false" type="long"/>
+      <element minOccurs="0" name="isDefaultBankAccount" type="long"/>
+      <element minOccurs="0" name="isverified" type="long"/>
+      <element minOccurs="0" name="sortcode" type="string"/>
+      <element minOccurs="0" name="sourcesystemid" type="string"/>
+      <element minOccurs="0" name="address" type="tns:address"/>
+    </sequence>
+  </complexType>
+  <complexType name="listOfBankAccountReference">
+    <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="bankAccountReference" type="tns:bankAccountReference"/>
+    </sequence>
+  </complexType>
+  <complexType name="bankAccountReference">
+    <sequence>
+      <element minOccurs="0" name="bankaccountReferenceTypeID" type="string"/>
+      <element minOccurs="0" name="id" type="long"/>
+      <element minOccurs="0" name="isverified" type="long"/>
+      <element minOccurs="0" name="validfrom" type="dateTime"/>
+      <element minOccurs="0" name="validto" type="dateTime"/>
+      <element minOccurs="0" name="value" type="string"/>
+    </sequence>
+  </complexType>
+  <complexType name="customerAgreement">
+    <sequence>
+      <element name="agreementNumber" type="string"/>
+      <element name="customerId" type="long"/>
+    </sequence>
+  </complexType>
+  <complexType name="customerLicence">
+    <sequence>
+      <element minOccurs="0" name="id" type="long"/>
+      <element minOccurs="0" name="licenceNumber" type="string"/>
+      <element minOccurs="0" name="licenceValidfrom" type="dateTime"/>
+      <element minOccurs="0" name="licenceValidto" type="dateTime"/>
+      <element minOccurs="0" name="dpaConsent" type="long"/>
+      <element minOccurs="0" name="licenceHeld" type="string"/>
+      <element minOccurs="0" name="restrictionType" type="string"/>
+      <element minOccurs="0" name="copyheld" type="string"/>
+      <element minOccurs="0" name="disqualifieduntil" type="dateTime"/>
+      <element minOccurs="0" name="offencecodes" type="string"/>
+      <element minOccurs="0" name="pointsTotal" type="long"/>
+      <element minOccurs="0" name="checkDate" type="dateTime"/>
+      <element minOccurs="0" name="licenceCategory" type="tns:LicenceCategoryType"/>
+      <element minOccurs="0" name="pointsCategory" type="tns:PointsCategoryType"/>
+    </sequence>
+  </complexType>
+  <complexType name="listOfNote">
+    <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="note" type="tns:note"/>
+    </sequence>
+  </complexType>
+  <complexType name="note">
+    <sequence>
+      <element minOccurs="0" name="body" type="string"/>
+      <element minOccurs="0" name="id" type="long"/>
+      <element minOccurs="0" name="sourcesystemid" type="string"/>
+      <element minOccurs="0" name="title" type="string"/>
+    </sequence>
+  </complexType>
+  <complexType name="verification">
+    <sequence>
+      <element minOccurs="0" name="id" type="long"/>
+      <element minOccurs="0" name="validfrom" type="dateTime"/>
+      <element minOccurs="0" name="validto" type="dateTime"/>
+      <element minOccurs="0" name="value" type="string"/>
+      <element minOccurs="0" name="verificationType" type="tns:VerificationType"/>
+    </sequence>
+  </complexType>
+  <complexType name="address">
+    <sequence>
+      <element minOccurs="0" name="careof" type="string"/>
+      <element minOccurs="0" name="flatIdentifier" type="string"/>
+      <element minOccurs="0" name="housename" type="string"/>
+      <element minOccurs="0" name="housenumber" type="string"/>
+      <element minOccurs="0" name="locality" type="string"/>
+      <element minOccurs="0" name="street" type="string"/>
+      <element minOccurs="0" name="streetNumber" type="string"/>
+      <element minOccurs="0" name="city" type="string"/>
+      <element minOccurs="0" name="town" type="string"/>
+      <element minOccurs="0" name="county" type="string"/>
+      <element minOccurs="0" name="country" type="string"/>
+      <element minOccurs="0" name="provinceCode" type="string"/>
+      <element minOccurs="0" name="pobox" type="string"/>
+      <element minOccurs="0" name="postcode" type="string"/>
+      <element minOccurs="0" name="postcode2" type="string"/>
+      <element minOccurs="0" name="salesCode" type="string"/>
+      <element minOccurs="0" name="ddmandate" type="long"/>
+      <element minOccurs="0" name="externalName" type="string"/>
+      <element minOccurs="0" name="defaultRentalDay" type="int"/>
+      <element minOccurs="0" name="defaultAddress" type="int"/>
+      <element minOccurs="0" name="addressType" type="tns:AddressType"/>
+      <element minOccurs="0" name="addressTypeCode" type="string"/>
+    </sequence>
+  </complexType>
+  <complexType name="listOfAddress">
+    <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="address" type="tns:address"/>
+    </sequence>
+  </complexType>
+  <complexType name="listOfPhone">
+    <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="phone" type="tns:phone"/>
+    </sequence>
+  </complexType>
+  <complexType name="phone">
+    <sequence>
+      <element maxOccurs="1" minOccurs="1" name="phoneType" type="tns:PhoneType"/>
+      <element maxOccurs="1" minOccurs="1" name="phoneNumber" type="string"/>
+      <element maxOccurs="1" minOccurs="0" name="contactViaSms" type="boolean"/>
+      <element maxOccurs="1" minOccurs="0" name="contactViaPhone" type="boolean"/>
+    </sequence>
+  </complexType>
+  <simpleType name="PhoneType">
+    <restriction base="string">
+      <enumeration value="Private"/>
+      <enumeration value="Mobile"/>
+      <enumeration value="Business"/>
+      <enumeration value="Fax"/>
+      <enumeration value="Other"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="AddressType">
+    <restriction base="string">
+      <enumeration value="Mailing"/>
+      <enumeration value="Business"/>
+      <enumeration value="Registered"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="GenderType">
+    <restriction base="string">
+      <enumeration value="Male"/>
+      <enumeration value="Female"/>
+      <enumeration value="Unknown"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="EmploymentStatusType">
+    <restriction base="string">
+      <enumeration value="Self-employed"/>
+      <enumeration value="Student"/>
+      <enumeration value="Retired"/>
+      <enumeration value="Employed"/>
+      <enumeration value="Home-maker"/>
+      <enumeration value="Other"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="MaritalStatusType">
+    <restriction base="string">
+      <enumeration value="Single"/>
+      <enumeration value="Married"/>
+      <enumeration value="Separated"/>
+      <enumeration value="Divorced"/>
+      <enumeration value="Widowed"/>
+      <enumeration value="De facto"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="ApplicantType">
+    <restriction base="string">
+      <enumeration value="New"/>
+      <enumeration value="Current"/>
+      <enumeration value="FormerPaidOutUpToAYear"/>
+      <enumeration value="FormerPaidOutGreaterThanAYear"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="SuffixType">
+    <restriction base="string">
+      <enumeration value="I"/>
+      <enumeration value="II"/>
+      <enumeration value="III"/>
+      <enumeration value="IV"/>
+      <enumeration value="V"/>
+      <enumeration value="VI"/>
+      <enumeration value="VII"/>
+      <enumeration value="VIII"/>
+      <enumeration value="Jr"/>
+      <enumeration value="Sr"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="PaymentMethodType">
+    <restriction base="string">
+      <enumeration value="PC"/>
+      <enumeration value="DRDEB"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="BankType">
+    <restriction base="string">
+      <enumeration value="Other"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="BankAccountType">
+    <restriction base="string">
+      <enumeration value="Personal"/>
+      <enumeration value="Commercial"/>
+      <enumeration value="Other"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="CustomerPotentialType">
+    <restriction base="string">
+      <enumeration value="Other"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="LicenceCategoryType">
+    <restriction base="string">
+      <enumeration value="Other"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="PointsCategoryType">
+    <restriction base="string">
+      <enumeration value="Other"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="ReferenceType">
+    <restriction base="string">
+      <enumeration value="Other"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="VerificationType">
+    <restriction base="string">
+      <enumeration value="Other"/>
+    </restriction>
+  </simpleType>
+  <complexType name="customerExposureResponse">
+    <sequence>
+      <element name="exposure" type="tns:exposure"/>
+      <element name="audit" type="tns:SecurityAudit"/>
+    </sequence>
+  </complexType>
+  <complexType name="SecurityAudit">
+    <sequence>
+      <element name="messageId" nillable="false" type="string"/>
+      <element name="timestamp" nillable="false" type="dateTime"/>
+      <element name="clientAppId" nillable="false" type="string"/>
+      <element name="userId" nillable="false" type="string"/>
+      <element minOccurs="0" name="authorisingUserId" type="string"/>
+      <element name="clientLanguage" nillable="false" type="tns:clientLanguage"/>
+    </sequence>
+  </complexType>
+  <complexType name="codeAndDescription">
+    <sequence>
+      <element name="code" type="int"/>
+      <element name="description" type="string"/>
+    </sequence>
+  </complexType>
+  <complexType name="code">
+    <sequence>
+      <element minOccurs="0" name="cmsCode" type="string"/>
+      <element minOccurs="0" name="externalCode" type="string"/>
+    </sequence>
+  </complexType>
+  <complexType name="typeAndReference">
+    <sequence>
+      <element name="type" type="string"/>
+      <element name="reference" type="string"/>
+    </sequence>
+  </complexType>
+  <simpleType name="yOrN">
+    <annotation>
+      <documentation>The Y-N type is used for boolean-like attributes.</documentation>
+    </annotation>
+    <restriction base="token">
+      <enumeration value="Y"/>
+      <enumeration value="N"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="clientLanguage">
+    <annotation>
+      <documentation>Supported languages for error messages</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="de_DE"/>
+      <enumeration value="en_GB"/>
+      <enumeration value="en_US"/>
+      <enumeration value="en_AU"/>
+      <enumeration value="fr_FR"/>
+      <enumeration value="zh_CN"/>
+    </restriction>
+  </simpleType>
+  <!--SQ002001-SQ002999 are Customer ErrorCode-->
+  <!--SQ003001-SQ003999 are Contract ErrorCode-->
+  <!--SQ004001-SQ004999 are Asset ErrorCode-->
+  <!--SQ009001-SQ009999 are Miscellaneous and Internal ErrorCode-->
+  <element name="businessError" type="tns:BusinessErrorType">
+    <annotation>
+      <documentation>List of Business Error Codes generated by Calms2CMS WebServices</documentation>
+    </annotation>
+  </element>
+  <element name="systemError" type="tns:SystemErrorType">
+    <annotation>
+      <documentation>List of System Error Codes generated by Calms2CMS WebServices</documentation>
+    </annotation>
+  </element>
+  <complexType abstract="true" name="BaseErrorType">
+    <sequence>
+      <element maxOccurs="1" minOccurs="1" name="faultName" type="string"/>
+      <element maxOccurs="1" minOccurs="0" name="message" type="string"/>
+    </sequence>
+  </complexType>
+  <complexType name="BusinessErrorType">
+    <sequence>
+      <element maxOccurs="1" minOccurs="1" name="errorCode" type="tns:BusinessErrorCodeType"/>
+    </sequence>
+  </complexType>
+  <complexType name="SystemErrorType">
+    <sequence>
+      <element maxOccurs="1" minOccurs="1" name="errorCode" type="tns:SystemErrorCodeType"/>
+      <element maxOccurs="1" minOccurs="1" name="originatingError" type="string"/>
+      <element maxOccurs="unbounded" minOccurs="0" name="trace" type="string"/>
+    </sequence>
+  </complexType>
+  <simpleType name="BusinessErrorCodeType">
+    <restriction base="string">
+      <enumeration value="SQ002001">
+        <annotation>
+          <documentation>Customer number is Null</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ002002">
+        <annotation>
+          <documentation>Invalid customer number</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ002003">
+        <annotation>
+          <documentation>Customer number not found</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ002004">
+        <annotation>
+          <documentation>Invalid customer id</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ002005">
+        <annotation>
+          <documentation>No customers found for given search</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ002006">
+        <annotation>
+          <documentation>Invalid search criteria</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ002007">
+        <annotation>
+          <documentation>Invalid customer search category</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ002008">
+        <annotation>
+          <documentation>Customer not found</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ002009">
+        <annotation>
+          <documentation>Invalid customer - missing identity documentation</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ002010">
+        <annotation>
+          <documentation>Unable to update customer details</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ002016">
+        <annotation>
+          <documentation>At least one link must be specified</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ002017">
+        <annotation>
+          <documentation>At least one primary link must be specified</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ002018">
+        <annotation>
+          <documentation>Deleted Link must exist as a valid link</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ002019">
+        <annotation>
+          <documentation>Updated Link must exist as a valid link</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ002020">
+        <annotation>
+          <documentation>Inserted Link already exists as a valid link</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ002021">
+        <annotation>
+          <documentation>Only 1 primary customer link is allowed</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ002022">
+        <annotation>
+          <documentation>Invalid customer number</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ002023">
+        <annotation>
+          <documentation>Updated link already exists as a valid link</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ002024">
+        <annotation>
+          <documentation>Only one of Customer Id or External Id should have value</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ002025">
+        <annotation>
+          <documentation>Either Customer Id or External Id must contains value</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ002026">
+        <annotation>
+          <documentation>External Number is Null</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ002027">
+        <annotation>
+          <documentation>Only Y / N or null allowed for Benifical Owner</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ002028">
+        <annotation>
+          <documentation>Error in Business Partner Web Service</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ002029">
+        <annotation>
+          <documentation>Can't perform settlement quote on primary contract while there are active contracts in the MCR</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003001">
+        <annotation>
+          <documentation>Contract number is Null</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003002">
+        <annotation>
+          <documentation>Invalid Contract number</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003003">
+        <annotation>
+          <documentation>Contract number not found</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003004">
+        <annotation>
+          <documentation>Invalid contract fee</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003005">
+        <annotation>
+          <documentation>Invalid fee category</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003006">
+        <annotation>
+          <documentation>Fee comment is too long</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003007">
+        <annotation>
+          <documentation>Invalid fee effect date</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003008">
+        <annotation>
+          <documentation>Invalid fee amount</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003009">
+        <annotation>
+          <documentation>Invalid fee amount, Fee amount has more than 2 decimals</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003010">
+        <annotation>
+          <documentation>Invalid fee amount, Fee amount has more than 11 digits</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003011">
+        <annotation>
+          <documentation>Fee comment is empty</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003012">
+        <annotation>
+          <documentation>Total Fee Amount cannot be negative</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003013">
+        <annotation>
+          <documentation>Invalid paymentType for Payment</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003014">
+        <annotation>
+          <documentation>Invalid customer number for letter generation</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003015">
+        <annotation>
+          <documentation>Invalid letter number, event type, event number or user field  for letter generation</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003016">
+        <annotation>
+          <documentation>At least one of feeAmountNet or feeAmountGross should be provided</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003017">
+        <annotation>
+          <documentation>Invalid Fee VAT code</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003018">
+        <annotation>
+          <documentation>Both supplier id and supplier bpid are not valid</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003019">
+        <annotation>
+          <documentation>Supplier bpid is more than 38 characters</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003020">
+        <annotation>
+          <documentation>Supplier invoice number is more than 12 characters</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003021">
+        <annotation>
+          <documentation>Supplier id is more than 11 digits</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003022">
+        <annotation>
+          <documentation>Given credit note does not match with any un-paid fee</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003023">
+        <annotation>
+          <documentation>feeAmountGross is not matching with given feeAmountNet and feeAmountVAT</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003024">
+        <annotation>
+          <documentation>Contract already Settled</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003025">
+        <annotation>
+          <documentation>Contract has future valued start date, No processing prior to start date supported.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003026">
+        <annotation>
+          <documentation>Quote cannot be prior to contract start date</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003027">
+        <annotation>
+          <documentation>Quote date cannot be after contract maturity date</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003028">
+        <annotation>
+          <documentation>Cannot perform quote as contract has been completed</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003101">
+        <annotation>
+          <documentation>No transaction found for reversal</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003102">
+        <annotation>
+          <documentation>4 or more characters required for search</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003103">
+        <annotation>
+          <documentation>No records found for search parameter</documentation>
+        </annotation>
+      </enumeration>
+      <!--Cash receipt Error Codes-->
+      <enumeration value="SQ003104">
+        <annotation>
+          <documentation>Invoice payment not turned on for MCR</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003105">
+        <annotation>
+          <documentation>No Invoice found with given invoice number</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003106">
+        <annotation>
+          <documentation>No transaction found for reversal which is not already reversed</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003107">
+        <annotation>
+          <documentation>Invalid transaction type</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003108">
+        <annotation>
+          <documentation>Extended Contract for given contract number not found</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003109">
+        <annotation>
+          <documentation>Invalid Batch data found</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003110">
+        <annotation>
+          <documentation>Invalid request for Early Settlement</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003111">
+        <annotation>
+          <documentation>This is an operating lease - residual rpymt not allowed</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003112">
+        <annotation>
+          <documentation>Entered Date is not valid calendar</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003113">
+        <annotation>
+          <documentation>No invoice found for payment</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003114">
+        <annotation>
+          <documentation>No active loan found</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003115">
+        <annotation>
+          <documentation>No MCUs found for given MCR</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003116">
+        <annotation>
+          <documentation>No Invoice found for reversal</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003117">
+        <annotation>
+          <documentation>Invalid amount to reversal</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003118">
+        <annotation>
+          <documentation>Invalid effective dates to reverse a payment</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003119">
+        <annotation>
+          <documentation>No matching dishonour reason code found.</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003120">
+        <annotation>
+          <documentation>Invalid Invoice number</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003121">
+        <annotation>
+          <documentation>Either invoice number or effective date is required</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003122">
+        <annotation>
+          <documentation>Dishonor Reason Code is required</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003123">
+        <annotation>
+          <documentation>Invalid Amount for payment</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003124">
+        <annotation>
+          <documentation>Invoice number is invalid</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003125">
+        <annotation>
+          <documentation>No matching transaction found for reversal</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003126">
+        <annotation>
+          <documentation>Invalid Payment Type</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003127">
+        <annotation>
+          <documentation>No matching payment type found</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003128">
+        <annotation>
+          <documentation>Invalid dishonor Reason Code</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003301">
+        <annotation>
+          <documentation>Invalid External(Internal) Contract Number</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003303">
+        <annotation>
+          <documentation>Invalid Invoice Type</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003304">
+        <annotation>
+          <documentation>Invalid Invoice Number</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003305">
+        <annotation>
+          <documentation>Invalid Invoice Amount</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003306">
+        <annotation>
+          <documentation>Invalid BP ID</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003307">
+        <annotation>
+          <documentation>Invalid BP Address ID</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003308">
+        <annotation>
+          <documentation>Interest Debit Date Error</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003309">
+        <annotation>
+          <documentation>Invoice Number Error</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003310">
+        <annotation>
+          <documentation>Generate MEMO Transaction Error</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003311">
+        <annotation>
+          <documentation>Asset invalid</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ003312">
+        <annotation>
+          <documentation>Payment Facility invalid</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ009001">
+        <annotation>
+          <documentation>Internal Service Error</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ009002">
+        <annotation>
+          <documentation>Invalid Date Format</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ009003">
+        <annotation>
+          <documentation>Invalid Request</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ009004">
+        <annotation>
+          <documentation>Invalid TerritoryCode</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ009998">
+        <annotation>
+          <documentation>Functionality Not implemented yet</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ009999">
+        <annotation>
+          <documentation>Unexpected Error</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+  <simpleType name="SystemErrorCodeType">
+    <restriction base="string">
+      <enumeration value="SQ001001">
+        <annotation>
+          <documentation>Authentication error</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ001002">
+        <annotation>
+          <documentation>Data base connection not available</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ001003">
+        <annotation>
+          <documentation>Undefined</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ001004">
+        <annotation>
+          <documentation>Undefined</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ001005">
+        <annotation>
+          <documentation>Undefined</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ001006">
+        <annotation>
+          <documentation>Undefined</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ001007">
+        <annotation>
+          <documentation>Undefined</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ001008">
+        <annotation>
+          <documentation>Undefined</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ001009">
+        <annotation>
+          <documentation>Undefined</documentation>
+        </annotation>
+      </enumeration>
+      <enumeration value="SQ001010">
+        <annotation>
+          <documentation>Undefined</documentation>
+        </annotation>
+      </enumeration>
+    </restriction>
+  </simpleType>
+</schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part><con:part><con:url>http://mkvsudfsdock11:81/calms2cms/services/Calms2CMSCustomer?xsd=xsd/CommonTypes.xsd</con:url><con:content><![CDATA[<schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes" xmlns:tns="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes" xmlns="http://www.w3.org/2001/XMLSchema">
+  <complexType name="SecurityAudit">
+    <annotation>
+      <documentation>A common standard audit information exchanged for security purposes between client and server, avoids request/response forgery. Default entity to hold audit details of the call such as user id and time-stamp.</documentation>
+    </annotation>
+    <sequence>
+      <element name="messageId" nillable="false" type="string">
+        <annotation>
+          <documentation/>
+        </annotation>
+      </element>
+      <element name="timestamp" nillable="false" type="dateTime">
+        <annotation>
+          <documentation/>
+        </annotation>
+      </element>
+      <element name="clientAppId" nillable="false" type="string">
+        <annotation>
+          <documentation/>
+        </annotation>
+      </element>
+      <element name="userId" nillable="false" type="string">
+        <annotation>
+          <documentation/>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="authorisingUserId" type="string">
+        <annotation>
+          <documentation/>
+        </annotation>
+      </element>
+      <element name="clientLanguage" nillable="false" type="tns:clientLanguage">
+        <annotation>
+          <documentation>The supported language for error messages.</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="codeAndDescription">
+    <annotation>
+      <documentation/>
+    </annotation>
+    <sequence>
+      <element name="code" type="string">
+        <annotation>
+          <documentation/>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="description" type="string">
+        <annotation>
+          <documentation/>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="code">
+    <annotation>
+      <documentation/>
+    </annotation>
+    <sequence>
+      <element minOccurs="0" name="cmsCode" type="string">
+        <annotation>
+          <documentation/>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="externalCode" type="string">
+        <annotation>
+          <documentation/>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="typeAndReference">
+    <annotation>
+      <documentation/>
+    </annotation>
+    <sequence>
+      <element name="type" type="string">
+        <annotation>
+          <documentation/>
+        </annotation>
+      </element>
+      <element name="reference" type="string">
+        <annotation>
+          <documentation/>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <simpleType name="yOrN">
+    <annotation>
+      <documentation>The Y-N type is used for boolean-like attributes.</documentation>
+    </annotation>
+    <restriction base="token">
+      <enumeration value="Y"/>
+      <enumeration value="N"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="clientLanguage">
+    <annotation>
+      <documentation>The supported language for error messages.</documentation>
+    </annotation>
+    <restriction base="string">
+      <enumeration value="de_DE"/>
+      <enumeration value="en_GB"/>
+      <enumeration value="en_US"/>
+      <enumeration value="en_AU"/>
+      <enumeration value="fr_FR"/>
+      <enumeration value="zh_CN"/>
+    </restriction>
+  </simpleType>
+  <complexType name="ApplicationInfo">
+    <annotation>
+      <documentation>Details for Tentant Information and Security Audit.</documentation>
+    </annotation>
+    <sequence>
+      <element minOccurs="0" name="tenantInfo" type="tns:TenantInfo">
+        <annotation>
+          <documentation/>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="securityAudit" type="tns:SecurityAudit">
+        <annotation>
+          <documentation/>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="TenantInfo">
+    <annotation>
+      <documentation>Tenant Information</documentation>
+    </annotation>
+    <sequence>
+      <element name="tenantCode" nillable="false" type="string">
+        <annotation>
+          <documentation>Tenant code</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="contractNumber">
+    <annotation>
+      <documentation/>
+    </annotation>
+    <sequence>
+      <element minOccurs="0" name="externalContractNumber" type="string">
+        <annotation>
+          <documentation/>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="internalContractNumber" type="int">
+        <annotation>
+          <documentation/>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="keyValuePair">
+    <annotation>
+      <documentation/>
+    </annotation>
+    <sequence>
+      <element name="key" type="string">
+        <annotation>
+          <documentation>key of the key and value pair</documentation>
+        </annotation>
+      </element>
+      <element name="value" type="string">
+        <annotation>
+          <documentation>value of the key and value pair</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="componentIdentifiers">
+    <annotation>
+      <documentation>This is an external reference number used by third party system.</documentation>
+    </annotation>
+    <sequence>
+      <element name="componentIdentifier" type="string">
+        <annotation>
+          <documentation>This is current MCU ID generated and passed from FMO during activation.</documentation>
+        </annotation>
+      </element>
+      <element name="originalComponentIdentifier" type="string">
+        <annotation>
+          <documentation>This is original MCU ID generated and passed from FMO during activation</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+</schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part><con:part><con:url>http://mkvsudfsdock11:81/calms2cms/services/Calms2CMSCustomer?xsd=xsd/Address.xsd</con:url><con:content><![CDATA[<schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Address" xmlns:tns="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Address" xmlns:cmn="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes" xmlns="http://www.w3.org/2001/XMLSchema">
+  <import namespace="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes" schemaLocation="http://mkvsudfsdock11:81/calms2cms/services/Calms2CMSCustomer?xsd=xsd/CommonTypes.xsd"/>
+  <complexType name="listOfAddressBP">
+    <annotation>
+      <documentation/>
+    </annotation>
+    <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="addressBP" type="tns:addressBP">
+        <annotation>
+          <documentation>Business partner address.</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="addressBP">
+    <annotation>
+      <documentation/>
+    </annotation>
+    <sequence>
+      <element name="addressId" type="long">
+        <annotation>
+          <documentation/>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="addressBPId" type="string">
+        <annotation>
+          <documentation>The BP ID.</documentation>
+        </annotation>
+      </element>
+      <element name="addressType" type="string">
+        <annotation>
+          <documentation/>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="isPrimaryMailing" type="boolean">
+        <annotation>
+          <documentation/>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="addressStreetNumber" type="string">
+        <annotation>
+          <documentation>The street number.</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="addressStreetName" type="string">
+        <annotation>
+          <documentation>Contains the street name or for post box addresses the post box number.</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="addressStreetType" type="string">
+        <annotation>
+          <documentation>The street name.</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="addressBuildingNum" type="string">
+        <annotation>
+          <documentation>The building or house number of the address record indicating the particular building in the street.</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="addressBuildingName" type="string">
+        <annotation>
+          <documentation>The building name.</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="addressSubBuildingNum" type="string">
+        <annotation>
+          <documentation>The sub building number, e.g. flat or apartment number of the address.</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="addressLocality" type="string">
+        <annotation>
+          <documentation>The address locality, where applicable.</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="addressCity" type="cmn:codeAndDescription">
+        <annotation>
+          <documentation/>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="addressPostTown" type="string">
+        <annotation>
+          <documentation>The name of the town or city for the address record.</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="addressCounty" type="string">
+        <annotation>
+          <documentation>County, region name, or area portion of an address record.</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="addressPostCode" type="string">
+        <annotation>
+          <documentation>The post code or zip code or Postleizahl of the partner, dealer, or third party supplier.</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="addressProvince" type="cmn:codeAndDescription">
+        <annotation>
+          <documentation/>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="addressCountry" type="cmn:codeAndDescription">
+        <annotation>
+          <documentation>The country code associated to the country the address is in.</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="channel">
+    <annotation>
+      <documentation/>
+    </annotation>
+    <sequence>
+      <element minOccurs="0" name="channelType" type="cmn:codeAndDescription">
+        <annotation>
+          <documentation>Archive, Printer, Fax, Email.</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="email" type="string">
+        <annotation>
+          <documentation>Email Address</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="fax" type="string">
+        <annotation>
+          <documentation>Fax Number</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="address" type="tns:addressBP">
+        <annotation>
+          <documentation>Business partner address.</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+</schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://mkvsudfsdock11:81/calms2cms/services/Calms2CMSCustomer</con:endpoint><con:endpoint>http://nssrvcalms01/calms2cms/services/Calms2CMSCustomer</con:endpoint></con:endpoints><con:environmentSpec><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:interface>

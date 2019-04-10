@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="eca44f45-2b94-46ed-ac1d-4f5b1f1b7c26" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Automated getSearch" searchProperties="true" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="43b7c2ee-21ec-476d-a883-95935f808a58fileName">Automated-getSearch</con:setting><con:setting id="eca44f45-2b94-46ed-ac1d-4f5b1f1b7c26fileName">Automated-getSearch</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="Initialisation Script" id="a02a9190-ab15-4710-ad5d-fcd1f0f3d924"><con:settings/><con:config><script>log.info "*******************************    get Search API  *************************************"
+
+//Set DOB value 
+testRunner.testCase.setPropertyValue( "DOB","010190" )
+testRunner.testCase.setPropertyValue( "DOBFORMAT","01/01/90" )
+testRunner.testCase.setPropertyValue("iterationValue", "1")
+def iterationValue = context.expand( '${#TestCase#iterationValue}' )
+log.info "Iteration Value              :"+ iterationValue</script></con:config></con:testStep><con:testStep type="datasource" name="DataSource" id="a20e2de5-7c6b-45f4-bad1-a4bdd816896b"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Excel"><con:configuration><file>C:/CMS Automation/API New/new/apiregression/getSearch.xlsx</file><worksheet>${#Project#Worksheet}</worksheet><cell>A2</cell><ignoreEmpty>false</ignoreEmpty><evaluateFormulas>false</evaluateFormulas></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>Row</con:property><con:property>ExpectedAPIoutput</con:property><con:property>Scenario</con:property><con:property>Query</con:property><con:property>searchString</con:property><con:property>messageId</con:property><con:property>timestamp</con:property><con:property>clientAppId</con:property><con:property>userId</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="Search By Contract Number" id="efb0696f-8b1c-481f-8a0d-827b9e33b5b8"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select LOAN_NUM from LLOAN where LOAN_STATUS = 8 and  rownum = 1</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>LOAN_NUM</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="Search By  Search by MCR number" id="82c67a22-04fe-4099-803c-77ee9abaf8a9"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select MCREF_REFERENCE from LMCREF where rownum = 1 order by A4GLidentity desc</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>MCREF_REFERENCE</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="Search by external Customer Id" id="b596cd1f-9460-4cca-a72f-3328ca9cd4be"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select c.ACCT_BPMID from LACMSTR c where rownum = 1  order by c.ACCT_BPMID desc</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>ACCT_BPMID</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="groovy" name="External Customer Id" id="58df753b-d6f2-4295-98b6-683ce1d022b5" disabled="true"><con:settings/><con:config><script>def aCCT_BPMID = context.expand( '${Search by external Customer Id#ACCT_BPMID}' )
+</script></con:config></con:testStep><con:testStep type="datasource" name="External Customer Id details" id="9bd263a3-4394-46ba-aa9c-73bdc99d8cf2"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select ACCT_NUMBER, ACCT_POSTCODE,ACCT_BIRTH_DATE , ACCT_CORPORATION from LACMSTR  where ACCT_BPMID = '${Search by external Customer Id#ACCT_BPMID}'</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>ACCT_NUMBER</con:property><con:property>ACCT_POSTCODE</con:property><con:property>ACCT_BIRTH_DATE</con:property><con:property>ACCT_CORPORATION</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="Search by  MCU" id="296543be-9779-4053-838b-a617d702b0af"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select CLINK_SECONDARY  from lclink where  rownum = 1</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>CLINK_SECONDARY</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="Count by Surname  'Wood'" id="dd40b0f4-5216-4f03-9db9-20c518668ab6"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select count(*) from LACMSTR c where c.ACCT_SURNAME like '%Wood%'</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>COUNT(*)</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="Search by Post Code" id="bdbcebe2-676a-4fdc-b70d-dee0324e21c5"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select acct_postcode from LACMSTR where rownum = 1</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>acct_postcode</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="Count by Post Code" id="9e7aa379-5eaa-4866-aa2a-96cf59e1791f"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select count(*) from LACMSTR where acct_postcode = '${Search by Post Code#acct_postcode}'</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>COUNT(*)</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="Search by Internal Customer Id" id="fcbb5f85-e3ca-4c9f-ae45-a6c02618f8c7"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select acct_number from LACMSTR where rownum = 1 order by acct_number desc</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>acct_number</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="Search By  Customer Number Is Corporation &quot;Y&quot;" id="147b9331-dbbf-4e5d-abb5-bdb4573ae44f"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select  ACCT_NUMBER from LACMSTR where acct_corporation = 'Y'  and  rownum = 1</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>ACCT_NUMBER</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="Search By  Customer Number Is Corporation &quot;N&quot;" id="f5eee73f-965f-4fcc-a2bb-6b6710d0f66b"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select  ACCT_NUMBER from LACMSTR where acct_corporation = 'N'  and  rownum = 1</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>ACCT_NUMBER</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="Customer Id  for Internal Customer" id="f7f766da-4bd6-495c-8e95-9f805cb0b44f"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select ACCT_NUMBER, ACCT_POSTCODE,ACCT_BIRTH_DATE , ACCT_CORPORATION from LACMSTR  where ACCT_NUMBER ='${Search by Internal Customer Id#acct_number}' </query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>ACCT_NUMBER</con:property><con:property>ACCT_POSTCODE</con:property><con:property>ACCT_BIRTH_DATE</con:property><con:property>ACCT_CORPORATION</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="Customer Id  for Customer with Corp Y" id="b6486fe4-c15b-4755-9fa1-0b303d36401b"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select ACCT_NUMBER, ACCT_POSTCODE,ACCT_BIRTH_DATE , ACCT_CORPORATION from LACMSTR  where ACCT_NUMBER ='${Search By  Customer Number Is Corporation "Y"#ACCT_NUMBER}'</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>ACCT_NUMBER</con:property><con:property>ACCT_POSTCODE</con:property><con:property>ACCT_BIRTH_DATE</con:property><con:property>ACCT_CORPORATION</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="Customer Id  for Customer with Corp N" id="8d4c0b4a-6016-439d-86a6-6f613589adb7"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select ACCT_NUMBER, ACCT_POSTCODE,ACCT_BIRTH_DATE , ACCT_CORPORATION from LACMSTR  where ACCT_NUMBER ='${Search By  Customer Number Is Corporation "N"#ACCT_NUMBER}'</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>ACCT_NUMBER</con:property><con:property>ACCT_POSTCODE</con:property><con:property>ACCT_BIRTH_DATE</con:property><con:property>ACCT_CORPORATION</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="Search by DOB" id="59ad041c-6dbb-4205-ba2b-653807926ce9" disabled="true"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>Test01db( Default environment )</Connection><query>select to_char(to_date(lpad(to_char(ACCT_BIRTH_DATE),6,'0'),'ddMMyy'),'DDMMYY') as ACCT_BIRTH_DATE from LACMSTR where ACCT_BIRTH_DATE ='90679'</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>ACCT_BIRTH_DATE</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="Count by DOB" id="e82191cc-9656-4b35-8b03-c54608504281"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select count(*) from LACMSTR where ACCT_BIRTH_DATE = '${#TestCase#DOB}'</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>COUNT(*)</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script- for looping" id="ea5014da-28b8-42f9-8a65-5b7dca7516b6"><con:settings/><con:config><script/></con:config></con:testStep><con:testStep type="datasource" name="Search String" id="160d8c34-0bb4-487e-bd8c-6a9c0b3bf8ce"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Groovy"><con:configuration><script> def lOAN_NUM = context.expand( '${Search By Contract Number#LOAN_NUM}' )
+ def mCTRAN_MCR_REFERENCE = context.expand( '${Search By  Search by MCR number#MCREF_REFERENCE}' ) 
+ def aCCT_BPMID_EXTERNAL_CUSTOMER = context.expand( '${Search by external Customer Id#ACCT_BPMID}' )
+ def cLINK_SECONDARY_MCU_NUMBER = context.expand( '${Search by  MCU#CLINK_SECONDARY}' ) 
+ def cOUNT = context.expand( '${Count by Surname  \'Wood\'#COUNT(*)}' ) 
+ def aCCT_POSTCODE = context.expand( '${Search by Post Code#acct_postcode}' ) 
+ def aCCT_NUMBER_INTENAL_CUSTOMER =  context.expand( '${Search by Internal Customer Id#acct_number}' )
+
+ def aCCT_NUMBER_CORP_Y = context.expand( '${Search By  Customer Number Is Corporation "Y"#ACCT_NUMBER}' ) 
+ def aCCT_NUMBER_CORP_N = context.expand( '${Search By  Customer Number Is Corporation "N"#ACCT_NUMBER}' )
+ // def aCCT_BIRTH_DATE = context.expand( '${Search by DOB#ACCT_BIRTH_DATE}' )
+ def aCCT_BIRTH_DATE = context.expand( '${#TestCase#DOBFORMAT}' )
+
+ 
+def searchString = [lOAN_NUM,mCTRAN_MCR_REFERENCE,aCCT_BPMID_EXTERNAL_CUSTOMER,cLINK_SECONDARY_MCU_NUMBER,aCCT_NUMBER_INTENAL_CUSTOMER,aCCT_NUMBER_CORP_Y,aCCT_NUMBER_CORP_N,aCCT_BIRTH_DATE,aCCT_POSTCODE    ]
+def searchBy =["LOANNUM","MCR","BPMID","MCU","INTERNALCUSTOMER","CORPY","CORPN","DOB","POSTCODE"]
+
+
+def iterationValue = context.expand( '${#TestCase#iterationValue}' )
+ 
+testRunner.testCase.setPropertyValue( "searchString", searchString[iterationValue.toInteger()] )
+
+if (iterationValue.toInteger()&lt;=9){
+result["SEARCHTEXT"] = searchString[iterationValue.toInteger()]
+result["SEARCHBY"] = searchBy[iterationValue.toInteger()]
+}
+</script></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>SEARCHTEXT</con:property><con:property>SEARCHBY</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="request" name="getSearch" id="b2ab3699-7ec5-4f83-adfd-adbd1126cc10"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>getSearch</con:operation><con:request name="getSearch" id="a92ca90d-eaf9-4e90-b01a-9973ba95b63f" defaultOutgoingWss="" defaultIncomingWss="" outgoingWss="" incomingWss=""><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvdfsdev01/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:con="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <con:getSearch>
+         <con:searchString>${Search String#SEARCHTEXT}</con:searchString>
+         <con:audit>
+            <com:messageId>${DataSource#messageId}</com:messageId>
+            <com:timestamp>${DataSource#timestamp}</com:timestamp>
+            <com:clientAppId>${DataSource#clientAppId}</com:clientAppId>
+            <com:userId>${DataSource#userId}</com:userId>
+            <com:clientLanguage>en_GB</com:clientLanguage>
+         </con:audit>
+      </con:getSearch>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="dfb0c479-029d-4b51-9877-83daaec3abe9"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="ba5f7dc0-e8db-409c-b494-16037c932774"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4afb3ac9-5034-4c9c-8880-fc76dd54bdc6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3413a0c0-76cc-4f43-9482-3efe9e972e81"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a32f4f82-e311-4f8a-ba4f-accdfcbdadcf"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1d61f86f-f9a2-4364-a52c-3d321cfb1a28"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="b796eeee-b2bf-40b2-9d2a-9d00c30d0dab"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="263f20f9-2653-4f33-8d66-1694d38c9931"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1f7152d8-1be5-485f-bc97-18cbc1aa4ba8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="3b0f4fd5-8397-4067-b032-ecfa22cfa5ff"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="02782eb4-ecaf-43ac-8f0c-0a1eeebbdd7a"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="15dff999-92e5-4da2-8a61-2a9da4ce2988"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="groovy" name="Validation" id="ca911c2a-c4f7-425a-af97-cb5c57a23406"><con:settings/><con:config><script>
+import com.eviware.soapui.model.testsuite.TestRunner.Status
+import com.eviware.soapui.support.XmlHolder
+import org.apache.log4j.Logger
+
+def response = context.expand( '${getSearch#Response}' )
+def holder = new XmlHolder(response)
+holder.namespaces["ns1"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract"
+holder.namespaces["ns4"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract"
+def entityType
+arr_EntityTypes= holder.getNodeValues('//ns1:resultEntityType')
+def numberOfData = holder["count(//ns1:resultEntityType)"]
+log.info "Number of data ----  : "+ numberOfData
+if (numberOfData !="0"){
+entityType  = arr_EntityTypes[numberOfData.toInteger()-1]
+log.info entityType
+log.info "resultEntityType	   :"+arr_EntityTypes[numberOfData.toInteger()-1]
+
+}else{
+	log.error "SOME ERROR IN THE INPUT DATA CHECK THE REQUEST"
+}
+def sEARCHBY = context.expand( '${Search String#SEARCHBY}' )
+// Entity type MCR
+if (sEARCHBY == "MCR"){
+	log.info "Search by MCR"
+if (entityType == "MCR"){
+			internalId = context.expand( '${Search String#SEARCHTEXT}' )
+                resultEntityType = holder.getNodeValue('//ns4:searchResultRecord[3]/ns4:resultEntityType')  
+                
+                internalIdfromNode = holder.getNodeValue('//ns4:searchResultRecord[3]/ns4:internalId')
+                def sEARCHTEXT = context.expand( '${Search String#SEARCHTEXT}' )
+                
+                if (internalIdfromNode == internalId){
+                                log.info "              "+"InternalId Id ------ Expected Value:"+ internalId + "------ Actual Value  is :" + internalIdfromNode
+                }else{
+                                log.error "           "+"InternalId Id ------ Expected Value :"+ internalId + "------ Actual Value  is:" + internalIdfromNode
+                }
+
+}else{
+	log.error "Entity Type Expected Value is --- MCR but Actual value is --- " + entityType		
+}
+}
+
+
+// Entity type CONTRACT
+if (sEARCHBY == "LOANNUM" || sEARCHBY == "MCU"){
+if (entityType == "Contract"){	
+	mcrReffromNode = holder.getNodeValue('//ns1:mcrRef')
+	internalIdfromNode = holder.getNodeValue('//ns1:internalId')
+	internalId = context.expand( '${Search String#SEARCHTEXT}' )
+	def sEARCHTEXT = context.expand( '${Search String#SEARCHTEXT}' )	
+	
+	if (sEARCHBY == "LOANNUM"){
+		lo.info "Search By Loan number"	
+	if (mcrReffromNode == "0"){
+		log.info "	"+"mcrReffromNode------ Expected Value:"+ "0" + "------ Actual Value  is    :" + mcrReffromNode
+	}else{
+		log.error "	"+"mcrReffromNode------ Expected Value:"+ "0" + "------ Actual Value  is    :" + mcrReffromNode
+	}}
+
+	if (sEARCHBY == "MCU"){
+         log.info "Search By MCU"
+          mculength = internalIdfromNode.length()
+          mcrlength = mculength.toInteger()-2
+                                
+             if (mcrReffromNode == internalIdfromNode.take(mcrlength)){
+               log.info "              "+"mcrReffromNode------ Expected Value:"+ mcrReffromNode + "------ Actual Value  is    :" + internalIdfromNode.take(mcrlength)
+             }else{
+                log.error "           "+"mcrReffromNode------ Expected Value:"+ mcrReffromNode + "------ Actual Value  is    :" + internalIdfromNode.take(mcrlength)
+              }
+     }
+
+
+	if (internalIdfromNode == internalId){
+		log.info "	"+"InternalId ------ Expected Value:"+ internalId + "------ Actual Value  is    :" + internalIdfromNode
+	}else{
+		log.error "	"+"InternalId ------ Expected Value:"+ internalId + "------ Actual Value  is    :" + internalIdfromNode
+	}
+}else{
+		log.error "Entity Type Expected Value is --- Contract but Actual value is --- " + entityType		
+}
+
+}
+
+
+// Entity type Customer
+if (sEARCHBY == "BPMID" || sEARCHBY == "INTERNALCUSTOMER" || sEARCHBY == "CORPY" || sEARCHBY == "CORPN"){
+	if (entityType == "Customer"){
+	def aCCT_BPMID = null
+	def aCCT_POSTCODE, aCCT_BIRTH_DATE,aCCT_CORPORATION 
+		
+	 aCCT_NUMBER = context.expand( '${External Customer Id details#ACCT_NUMBER}' )
+	 
+
+	if (sEARCHBY == "BPMID"){
+		log.info "Search By External Customer id"
+		aCCT_BPMID = context.expand( '${Search by external Customer Id#ACCT_BPMID}' )
+		aCCT_POSTCODE = context.expand( '${External Customer Id details#ACCT_POSTCODE}' )
+	 	aCCT_BIRTH_DATE = context.expand( '${External Customer Id details#ACCT_BIRTH_DATE}' )
+	 	aCCT_CORPORATION = context.expand( '${External Customer Id details#ACCT_CORPORATION}' )	
+	}else{
+		aCCT_BPMID = "BPM"+aCCT_NUMBER
+	}
+
+	if ( sEARCHBY == "INTERNALCUSTOMER"){
+		log.info "Search by Internal Customer id"
+		aCCT_NUMBER = context.expand( '${Search by Internal Customer Id#acct_number}' )
+		aCCT_POSTCODE = context.expand( '${Customer Id  for Internal Customer#ACCT_POSTCODE}' )
+		aCCT_BIRTH_DATE = context.expand( '${Customer Id  for Internal Customer#ACCT_BIRTH_DATE}' )
+		aCCT_CORPORATION = context.expand( '${Customer Id  for Internal Customer#ACCT_CORPORATION}' )
+		
+		aCCT_BPMID = null
+	}
+	if ( sEARCHBY == "CORPY"){
+		log.info "Search by Customer where Corporation is Y "
+		aCCT_NUMBER =  context.expand( '${Search By  Customer Number Is Corporation "Y"#ACCT_NUMBER}' )
+		aCCT_POSTCODE = context.expand( '${Customer Id  for Customer with Corp Y#ACCT_POSTCODE}' )
+		aCCT_BIRTH_DATE = context.expand( '${Customer Id  for Customer with Corp Y#ACCT_BIRTH_DATE}' )
+		aCCT_CORPORATION = context.expand( '${Customer Id  for Customer with Corp Y#ACCT_CORPORATION}' )
+			
+	aCCT_BPMID ="BPM"+ aCCT_NUMBER
+	}
+
+	if ( sEARCHBY == "CORPN"){
+	log.info "Search by Customer where Corporation is N "
+	 aCCT_NUMBER =  context.expand( '${Search By  Customer Number Is Corporation "N"#ACCT_NUMBER}' )
+	 aCCT_POSTCODE = context.expand( '${Customer Id  for Customer with Corp N#ACCT_POSTCODE}' )
+ 	 aCCT_BIRTH_DATE = context.expand( '${Customer Id  for Customer with Corp N#ACCT_BIRTH_DATE}' )
+ 	 aCCT_CORPORATION = context.expand( '${Customer Id  for Customer with Corp N#ACCT_CORPORATION}' )
+		
+	 aCCT_BPMID ="BPM"+ aCCT_NUMBER
+	}
+
+	
+	def dataForExternalId = [aCCT_BPMID,aCCT_NUMBER,aCCT_BIRTH_DATE,aCCT_POSTCODE,aCCT_CORPORATION]   
+	def tagnames =[ "externalId","internalId","dob","postCode","isCorporation"]
+
+
+	for (int i=0;i&lt;=4;i++){
+		if (dataForExternalId[i]!='0'){
+		xmlnodeValue = holder.getNodeValue('//ns1:'+tagnames[i]+'')
+		if (i==2 &amp;&amp; aCCT_BIRTH_DATE !=0){
+			arrlength =  aCCT_BIRTH_DATE.length()
+			log.info aCCT_BIRTH_DATE
+			arrlength =  aCCT_BIRTH_DATE.length()
+             if (arrlength ==5){
+             arrDATEFROMDB = aCCT_BIRTH_DATE.split("")
+             dateValue = "19"+arrDATEFROMDB[3]+arrDATEFROMDB[4]+"-"+arrDATEFROMDB[1]+arrDATEFROMDB[2]+"-"+"0"+arrDATEFROMDB[0]
+             dataForExternalId[i] = dateValue 
+             }
+
+             if (arrlength ==6){
+             arrDATEFROMDB = aCCT_BIRTH_DATE.split("")
+             dateValue = "19"+arrDATEFROMDB[4]+arrDATEFROMDB[5]+"-"+arrDATEFROMDB[2]+arrDATEFROMDB[3]+"-"+arrDATEFROMDB[0]+arrDATEFROMDB[1]
+             dataForExternalId[i] = dateValue 
+             }
+
+		}
+		if (dataForExternalId[i] == xmlnodeValue){
+			log.info "	"+tagnames[i]+ "------ Expected Value from DB: "+ dataForExternalId[i] + "------ Actual Value from XML : " + xmlnodeValue
+		}else{
+			log.error "	"+tagnames[i]+ "------ Expected Value from DB: "+ dataForExternalId[i] + "------ Actual Value from XML : " + xmlnodeValue
+		}	
+			
+		}else{
+	
+			if (holder.getNodeValue('exists(//ns1:getSearchResponse/ns1:'+tagnames[i]+')')){
+			xmlnodeValue = holder.getNodeValue('//ns1:'+tagnames[i]+'')
+			if (xmlnodeValue == null){
+				xmlnodeValue ="0"
+			}
+			if (dataForExternalId[i] == xmlnodeValue){
+				log.info "	"+tagnames[i]+ "------ Expected Value from DB: "+ dataForExternalId[i] + "------ Actual Value from XML: " + xmlnodeValue 
+			}else{
+				log.error "	"+tagnames[i]+ "------ Expected Value from DB: "+ dataForExternalId[i] + "------ Actual Value from XML: " + xmlnodeValue 
+			}
+			
+			}else{
+			xmlnodeValue = "0"
+			log.info "	"+tagnames[i]+ "------ Expected Value from DB: "+ dataForExternalId[i] + "------ Actual Value from XML: " + xmlnodeValue
+			}		
+		}
+	}	
+}else{
+	log.error "Entity Type Expected Value is --- Customer but Actual value is --- " + entityType
+}
+}
+
+// Search by Post Code
+if (sEARCHBY == "POSTCODE"){
+	numberOfData = holder["count(//ns1:resultEntityType)"]
+	log.info "Total Count of  resultEntityType 		:" + numberOfData
+	def cOUNT = context.expand( '${Count by Post Code#COUNT(*)}' )
+	def acct_postcode = context.expand( '${Search by Post Code#acct_postcode}' )
+	if (cOUNT == numberOfData ){
+		
+		log.info "Search By Post Code     : " + acct_postcode
+		log.info "	"+"Total records reterived in API    : " + numberOfData
+		log.info "	"+"Total records count from Database : " + cOUNT
+	}else {
+		log.info "Search By Post Code     : " + acct_postcode
+		log.info "	"+"Total records reterived in API    : " + numberOfData
+		log.info "	"+"Total records count from Database : " + cOUNT
+		log.error "	"+" Total records from API does not match those from Database"
+	}
+
+	arr_postCodes= holder.getNodeValues('//ns1:postCode')
+
+	for (int i= 0; i&lt; numberOfData.toInteger();i++){
+		if (arr_postCodes[i] != acct_postcode ){
+		log.error "post code for the list " + i +" does not match the search value" +  acct_postcode
+		}
+	}	
+}
+
+//Search by DOB
+
+if (sEARCHBY == "DOB"){
+	def numberOfDOBData = holder["count(//ns1:resultEntityType)"]
+	log.info "Total Count of  resultEntityType 		:" + numberOfDOBData
+	cOUNT = context.expand( '${Count by DOB#COUNT(*)}' )
+
+	def dOB = context.expand( '${#TestCase#DOB}' )
+	
+	if (cOUNT == numberOfDOBData ){		
+		log.info "Search By DOB     : " + dOB
+		log.info "	"+"Total records reterived in API    : " + numberOfDOBData
+		log.info "	"+"Total records count from Database : " + cOUNT
+	}else {
+		log.info "Search By Post Code     : " + dOB
+		log.info "	"+"Total records reterived in API    : " + numberOfDOBData
+		log.info "	"+"Total records count from Database : " + cOUNT
+		log.error "	"+"Total records from API does not match those from Database"
+	}
+
+	arr_dob = holder.getNodeValues('//ns1:dob')
+
+	for (int i= 0; i&lt; numberOfData.toInteger();i++){
+		if (arr_dob[i] != "1990-01-01" ){
+		log.error "Date of Birth for the list " + i +" does not match the search value" +  "1990-01-01"
+		}
+	}	
+}</script></con:config></con:testStep><con:testStep type="groovy" name="Increment iterationValue" id="e085c190-dab3-4041-9b03-b23f7fb925bf"><con:settings/><con:config><script>def iterationValue = context.expand( '${#TestCase#iterationValue}' )
+iterationValue  = iterationValue.toInteger()+1
+
+log.info "Iteration value " + iterationValue
+
+if (iterationValue&lt;9){
+testRunner.testCase.setPropertyValue("iterationValue", iterationValue.toString())
+}else{
+	testRunner.cancel("loop is done")
+}
+</script></con:config></con:testStep><con:testStep type="datasourceloop" name="DataSource Loop" id="8a1dc320-dd8a-4679-8a6e-c33ba1c4efd1"><con:settings/><con:config><dataSourceStep>Search String</dataSourceStep><targetStep>Groovy Script- for looping</targetStep></con:config></con:testStep><con:testStep type="request" name="SOAP Request" id="8d021ecb-0307-4df4-8f50-bc2d9e49a498" disabled="true"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>getSearch</con:operation><con:request name="SOAP Request" id="b5a48f8a-6958-4650-8248-ccde978bf9c2" defaultOutgoingWss="" defaultIncomingWss="" outgoingWss="" incomingWss=""><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvdfsdev01/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:con="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <con:getSearch>
+         <con:searchString>1807</con:searchString>
+         <con:audit>
+            <com:messageId>78654</com:messageId>
+            <com:timestamp>2015-12-23T20:26:24+10:00</com:timestamp>
+            <com:clientAppId>78654</com:clientAppId>
+            <com:userId>AutoUser</com:userId><com:clientLanguage>de_DE</com:clientLanguage>
+         </con:audit>
+      </con:getSearch>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="52c34207-0d70-496f-b951-ad9104e63c92"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="ba5f7dc0-e8db-409c-b494-16037c932774"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4afb3ac9-5034-4c9c-8880-fc76dd54bdc6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3413a0c0-76cc-4f43-9482-3efe9e972e81"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a32f4f82-e311-4f8a-ba4f-accdfcbdadcf"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1d61f86f-f9a2-4364-a52c-3d321cfb1a28"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="b796eeee-b2bf-40b2-9d2a-9d00c30d0dab"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="263f20f9-2653-4f33-8d66-1694d38c9931"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1f7152d8-1be5-485f-bc97-18cbc1aa4ba8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="3b0f4fd5-8397-4067-b032-ecfa22cfa5ff"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="02782eb4-ecaf-43ac-8f0c-0a1eeebbdd7a"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="15dff999-92e5-4da2-8a61-2a9da4ce2988"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script - Search String" id="9367d7e6-7ce2-4e59-a17f-5fcca568725d" disabled="true"><con:settings/><con:config><script> def lOAN_NUM = context.expand( '${Search By Contract Number#LOAN_NUM}' )
+ def mCTRAN_MCR_REFERENCE = context.expand( '${Search By  Search by MCR number#MCREF_REFERENCE}' ) 
+ def aCCT_BPMID_EXTERNAL_CUSTOMER = context.expand( '${Search by external Customer Id#ACCT_BPMID}' )
+ def cLINK_SECONDARY_MCU_NUMBER = context.expand( '${Search by  MCU#CLINK_SECONDARY}' ) 
+ def cOUNT = context.expand( '${Count by Surname  \'Wood\'#COUNT(*)}' ) 
+ def aCCT_POSTCODE = context.expand( '${Search by Post Code#acct_postcode}' ) 
+ def aCCT_NUMBER_INTENAL_CUSTOMER = context.expand( '${Search by Internal Customer Id#acct_number}' )
+ def aCCT_NUMBER_CORP_Y = context.expand( '${Search By  Customer Number Is Corporation "Y"#ACCT_NUMBER}' ) 
+ def aCCT_NUMBER_CORP_N = context.expand( '${Search By  Customer Number Is Corporation "N"#ACCT_NUMBER}' )
+ def aCCT_BIRTH_DATE = context.expand( '${Search by DOB#ACCT_BIRTH_DATE}' ) 
+ 
+def searchString = [lOAN_NUM,mCTRAN_MCR_REFERENCE,aCCT_BPMID_EXTERNAL_CUSTOMER,cLINK_SECONDARY_MCU_NUMBER,aCCT_POSTCODE ,aCCT_NUMBER_INTENAL_CUSTOMER,aCCT_NUMBER_CORP_Y,aCCT_NUMBER_CORP_N,aCCT_BIRTH_DATE    ]
+
+def iterationValue = context.expand( '${#TestCase#iterationValue}' )
+ 
+testRunner.testCase.setPropertyValue( "searchString", searchString[iterationValue.toInteger()] )
+</script></con:config></con:testStep><con:testStep type="request" name="getsearch test01" id="e92e51e3-bbbf-4b57-b4ca-27aa636d0505" disabled="true"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>getSearch</con:operation><con:request name="getsearch test01" id="190e917b-7d32-4e92-ba5d-d1b24275a9a8" defaultOutgoingWss="" defaultIncomingWss="" outgoingWss="" incomingWss=""><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvdfsdev01/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:con="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <con:getSearch>
+         <con:searchString>?</con:searchString>
+         <con:audit>
+            <com:messageId>?</com:messageId>
+            <com:timestamp>?</com:timestamp>
+            <com:clientAppId>?</com:clientAppId>
+            <com:userId>?</com:userId>
+            <com:clientLanguage>?</com:clientLanguage>
+         </con:audit>
+      </con:getSearch>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="bc37a389-85eb-4c02-bc2d-964cbd86ff94"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="ba5f7dc0-e8db-409c-b494-16037c932774"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4afb3ac9-5034-4c9c-8880-fc76dd54bdc6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3413a0c0-76cc-4f43-9482-3efe9e972e81"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a32f4f82-e311-4f8a-ba4f-accdfcbdadcf"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1d61f86f-f9a2-4364-a52c-3d321cfb1a28"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="b796eeee-b2bf-40b2-9d2a-9d00c30d0dab"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="263f20f9-2653-4f33-8d66-1694d38c9931"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1f7152d8-1be5-485f-bc97-18cbc1aa4ba8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="3b0f4fd5-8397-4067-b032-ecfa22cfa5ff"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="02782eb4-ecaf-43ac-8f0c-0a1eeebbdd7a"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="15dff999-92e5-4da2-8a61-2a9da4ce2988"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:properties><con:property><con:name>iterationValue</con:name><con:value>8</con:value></con:property><con:property><con:name>searchString</con:name><con:value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">MK14 6FG</con:value></con:property><con:property><con:name>DOB</con:name><con:value>010190</con:value></con:property><con:property><con:name>DOBFORMAT</con:name><con:value>01/01/90</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>bc417f29-9ccb-4bfb-8d2c-b090123b3b2c</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>b3e29ea6-62eb-4e90-9c63-736617af88c5</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>b630264b-a175-4e5f-92c1-84131ae8b290</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>2b80a873-4518-4fea-b16e-2fb78b03d305</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>84f3cad1-654a-4d39-ad98-3600d50172c4</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>bd4910f2-93b8-4aa1-a14a-2850e56b9ab7</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>bb772862-17b2-4cd0-b028-611f07a9da46</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>ac7d765a-cfb7-4494-bb0e-8dfce9d7d094</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>83c08769-3cc1-4eae-9e74-367ca7bc33c0</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>8a63cf4e-1c6c-439c-871e-4702bfd7817f</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>d410df73-fd73-4052-a2b2-0b276b48bb86</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>60c0ee26-c43a-4079-a2c3-5e4bf15b3b3d</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>2e975e77-0e6f-4012-8fb9-6383652bf68a</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>08b4b018-bc53-4336-88d8-f959c1969785</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>0bc9613b-d1aa-48a3-ba60-ec0623b9d26f</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>0cde3040-d9e9-44b6-bac1-2c1f9553ab05</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>1f002e48-0d52-488a-9ccb-af0dca01e54a</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>1be0b180-1d93-4fd4-9722-1e84cce1c539</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>2b051ca4-738e-4b5f-82b6-331178e26376</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>372fbb06-892f-4eb6-abe3-4266dd8f3615</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>3f4c01d0-12eb-4ced-9c4c-0e35ae85a175</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>5844e880-6091-4e4f-8e4d-61f929826d41</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>dbaade53-caf1-4a15-9c0e-03b66026a8bb</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>e8376f3e-8bad-447c-ad05-339683e4c72a</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>1d9e0eed-40c9-483d-bda2-696d57daee09</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>8433a6a2-91be-48d9-895c-d33f556c4123</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>097fb183-89c0-4769-a6be-c2c4b90eb569</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>67aa2abc-834a-4c1a-846a-c01031deaabc</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="ba5f7dc0-e8db-409c-b494-16037c932774"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4afb3ac9-5034-4c9c-8880-fc76dd54bdc6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3413a0c0-76cc-4f43-9482-3efe9e972e81"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a32f4f82-e311-4f8a-ba4f-accdfcbdadcf"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="263f20f9-2653-4f33-8d66-1694d38c9931"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1f7152d8-1be5-485f-bc97-18cbc1aa4ba8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3b0f4fd5-8397-4067-b032-ecfa22cfa5ff"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="02782eb4-ecaf-43ac-8f0c-0a1eeebbdd7a"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="15dff999-92e5-4da2-8a61-2a9da4ce2988"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>

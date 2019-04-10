@@ -1,0 +1,14 @@
+1.UpdateContractDetails.xml
+2.-MCR---Invalid-Intension-code---throws-error-code-SQ009014.xml
+3.MCU---Invalid-Intension-code--throws-error-code-SQ009014.xml
+4.Intention-code-is-blank.xml
+5.Invalid-Contract-number--throws-error-code-SQ009011.xml
+6.Update-Customer-Intenstion-for-a-contract-that-has-no-live-assets---throws-error-code-SQ009013.xml
+7.Customer-intension-on-already-ended-contract----throws-error-code-SQ009012.xml
+8.If-any-of-the-assets-under-the-ID-provided-are-of-a-product-type-which-does-not-allow-the-intention-code-to-be-set----throws-error-code-SQ009015.xml
+9.Balloon-payment-in-progress-%E2%80%93-cannot-update-intention---throws-error-code-SQ009016.xml
+10.If-the-Balloon-Invoiced-field-is-set-to-Y-%28lextn_balloon_invoiced-%3D-Y%29-and-the-lextn_suppress_balloon-is-set-to-N---throws-error-code-SQ009016.xml
+11.If-the-DD-for-the-balloon-has-been-captured-throws-error-code-SQ009016.xml
+12.MCU---EOC-Intension--updates-Contract-history-with-the-Security-Audit-user.xml
+13.Update-EOC-Customer-Intension-for-an-MCR-updates-the-MCU-with-an-Asset.xml
+14.MCR---EOC-Intension--updates-Contract-history-with-the-Security-Audit-user.xml

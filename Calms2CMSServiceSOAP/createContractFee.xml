@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:operation id="72994f7e-6d71-4568-9dec-acaeef10649f" isOneWay="false" action="createContractFee" name="createContractFee" bindingOperationName="createContractFee" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="befe0931-ab58-4c04-8fd1-97d13c2c87e5fileName">createContractFee</con:setting><con:setting id="72994f7e-6d71-4568-9dec-acaeef10649ffileName">createContractFee</con:setting></con:settings><con:call id="9e9571d5-c689-408c-b882-0fd81fb34d66" defaultOutgoingWss="" defaultIncomingWss="" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvdfsdev01/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:con="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <con:createContractFee>
+         <con:contractNumber>?</con:contractNumber>
+         <con:contractFee>
+            <con:feeCategory>?</con:feeCategory>
+            <con:InvoiceAmount>?</con:InvoiceAmount>
+            <con:feeComment>?</con:feeComment>
+            <con:effectiveDate>?</con:effectiveDate>
+         </con:contractFee>
+         <con:audit>
+            <com:messageId>?</com:messageId>
+            <com:timestamp>?</com:timestamp>
+            <com:clientAppId>?</com:clientAppId>
+            <com:userId>?</com:userId>
+         </con:audit>
+      </con:createContractFee>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508" action="createContractFee"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="ba5f7dc0-e8db-409c-b494-16037c932774"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4afb3ac9-5034-4c9c-8880-fc76dd54bdc6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3413a0c0-76cc-4f43-9482-3efe9e972e81"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a32f4f82-e311-4f8a-ba4f-accdfcbdadcf"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1d61f86f-f9a2-4364-a52c-3d321cfb1a28"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="b796eeee-b2bf-40b2-9d2a-9d00c30d0dab"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="263f20f9-2653-4f33-8d66-1694d38c9931"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1f7152d8-1be5-485f-bc97-18cbc1aa4ba8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="3b0f4fd5-8397-4067-b032-ecfa22cfa5ff"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="02782eb4-ecaf-43ac-8f0c-0a1eeebbdd7a"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="15dff999-92e5-4da2-8a61-2a9da4ce2988"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:call><con:call id="07c43185-ab85-4b05-94be-df0842ac809e" name="Request 2"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvbmwst01:28080/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:con="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract" xmlns:fee="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Fee" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <con:createContractFee>
+         <con:externalContractNumber>10082460</con:externalContractNumber>
+         <!--Optional:-->
+         
+         <con:effectiveDate>2016-10-11</con:effectiveDate>
+         <con:listOfContractFee>
+            <!--1 or more repetitions:-->
+            <fee:contractFee>
+               <fee:fee>
+                  <!--Optional:-->
+                  
+                  <!--Optional:-->
+                  <fee:feeCategory>11</fee:feeCategory>
+                  <!--Optional:-->
+                  <fee:feeAmount>
+                     <!--Optional:-->
+                     
+                     <!--Optional:-->
+                     <fee:grossAmount>100</fee:grossAmount>
+                     <!--Optional:-->
+                     <fee:netAmount>100</fee:netAmount>
+                     <!--Optional:-->
+<!--                     <fee:taxCode>-->
+                        <!--Optional:-->
+                        
+                        <!--Optional:-->
+                        
+<!--                     </fee:taxCode>-->
+                     <!--Optional:-->
+                     
+                     <!--Optional:-->
+                     
+                     <!--Optional:-->
+                     
+                     <!--Optional:-->
+                     
+                     <!--Optional:-->
+                     
+                  </fee:feeAmount>
+                  <!--Optional:-->
+<!--                  <fee:supplier>-->
+                     <!--Optional:-->
+                     
+                     <!--Optional:-->
+                     
+                     <!--Optional:-->
+                     
+                     <!--Optional:-->
+                     
+                     <!--Optional:-->
+                     
+<!--                  </fee:supplier>-->
+                  <!--Optional:-->
+<!--                  <fee:feeInvoiceThirdParty>-->
+<!--                     <fee:paymentType/>-->
+<!--                     <fee:thirdPartyType/>-->
+                     <!--Optional:-->
+                     
+                     <!--Optional:-->
+                     
+<!--                  </fee:feeInvoiceThirdParty>-->
+               </fee:fee>
+               <!--Optional:-->
+               
+               <fee:feeComment>${DataExcel#feeComment}</fee:feeComment>
+               <fee:comment>${DataExcel#comment}</fee:comment>
+               <!--Optional:-->
+               
+               <!--Optional:-->
+               
+               <!--Optional:-->
+               
+               <fee:processingRecharge>${DataExcel#processingRecharge}</fee:processingRecharge>
+               <!--Optional:-->
+               
+               <!--Optional:-->
+<!--               <fee:processingFeeAmount>-->
+                  <!--Optional:-->
+                  
+                  <!--Optional:-->
+                  
+                  <!--Optional:-->
+                  
+                  <!--Optional:-->
+<!--                  <fee:taxCode>-->
+                     <!--Optional:-->
+                     
+                     <!--Optional:-->
+                     
+<!--                  </fee:taxCode>-->
+                  <!--Optional:-->
+                  
+                  <!--Optional:-->
+                  
+                  <!--Optional:-->
+                  
+                  <!--Optional:-->
+                  
+                  <!--Optional:-->
+                  
+<!--               </fee:processingFeeAmount>-->
+               <!--Optional:-->
+               
+               <!--Optional:-->
+               
+            </fee:contractFee>
+         </con:listOfContractFee>
+         <con:territoryCode>${DataExcel#territoryCode}</con:territoryCode>
+         <!--Optional:-->
+         
+         <con:audit>
+            <com:messageId>${DataExcel#messageId}</com:messageId>
+            <com:timestamp>${DataExcel#timestamp}</com:timestamp>
+            <com:clientAppId>${DataExcel#clientAppId}</com:clientAppId>
+            <com:userId>${DataExcel#userId}</com:userId>
+            <com:clientLanguage>${DataExcel#clientLanguage}</com:clientLanguage>
+         </con:audit>
+      </con:createContractFee>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508" action="createContractFee"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="a32f4f82-e311-4f8a-ba4f-accdfcbdadcf"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="263f20f9-2653-4f33-8d66-1694d38c9931"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1f7152d8-1be5-485f-bc97-18cbc1aa4ba8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="3b0f4fd5-8397-4067-b032-ecfa22cfa5ff"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="02782eb4-ecaf-43ac-8f0c-0a1eeebbdd7a"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="15dff999-92e5-4da2-8a61-2a9da4ce2988"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:call><con:call id="7019f889-c7c8-4ebd-9641-2f8abdf97268" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://mkvsudfsdock11:81/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:con="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract" xmlns:fee="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Fee" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <con:createContractFee>\r
+         <con:externalContractNumber>?</con:externalContractNumber>\r
+         <!--Optional:-->\r
+         <con:effectiveDate>?</con:effectiveDate>\r
+         <con:listOfContractFee>\r
+            <!--1 or more repetitions:-->\r
+            <fee:contractFee>\r
+               <!--Optional:-->\r
+               <fee:paymentBlock>?</fee:paymentBlock>\r
+               <fee:fee>\r
+                  <!--Optional:-->\r
+                  <fee:feeCategory>?</fee:feeCategory>\r
+                  <!--Optional:-->\r
+                  <fee:feeDescription>?</fee:feeDescription>\r
+                  <!--Optional:-->\r
+                  <fee:feeAmount>\r
+                     <!--Optional:-->\r
+                     <fee:grossAmount>?</fee:grossAmount>\r
+                     <!--Optional:-->\r
+                     <fee:netAmount>?</fee:netAmount>\r
+                     <!--Optional:-->\r
+                     <fee:taxAmount>?</fee:taxAmount>\r
+                     <!--Optional:-->\r
+                     <fee:taxCode>\r
+                        <!--Optional:-->\r
+                        <com:cmsCode>?</com:cmsCode>\r
+                        <!--Optional:-->\r
+                        <com:externalCode>?</com:externalCode>\r
+                     </fee:taxCode>\r
+                     <!--Optional:-->\r
+                     <fee:taxRate>?</fee:taxRate>\r
+                     <!--Optional:-->\r
+                     <fee:invoiceReceived>?</fee:invoiceReceived>\r
+                     <!--Optional:-->\r
+                     <fee:exempt>?</fee:exempt>\r
+                     <!--Optional:-->\r
+                     <fee:exemptReason>?</fee:exemptReason>\r
+                     <!--Optional:-->\r
+                     <fee:taxCrPcent>?</fee:taxCrPcent>\r
+                  </fee:feeAmount>\r
+                  <!--Optional:-->\r
+                  <fee:supplier>\r
+                     <!--Optional:-->\r
+                     <fee:supplierId>?</fee:supplierId>\r
+                     <!--Optional:-->\r
+                     <fee:supplierBpid>?</fee:supplierBpid>\r
+                     <!--Optional:-->\r
+                     <fee:invoiceReceived>?</fee:invoiceReceived>\r
+                     <!--Optional:-->\r
+                     <fee:supplierInvoiceNumber>?</fee:supplierInvoiceNumber>\r
+                     <!--Optional:-->\r
+                     <fee:VATNumber>?</fee:VATNumber>\r
+                  </fee:supplier>\r
+                  <!--Optional:-->\r
+                  <fee:feeInvoiceThirdParty>\r
+                     <fee:paymentType>?</fee:paymentType>\r
+                     <fee:thirdPartyType>?</fee:thirdPartyType>\r
+                     <!--Optional:-->\r
+                     <fee:thirdPartyBpId>?</fee:thirdPartyBpId>\r
+                     <!--Optional:-->\r
+                     <fee:thirdPartyAddressExtId>?</fee:thirdPartyAddressExtId>\r
+                  </fee:feeInvoiceThirdParty>\r
+               </fee:fee>\r
+               <!--Optional:-->\r
+               <fee:feeComment>?</fee:feeComment>\r
+               <fee:comment>?</fee:comment>\r
+               <!--Optional:-->\r
+               <fee:invoiceNumber>?</fee:invoiceNumber>\r
+               <!--Optional:-->\r
+               <fee:invoiceItemNumber>?</fee:invoiceItemNumber>\r
+               <!--Optional:-->\r
+               <fee:eventDate>?</fee:eventDate>\r
+               <fee:processingRecharge>?</fee:processingRecharge>\r
+               <!--Optional:-->\r
+               <fee:processingFeeCategory>?</fee:processingFeeCategory>\r
+               <!--Optional:-->\r
+               <fee:processingFeeAmount>\r
+                  <!--Optional:-->\r
+                  <fee:grossAmount>?</fee:grossAmount>\r
+                  <!--Optional:-->\r
+                  <fee:netAmount>?</fee:netAmount>\r
+                  <!--Optional:-->\r
+                  <fee:taxAmount>?</fee:taxAmount>\r
+                  <!--Optional:-->\r
+                  <fee:taxCode>\r
+                     <!--Optional:-->\r
+                     <com:cmsCode>?</com:cmsCode>\r
+                     <!--Optional:-->\r
+                     <com:externalCode>?</com:externalCode>\r
+                  </fee:taxCode>\r
+                  <!--Optional:-->\r
+                  <fee:taxRate>?</fee:taxRate>\r
+                  <!--Optional:-->\r
+                  <fee:invoiceReceived>?</fee:invoiceReceived>\r
+                  <!--Optional:-->\r
+                  <fee:exempt>?</fee:exempt>\r
+                  <!--Optional:-->\r
+                  <fee:exemptReason>?</fee:exemptReason>\r
+                  <!--Optional:-->\r
+                  <fee:taxCrPcent>?</fee:taxCrPcent>\r
+               </fee:processingFeeAmount>\r
+               <!--Optional:-->\r
+               <fee:processingFeeLink>?</fee:processingFeeLink>\r
+               <!--Optional:-->\r
+               <fee:processingFeeLinkItemNumber>?</fee:processingFeeLinkItemNumber>\r
+               <!--Optional:-->\r
+               <fee:printInvoice>?</fee:printInvoice>\r
+               <!--Optional:-->\r
+               <fee:externalReference>?</fee:externalReference>\r
+            </fee:contractFee>\r
+         </con:listOfContractFee>\r
+         <con:territoryCode>?</con:territoryCode>\r
+         <!--Optional:-->\r
+         <con:additionalInfo>?</con:additionalInfo>\r
+         <con:applicationInfo>\r
+            <!--Optional:-->\r
+            <com:tenantInfo>\r
+               <com:tenantCode>?</com:tenantCode>\r
+            </com:tenantInfo>\r
+            <!--Optional:-->\r
+            <com:securityAudit>\r
+               <com:messageId>?</com:messageId>\r
+               <com:timestamp>?</com:timestamp>\r
+               <com:clientAppId>?</com:clientAppId>\r
+               <com:userId>?</com:userId>\r
+               <!--Optional:-->\r
+               <com:authorisingUserId>?</com:authorisingUserId>\r
+               <com:clientLanguage>?</com:clientLanguage>\r
+            </com:securityAudit>\r
+         </con:applicationInfo>\r
+      </con:createContractFee>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508" action="createContractFee"/><con:environmentSpec><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:call><con:environmentSpec><con:entry environmentId="ba5f7dc0-e8db-409c-b494-16037c932774"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4afb3ac9-5034-4c9c-8880-fc76dd54bdc6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3413a0c0-76cc-4f43-9482-3efe9e972e81"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a32f4f82-e311-4f8a-ba4f-accdfcbdadcf"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="263f20f9-2653-4f33-8d66-1694d38c9931"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1f7152d8-1be5-485f-bc97-18cbc1aa4ba8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3b0f4fd5-8397-4067-b032-ecfa22cfa5ff"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="02782eb4-ecaf-43ac-8f0c-0a1eeebbdd7a"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="15dff999-92e5-4da2-8a61-2a9da4ce2988"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:operation>

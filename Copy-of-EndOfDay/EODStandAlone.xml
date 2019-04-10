@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="64ca0f22-9880-42b6-ad4d-f50309dbdeec" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="EODStandAlone" searchProperties="true" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="448203de-6e4d-4507-bef1-971116798e83fileName">EODStandAlone</con:setting><con:setting id="64ca0f22-9880-42b6-ad4d-f50309dbdeecfileName">EODStandAlone</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="Groovy Script" id="3564d5b9-46a4-48a4-93a4-c794ea634bfb"><con:settings/><con:config><script>def projName = testRunner.testCase.testSuite.project.name
+def suiteName = testRunner.testCase.testSuite.name
+def tcName   = testRunner.testCase.name
+
+// Use soapUI context object to log project endpoint and Database.
+def endpoint = context.expand( '${#Project#endpoint}' ) 
+def eodUrl = context.expand('${#TestCase#EODUrl}')
+
+log.info "*********************************************************************"
+log.info "       Running Project: "  + projName 
+log.info "       Suite: "  + suiteName 
+log.info "       Testcase: " + tcName
+log.info "       Endpoint: " + endpoint
+log.info "		 EodUrl:   " + eodUrl
+log.info "*********************************************************************"
+
+log.info "        Generating Random Values for Contract Activation"
+
+def iterationValue = testRunner.testCase.getPropertyValue("iterationValue")
+iterationValue = iterationValue.toInteger()
+log.info  "Iteration value is   : " + iterationValue 
+
+//def noOfDaysForEODExecution = context.expand( '${#TestCase#noOfDaysForEODExecution}' )
+def noOfDaysForEODExecution = testRunner.testCase.getPropertyValue ("noOfDaysForEODExecution")
+noOfDaysForEODExecution= noOfDaysForEODExecution.toInteger();
+log.info "noOfDaysForEODExecution is : "+ noOfDaysForEODExecution
+
+if (iterationValue > noOfDaysForEODExecution){
+	log.info ("Exit Groovy Data Source Looper")	
+	testRunner.cancel("Iteration is done")		
+}else{
+for( i in iterationValue..noOfDaysForEODExecution ) {
+	iterationValue = testRunner.testCase.getPropertyValue("iterationValue")
+	iterationValue = iterationValue.toInteger()
+	log.info " Iteration Value  "  + iterationValue
+	
+	testRunner.runTestStepByName( "PostEODMainTask")
+	testRunner.runTestStepByName( "Delay")
+	testRunner.runTestStepByName( "getEODMainTask")
+	testRunner.runTestStepByName( "Validate EOD Status")
+
+	if (iterationValue> noOfDaysForEODExecution|| iterationValue== noOfDaysForEODExecution){
+	log.info ("Exit Groovy Data Source Looper")
+	testRunner.cancel("Iteration is done")
+	
+	}
+	else{
+		iterVal = iterationValue+1
+		log.info iterVal
+		testRunner.testCase.setPropertyValue("iterationValue", iterVal.toString() );
+	}
+}
+}</script></con:config></con:testStep><con:testStep type="httprequest" name="PostEODMainTask" id="8733d98e-1b67-48bf-b82f-7c575b7d0f89" disabled="true"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="c9b215a1-dd46-49e4-8509-6b2a3ff76fd9" name="PostEODMainTask" postQueryString="false" mediaType="text/xml" downloadIncludedResources="false" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.impl.support.AbstractHttpRequest@follow-redirects">true</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>${#TestCase#EODURL}</con:endpoint><con:request/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><con:parameter><con:name>jobParameters</con:name><con:value>Territory.Code(long)=${#TestCase#TerritoryCode} , Execution.Time =Execution.Time=2018/03/22 11:40:58</con:value><con:style>QUERY</con:style><con:default>Territory.Code(long)=${#TestCase#TerritoryCode} , Execution.Time =Execution.Time=2018/03/22 11:40:58</con:default></con:parameter></con:parameters><con:environmentSpec><con:entry environmentId="2df33d9c-03a8-414c-ade6-61994cc4ada6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="2a361352-f730-4850-9559-b73996a5477d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="06de0333-6715-4960-a9f7-88e5be93a72b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="df1908ce-af9d-4514-9808-3d96da56cf95"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:config></con:testStep><con:testStep type="delay" name="Delay" id="a1e06974-f548-4f4f-9406-ce5c3592aaf9" disabled="true"><con:settings/><con:config><delay>100</delay></con:config></con:testStep><con:testStep type="httprequest" name="getEODMainTask" id="4881479b-2136-4321-b207-787503426b69" disabled="true"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" id="c9b215a1-dd46-49e4-8509-6b2a3ff76fd9" name="getEODMainTask" postQueryString="false" mediaType="text/xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>${#TestCase#EODURL}</con:endpoint><con:request/><con:assertion type="JsonPath Match" id="75874be5-4db1-49f2-ba4e-90874889cec6" name="JsonPath Match" disabled="true"><con:configuration/></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><con:parameter><con:name>jobParameters</con:name><con:value>Territory.Code(long)=${#TestCase#TerritoryCode}</con:value><con:style>QUERY</con:style><con:default>Territory.Code(long)=${#TestCase#TerritoryCode}</con:default></con:parameter></con:parameters><con:environmentSpec><con:entry environmentId="2df33d9c-03a8-414c-ade6-61994cc4ada6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="2a361352-f730-4850-9559-b73996a5477d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="06de0333-6715-4960-a9f7-88e5be93a72b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="df1908ce-af9d-4514-9808-3d96da56cf95"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:config></con:testStep><con:testStep type="groovy" name="Validate EOD Status" id="b58f5d7d-45f7-4a7e-b232-54e76adbe694"><con:settings/><con:config><script>import groovy.json.JsonSlurper
+
+postresponseContent = testRunner.testCase.getTestStepByName("PostEODMainTask").getPropertyValue("response")
+slurperresponse = new JsonSlurper().parseText(postresponseContent)
+def id = slurperresponse.jobExecution.id
+def resource = slurperresponse.jobExecution.resource
+def jobInstance = slurperresponse.jobExecution.jobInstance
+def jobInstanceresource = slurperresponse.jobExecution.jobInstance.resource
+def name = slurperresponse.jobExecution.name
+def status = slurperresponse.jobExecution.status
+def eodStatus = ""
+log.info "**************************"
+log.info (id)
+//log.info (resource)
+//log.info (jobInstance)
+log.info (name)
+log.info (status)
+log.info (jobInstanceresource)
+
+
+def jobInstanceres = jobInstanceresource.split('/')
+def jobInstanceID =  jobInstanceres[7]
+def resLength  =  jobInstanceID.length();
+len = resLength.toInteger();
+def jobid =  jobInstanceID.take(len-5)
+
+
+/*get Response validation */
+getresponseContent = testRunner.testCase.getTestStepByName("getEODMainTask").getPropertyValue("response")
+log.info "  getresponseContent" +getresponseContent
+getslurperresponse = new JsonSlurper().parseText(getresponseContent)
+getJobInstanceId =  getslurperresponse.job.jobInstances[jobid]
+getlastJobExecutionStatus = getslurperresponse.job.jobInstances[jobid].lastJobExecutionStatus
+getLastJobExecution =  getslurperresponse.job.jobInstances[jobid].lastJobExecution
+log.info "getLastJobExecution  " +getLastJobExecution
+getResource =  getslurperresponse.job.jobInstances[jobid].resource
+
+if (getResource.contains(jobid)){
+	log.info  "Executed Job with ID  : " + jobid
+	log.info "getlastJobExecutionStatus" + getlastJobExecutionStatus
+	while (getlastJobExecutionStatus !="COMPLETED" &amp;&amp; getlastJobExecutionStatus !="FAILED"){
+		testRunner.runTestStepByName( "Delay")
+		testRunner.runTestStepByName( "getEODMainTask")
+		getresponseContent = testRunner.testCase.getTestStepByName("getEODMainTask").getPropertyValue("response")
+		getslurperresponse = new JsonSlurper().parseText(getresponseContent)
+		getJobInstanceId =  getslurperresponse.job.jobInstances[jobid]
+		getlastJobExecutionStatus = getslurperresponse.job.jobInstances[jobid].lastJobExecutionStatus
+		log.info "TEST job status :   " +  getlastJobExecutionStatus
+	}
+
+	if (getlastJobExecutionStatus =="COMPLETED"){
+	log.info "Job Executed successfully    : " + getlastJobExecutionStatus
+	testRunner.testCase.setPropertyValue( "EODStatus",  "true" )
+	eodStatus = "Success"
+	assert true 
+	
+}else{
+	log.error "Job failed and the id is    : " + jobid
+	testRunner.testCase.setPropertyValue( "EODStatus",  "false" )
+	eodStatus = "Fail"
+	assert false
+}	
+	
+}else{
+log.error "job failed and  the id is    : " + jobid
+	testRunner.testCase.setPropertyValue( "EODStatus",  "false" )
+	eodStatus = "Fail"
+	assert false
+}
+
+//Writing it to a file
+def resultDir = new File("C:/CMSTests"); 
+
+if(!resultDir.exists()) 
+{
+   resultDir.mkdirs();
+}
+
+def inputFile = new File(resultDir, "EoDDetails.txt");
+fos = new FileOutputStream( inputFile, false );
+pw = new PrintWriter( fos );
+   
+// Check if a file with same name exisits in the folder.
+if(inputFile.exists())
+{
+	pw.write("getlastJobExecutionStatus: " +  getlastJobExecutionStatus);
+	pw.println("");
+	pw.write("EODStatus: " +  eodStatus);
+	pw.println("");
+	pw.write("getlastJobExecutionStatus: " +getlastJobExecutionStatus);
+	pw.println("");
+	}
+
+pw.close();
+fos.close();
+</script></con:config></con:testStep><con:properties><con:property><con:name>EODStatus</con:name><con:value>false</con:value></con:property><con:property><con:name>TerritoryCode</con:name><con:value>149</con:value></con:property><con:property><con:name>IDDbeforeEod</con:name><con:value/></con:property><con:property><con:name>IDDafterEod</con:name><con:value/></con:property><con:property><con:name>iterationValue</con:name><con:value>2</con:value></con:property><con:property><con:name>EODUrl</con:name><con:value>http://${#Project#endpoint}/eod/admin/jobs/EndOfDayJob.json</con:value></con:property><con:property><con:name>NoOfDaysForEODExecution</con:name><con:value>2</con:value></con:property><con:property><con:name>executionTime</con:name><con:value/></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>969b3371-46eb-4f58-84ba-3071609fac8f</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>c368cc3b-1d68-4646-aea2-c33b123494ae</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>08b7dae9-b20d-4fbf-ab14-afc55a27eb48</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>8948b92c-c74d-4997-8a8f-e168dfabc3c7</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>091ce84a-b6fc-4641-b9f2-f32e0892d72b</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>06a249c9-88af-421a-a934-14028966ad3c</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>b59e97f9-2149-4aa4-afaf-f7ea0cd21534</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>049f5c21-abea-4980-8a20-4c29fc052c76</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>dbbcf2c6-5065-47aa-bfca-cb77774162dc</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>104f569c-0f0b-4b93-baca-8d4afc4dd38a</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>1c762b99-27f8-419e-a4fc-d5cf7ad5be9e</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>f22e519e-5c15-4c0c-aad6-b946051d185e</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>4eb25486-a322-439a-896e-ecb209c7224b</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>b1c0c127-a4bb-4f60-b5cc-eeb89f927031</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>45108acf-142a-4c47-8d79-5364b70b5b8f</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>d563457a-5a99-475b-873a-af47408ee805</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>98a0570e-6573-4efa-8a77-c83e01b6c525</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>3f1e8b58-085c-4077-97e0-5907e7dca810</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>d0928d97-1a1e-4bf2-a863-78bbde2c8b9c</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>1cbe2c2f-f166-4c90-afd1-eaea6b22c12d</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>c2be04c3-e5d1-48a7-a727-d8fb6012fdcf</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>32893c59-e115-4672-9dd1-edf36af57089</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>24282e93-23d6-474e-84ec-707f5d667c88</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>4afc4b5f-7b5e-4d07-9b9f-a978aadfb5d8</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>cf91df5f-8d68-420c-a268-50f64e571536</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>21899bee-9ecd-4081-8af1-cf0295b1496e</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>f4362d11-b22c-4065-af3d-e45e954330e4</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>65a9b967-e533-4806-b70b-7e3292750196</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>fc547f03-9c0a-4d0c-b7eb-bf6d787889b0</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>16cda447-e3fc-4f2f-8a29-79318614ce83</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>814c00f4-af5e-4ca2-a179-b696715870c0</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>3186ffff-8501-46f2-91a1-0409230ae925</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>86e0b0f5-0580-4ff4-9aa0-b49e27033307</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>80311e1e-61d6-4c28-9711-676b6ec6ef9c</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>575fdb8f-d0ca-414b-b2ae-07f862848961</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>11f69c70-196c-4bce-b341-d895c87fed2d</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>3c295e22-6342-4f35-b12a-b38f6128b6dd</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>eaed463f-fd89-4a0c-9b07-ad7eeda93ee4</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>52544173-c338-419c-88ac-229d3a05d6dc</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="2df33d9c-03a8-414c-ade6-61994cc4ada6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="2a361352-f730-4850-9559-b73996a5477d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="06de0333-6715-4960-a9f7-88e5be93a72b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="df1908ce-af9d-4514-9808-3d96da56cf95"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>

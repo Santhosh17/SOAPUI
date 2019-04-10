@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="2fc2edb5-7b1f-48f1-9fd0-c5b13aeb83d1" discardOkResults="false" failOnError="false" failTestCaseOnErrors="true" keepSession="false" name="CMS-10188-CreateContractBundle-CustType-I_BMWTEST03" searchProperties="true" timeout="0" maxResults="5000000" wsrmEnabled="false" wsrmVersion="1.0" wsrmAckTo="" amfAuthorisation="false" amfEndpoint="" amfLogin="" amfPassword="" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="60c18efc-fb39-4c7e-8459-2fa5fd125f1afileName">CreateContractBundleActivation</con:setting><con:setting id="ad28faed-bfaf-4af6-8420-1fd2cc39d6c7fileName">CMS-9313-AddTaxOptionsAndExtras</con:setting><con:setting id="c6fce2b3-990a-4b0a-b355-2403bf9b0e24fileName">CMS-9313-AddTaxOptionsAndExtrasIsLeaseFalse</con:setting><con:setting id="345dd6c8-20fd-4f76-9a74-6043abad771ffileName">CMS-9313-AddTaxOptionsAndExtrasIsLeaseTrue</con:setting><con:setting id="5c0e444b-1471-433c-bfab-62106549e534fileName">CMS-9313-AddTaxOptionsAndExtrasIsLeaseTrue</con:setting><con:setting id="bdc1068d-b571-43d7-beab-3ac323aa7f10fileName">CMS-10188-CreateContractBundle-CustType-I_BMWTEST03</con:setting><con:setting id="2fc2edb5-7b1f-48f1-9fd0-c5b13aeb83d1fileName">CMS-10188-CreateContractBundle-CustType-I_BMWTEST03</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="Information" id="3fba29b7-8fe6-4f89-9e79-10f9957b1c83"><con:settings/><con:config><script>// Env - BMWTEST03 
+
+//Automated scripts for different customer types like "corporation customer" and "non corporation customers"
+
+
+/*
+* *************Valid Scenarios***************
+* 
+*Automated scripts for CreateContractBundle for Different Customer type I
+*
+* *******************************************
+*/
+
+
+/*
+*******************Validations***********
+responseStatus=="Success"
+requestCustType == db_acct_cust_type 
+db_acct_corporation == expectedCorporationCustomer 
+responseExternalContractNumber == db_lNKNUM_EXTERNAL_REF_FIELD 
+responseCMSId == db_lOAN_ICON_GROUP  
+requestCustomerStatus == db_acct_customer_status
+reqDirectMarketingPost == db_acct_lit_request 
+*******************************************
+*/
+
+ 
+/*
+*************TABLES*************************
+*
+* LINTRANS  
+* LACMSTR
+* LLOAN 
+* LLNKNUM
+*
+*********************************************
+*/
+
+
+</script></con:config></con:testStep><con:testStep type="groovy" name="SetExcelDataRow" id="3735c476-6813-4d83-92e0-635cc95ac873"><con:settings/><con:config><script>testRunner.testCase.testSuite.setPropertyValue("TestStartCell", "A37")
+testCaseName = testRunner.testCase.getName()
+testRunner.testCase.testSuite.setPropertyValue("TestCaseName", testCaseName)</script></con:config></con:testStep><con:testStep type="calltestcase" name="Run TestCase" id="22f0eb82-2f91-4ec2-b37c-411bf11b89f0"><con:settings/><con:config xsi:type="con:RunTestCaseStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:targetTestCase>91703f85-68b1-4a2a-b285-e3a65ce37068</con:targetTestCase><con:properties><con:property><con:name>ContractNumber</con:name><con:value>10090603</con:value></con:property></con:properties><con:returnProperties><con:entry>ContractNumber</con:entry></con:returnProperties><con:runMode>PARALLELL</con:runMode></con:config></con:testStep><con:testStep type="assertionteststep" name="Assertion" id="735167db-55b3-40c2-b236-d7ba7dcaa9c5"><con:settings/><con:config xsi:type="con:AssertionTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:entry><con:id>074766ca-8a41-4c9a-9b04-8bb966dfd4e4</con:id><con:isGroup>false</con:isGroup><con:sourceId>d28ca9c1-6c59-4e3d-a244-d0591c5c8892</con:sourceId><con:propertyName>TestResult</con:propertyName><con:assertion type="Simple Equals" name="Equals" id="b24f67ea-d962-46a2-b7e2-75380256180a"><con:configuration><patternText>PASS</patternText><caseSensitive>true</caseSensitive></con:configuration></con:assertion></con:entry></con:config></con:testStep><con:properties><con:property><con:name>ContractNumber</con:name><con:value>10088980</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>f16fb382-829a-436e-874d-0eacb9698ccd</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>ca7f75f9-f0be-427b-a069-1abb5a30cdd1</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>ab0ed0fa-35f0-4715-b614-82e2d3cc97df</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>a16e1f73-3eaf-444e-814b-b6f94807eb90</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>53bf57b3-df65-4ac2-9b09-9fd962963b10</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>f61326f1-b7b7-44b2-9bef-7a4540b96ab6</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>6a391cac-a94a-4a1e-964a-078e3e6e118e</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>58b15c68-3124-41e0-805e-13544409f4f8</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>18fc46b9-3d53-471b-b67e-37d8d74b4fee</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>25bbbeb3-535e-4587-aaf2-e387cecb4484</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>2c37a84c-b7e0-4a62-b957-d973dc4fd1d4</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>7b4d265c-6952-4ce1-a61e-d306f1b24e45</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>efb1c8d4-6de8-4253-b2c2-a7a8b3e23664</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>d55c6d4f-d407-4f86-8ddb-2b898656b038</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>

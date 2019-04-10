@@ -1,0 +1,1074 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="e61a18f4-b580-4d25-a2f9-9737d3086cf2" discardOkResults="false" failOnError="false" failTestCaseOnErrors="true" keepSession="false" name="CreateContractBundleActivationforRoles_BMWTEST03" searchProperties="true" timeout="0" maxResults="5000000" wsrmEnabled="false" wsrmVersion="1.0" wsrmAckTo="" amfAuthorisation="false" amfEndpoint="" amfLogin="" amfPassword="" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="60c18efc-fb39-4c7e-8459-2fa5fd125f1afileName">CreateContractBundleActivation</con:setting><con:setting id="7615c421-f4e2-45e8-94c8-56baf1c35868fileName">CreateContractBundleActivation</con:setting><con:setting id="294f309e-4fcb-4c63-a652-8c5d833761d5fileName">CreateContractBundleActivationforRoles</con:setting><con:setting id="c6e462ba-80da-4cd4-a681-a762d2b74f3dfileName">CreateContractBundleActivationforRoles_BMWTEST03</con:setting><con:setting id="e61a18f4-b580-4d25-a2f9-9737d3086cf2fileName">CreateContractBundleActivationforRoles_BMWTEST03</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="Information" id="e3f62446-a806-4360-aafc-b13c3a200edf"><con:settings/><con:config><script>// Env - BMWTEST03
+//Automated scripts for different roles 
+
+
+/*
+* *************Valid Scenarios***************
+* 
+*Automated scripts for CreateContractBundle for Different roles like A,C,G,K,R,S and borrower types like primary borrower
+* Co borrower, and Guarantor
+*
+* *******************************************
+*/
+
+
+/*
+*******************Validations***********
+responseStatus=="Success" 
+cCBrole == dbRole
+dbBorrowerType == expectedBorrowerType 
+requestCustType == db_acct_cust_type 
+db_acct_corporation == expectedCorporationCustomer 
+responseExternalContractNumber == db_lNKNUM_EXTERNAL_REF_FIELD 
+responseCMSId == db_lOAN_ICON_GROUP 
+requestCustomerStatus == db_acct_customer_status 
+reqDirectMarketingPost == db_acct_lit_request
+* 
+*******************************************
+*/
+
+ 
+/*
+*************TABLES*************************
+*
+* LINTRANS  
+* LACMSTR
+* LLOAN 
+* LLNKNUM
+*
+*********************************************
+*/
+
+
+</script></con:config></con:testStep><con:testStep type="groovy" name="RandomBpmId" id="0ba13706-46e0-4eff-bec4-2635fbe7a881"><con:settings/><con:config><script>def randomBpmId=(int)(Math.random()*500000)
+def randomBpmIdSecond = (int)(Math.random()*500000)
+def randomVIN=1000000+(int)(Math.random()*500000)
+def randomRegNum = (int)(Math.random()*50)
+
+log.info("randomRegNum"+randomRegNum)
+def vin = "ABC"+randomVIN
+
+
+
+def regNum = "AB"+randomRegNum+"ABC"
+//def randomVinNumber = ZFA197870005112737
+//log.info(randomBpmId)
+log.info(regNum)
+log.info(vin)
+
+def maxLengthForAlphaNumeric = 7
+def setTestSuiteAlphaNumeric = new Random().with {(1..maxLengthForAlphaNumeric).collect { (('A'..'Z')+('0'..'9')).join()[ nextInt( (('A'..'Z')+('0'..'9')).join().length() ) ] }.join()
+  }
+  // the below line will print alphaNumeric value with max length of 10 digits.
+log.info("alphanumeric"+setTestSuiteAlphaNumeric)
+
+def maxLengthForNumber = 8
+def setTestSuiteNumber = new Random().with {
+    (1..maxLengthForNumber).collect { ('0'..'9').join()[ nextInt( ('0'..'9').join().length() ) ] }.join()
+  }
+   // the below line will print Numeric value with max length of 8 digits.
+log.info("number"+ setTestSuiteNumber)
+
+def maxLengthForCharacters = 5
+def setTestSuiteCharacters = new Random().with {(1..maxLengthForCharacters).collect { ('A'..'Z').join()[ nextInt( ('A'..'Z').join().length() ) ] }.join()
+  }
+
+  // the below line will print Character values with max length of 5 digits.
+log.info("characters"+setTestSuiteCharacters)
+
+// set the value to testsuite like below
+//testRunner.testCase.testSuite.setPropertyValue("RandomCharacterValue",setTestSuiteCharacters) 
+
+//def maxLengthForFloatingNumber = 9
+//def setTestSuiteFloatingValue = new Random().with {
+//    (1..maxLengthForFloatingNumber).collect { ('0'..'9').join()[ nextFloat( ('0'..'9').join().length() ) ] }.join()
+//  }
+//
+//  log.info("floating number" + setTestSuiteFloatingValue)
+
+
+
+testRunner.testCase.testSuite.setPropertyValue("bpmid",String.valueOf(randomBpmId))
+testRunner.testCase.testSuite.setPropertyValue("bpmidsecond",String.valueOf(randomBpmIdSecond))
+//testRunner.testCase.testSuite.setPropertyValue("vin",vin)
+//testRunner.testCase.testSuite.setPropertyValue("regNum",regNum)
+
+testRunner.testCase.testSuite.setPropertyValue("vin",vin)
+testRunner.testCase.testSuite.setPropertyValue("regNum",setTestSuiteAlphaNumeric)
+
+</script></con:config></con:testStep><con:testStep type="datasource" name="CMS10188DataExcel" id="a059679a-259a-4e50-9b11-7dd5b9c7720b"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Excel"><con:configuration><file>C:/Users/vamshib/checkouts/13092017/cms10188ActivationAndThirdParty.xlsx</file><worksheet>${#Project#workSheet}</worksheet><cell>${#TestSuite#TestStartCell}</cell><ignoreEmpty>true</ignoreEmpty><evaluateFormulas>false</evaluateFormulas></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>testCaseId</con:property><con:property>TestCaseName</con:property><con:property>expectedResponseStatus</con:property><con:property>expectedErrorCode</con:property><con:property>expectedErrorDescription</con:property><con:property>expectedFaultCode</con:property><con:property>expectedFaultString</con:property><con:property>partnerType</con:property><con:property>bpmId</con:property><con:property>pmsId</con:property><con:property>cmsId</con:property><con:property>entityType</con:property><con:property>role</con:property><con:property>contactViaSMS</con:property><con:property>phoneFaxNumber</con:property><con:property>phoneType</con:property><con:property>phoneFaxNumberWO</con:property><con:property>phoneTypeWO</con:property><con:property>bankCode</con:property><con:property>branchCode</con:property><con:property>branchName</con:property><con:property>bankAccountType</con:property><con:property>ibanNumber</con:property><con:property>swiftCode</con:property><con:property>sortCode</con:property><con:property>mandateValid</con:property><con:property>mandateReference</con:property><con:property>mandateSignedDate</con:property><con:property>bankAccountName</con:property><con:property>bankAccountNumber</con:property><con:property>isDirectDebitBankAccount</con:property><con:property>externalSystemId</con:property><con:property>thirdPartyRepositoryId</con:property><con:property>addressIdCMSId</con:property><con:property>addressTypeCMSCode</con:property><con:property>addressTypeExternalCode</con:property><con:property>locality</con:property><con:property>buildingNumber</con:property><con:property>buildingName</con:property><con:property>subBuildingNumber</con:property><con:property>streetNumber</con:property><con:property>street</con:property><con:property>postTown</con:property><con:property>county</con:property><con:property>postCode</con:property><con:property>streetType</con:property><con:property>isPrimarymailing</con:property><con:property>addressTypeCMSCodee</con:property><con:property>externalCode</con:property><con:property>Localityy</con:property><con:property>BuildingNumberr</con:property><con:property>BuildingNamee</con:property><con:property>subbuildingNumberr</con:property><con:property>StreetNumberr</con:property><con:property>Streett</con:property><con:property>PostTownn</con:property><con:property>Countyy</con:property><con:property>PostCodee</con:property><con:property>StreetTypee</con:property><con:property>IsPrimaryMailingg</con:property><con:property>gender</con:property><con:property>maritalStatus</con:property><con:property>dateOfBirth</con:property><con:property>firstName</con:property><con:property>middleName</con:property><con:property>surName</con:property><con:property>directMarketingPost</con:property><con:property>numberOfDependants</con:property><con:property>title</con:property><con:property>suffix</con:property><con:property>suffixcmsCode</con:property><con:property>suffixexternalCode</con:property><con:property>socialSecurityNumber</con:property><con:property>socialInsuranceNumber</con:property><con:property>maidenName</con:property><con:property>motabilityFlag</con:property><con:property>countryOfBirth</con:property><con:property>driversLic</con:property><con:property>employer</con:property><con:property>employmentStatus</con:property><con:property>occupation</con:property><con:property>occupationCMSCode</con:property><con:property>occupationExternalCode</con:property><con:property>annualIncome</con:property><con:property>industrySubCodecmsCode</con:property><con:property>industryExternalCode</con:property><con:property>baselClasscodecmsCode</con:property><con:property>baselClasscodeExternalCode</con:property><con:property>ctryNationalitycmsCode</con:property><con:property>ctryNationalityExternalCode</con:property><con:property>preferredLanguagecmsCode</con:property><con:property>preferredLanguageExternalCode</con:property><con:property>previousName</con:property><con:property>privacyConsent</con:property><con:property>IdentificationDocumentTypecmsCode</con:property><con:property>IdentificationDocumentTypeExternalCode</con:property><con:property>IdentificationDocumentissuedDate</con:property><con:property>IdentificationDocumentdateExpired</con:property><con:property>IdentificationDocumentNumber</con:property><con:property>issuingEntity</con:property><con:property>issuingCountryCodecmsCode</con:property><con:property>issuingCountryCodeExternalCode</con:property><con:property>identificationDocumentTypeCodecmsCode</con:property><con:property>identificationDocumentTypeCodeexternalCode</con:property><con:property>IdentificationDocumentissuedDatee</con:property><con:property>IdentificationDocumentdateExpiredd</con:property><con:property>IdentificationDocumentNumberr</con:property><con:property>issuingEntityy</con:property><con:property>issuingCountryCodecmsCodee</con:property><con:property>issuingCountryCodeExternalCodee</con:property><con:property>businessname</con:property><con:property>customerStatuscmsCode</con:property><con:property>customerStatusExternalCode</con:property><con:property>inCorporationDate</con:property><con:property>politicallyExposedPerson</con:property><con:property>isStaff</con:property><con:property>isDeceased</con:property><con:property>contactPerson</con:property><con:property>vatNumber</con:property><con:property>vatCode</con:property><con:property>isNegativeInfo</con:property><con:property>salutation</con:property><con:property>OrganisationTypecmsCode</con:property><con:property>OrganisationTypeExternalCode</con:property><con:property>taxNumber</con:property><con:property>partnerCodecmscode</con:property><con:property>partnerCodeExternalcode</con:property><con:property>industryCodecmsCode</con:property><con:property>industryCodeExternalCode</con:property><con:property>trustVatNo</con:property><con:property>certificateNumber</con:property><con:property>businessTypeDesc</con:property><con:property>businessTypeCodecmsCode</con:property><con:property>businessTypeCodeExternalCode</con:property><con:property>balanceSheetCodecmsCode</con:property><con:property>balanceSheetCodeExternalCode</con:property><con:property>dateOfDeath</con:property><con:property>isPaymentLocking</con:property><con:property>intraGrpConsldnCode</con:property><con:property>emailTypecmsCode</con:property><con:property>emailTypeExternalCode</con:property><con:property>emailAddress</con:property><con:property>isPrimaryMaillingg</con:property><con:property>isConsent</con:property><con:property>thirdPartDetailThirdPartyType</con:property><con:property>thirdPartDetailSourceTypecmsCode</con:property><con:property>thirdPartDetailSourceTypeExternalCode</con:property><con:property>thirdPartyDetailRegion</con:property><con:property>dealerGroupId</con:property><con:property>dealerCompanyId</con:property><con:property>riskClassificationCode</con:property><con:property>dealerBranch</con:property><con:property>tenantCode</con:property><con:property>messageId</con:property><con:property>timestamp</con:property><con:property>clientAppId</con:property><con:property>auditUserId</con:property><con:property>clientLanguage</con:property><con:property>partner</con:property><con:property>ctryResidenceCMSCode</con:property><con:property>ctryResidenceExternalCode</con:property><con:property>contractNumberExternalContractNumber</con:property><con:property>CCBAppUid</con:property><con:property>CCBscoreBandCodeCMSCode</con:property><con:property>CCBdealerDealershipName</con:property><con:property>CCBdealerPortfolioId</con:property><con:property>CCBdealerShipGroupId</con:property><con:property>ccbdealerId</con:property><con:property>CCBExternalDealerCodeCMSCode</con:property><con:property>CCBdealerTaxRegNo</con:property><con:property>CCBCustomerDetailsType</con:property><con:property>CCBrole</con:property><con:property>CCBcvsms</con:property><con:property>CCBtpfaxno</con:property><con:property>ccbtptype</con:property><con:property>CCBbankAccountIDBPMId</con:property><con:property>CCBbankbranchcode</con:property><con:property>CCBbankaccounttype</con:property><con:property>ccbaddressTypeCmscode</con:property><con:property>ccbbuildingnumber</con:property><con:property>ccbstreet</con:property><con:property>ccbposttown</con:property><con:property>ccbpostcode</con:property><con:property>ccbaddressaddresstypecmscode</con:property><con:property>ccbMartialStatus</con:property><con:property>ccbDateOfBirth</con:property><con:property>ccbFirstName</con:property><con:property>ccbSurName</con:property><con:property>ccbNumOfDependants</con:property><con:property>ccbTitle</con:property><con:property>ccbEmployer</con:property><con:property>ccbEmploymentStatus</con:property><con:property>ccbOccupation</con:property><con:property>ccbIdentificationDocNumber</con:property><con:property>ccbIssuingEntity</con:property><con:property>ccbResidentialStatusCodeCMSCode</con:property><con:property>ccbCustomerStatusCMSCode</con:property><con:property>ccbCustomerStatusExternalCode</con:property><con:property>ccbIsDeceased</con:property><con:property>ccbisNegativeInfo</con:property><con:property>ccbDriversLic</con:property><con:property>ccbDirectMarketingPost</con:property><con:property>ccbSuffix</con:property><con:property>ccbSuffixCodeCMScode</con:property><con:property>ccbSuffixCodeExternalCode</con:property><con:property>ccbMaidenName</con:property><con:property>ccbMotabilityFlag</con:property><con:property>ccbBaselClassCodeCMScode</con:property><con:property>ccbBaselClassCodeExternalCode</con:property><con:property>ccbCtryResidenceCMSCode</con:property><con:property>ccbCtryResidenceExternalCode</con:property><con:property>ccbPreviousName</con:property><con:property>ccbPrivacyConsent</con:property><con:property>CCBContractNumberExternalContractNumber</con:property><con:property>ccbBundlesBundleIdentifier</con:property><con:property>ccbContractsContractIdentifier</con:property><con:property>ccbReportingAndRelationsCountry</con:property><con:property>ccbReportingAndRelationsCompanyCmsCode</con:property><con:property>ccbbusinessDivisionCMSCode</con:property><con:property>ccbexternalCode</con:property><con:property>ccbclientManagercmsCode</con:property><con:property>ccbInstalgrossAmount</con:property><con:property>ccbdatesstartDate</con:property><con:property>ccbterm</con:property><con:property>ccbinterestRatesapr</con:property><con:property>ccbinterestRatescustomerNominalRate</con:property><con:property>ccbinterestRatescustomerTrueRate</con:property><con:property>ccbComissionTypeCmsCode</con:property><con:property>ccbComissionamountGrossamount</con:property><con:property>ccbComissionDate</con:property><con:property>ccbcomissionThirdpartyIdBPMid</con:property><con:property>ccbFinanceProductCodeCmsCode</con:property><con:property>ccbFinanceIsArrears</con:property><con:property>ccbFinanceIsLease</con:property><con:property>ccbFinanceIsStructured</con:property><con:property>ccbAmountpayableGrossAmount</con:property><con:property>ccbTotalInterestgrossAmount</con:property><con:property>ccbgrosscostgrossamount</con:property><con:property>ccbgrosscostnetAmount</con:property><con:property>ccbdepositSupportGrossAmount</con:property><con:property>ccbdepositsupportNetAmount</con:property><con:property>ccbdepositsdeptype</con:property><con:property>ccbdepositsamountgrossamount</con:property><con:property>ccbbaloonamountgrossamount</con:property><con:property>ccbEarlySettlementHalfGrossAmount</con:property><con:property>ccbEarlySettlementThirdGrossAmount</con:property><con:property>ccbComissionDebitBackTerms</con:property><con:property>ccbdocFeeDebitbackTreatment</con:property><con:property>ccbisPromo</con:property><con:property>ccbisNetSettlements</con:property><con:property>ccbisModifiedAgreement</con:property><con:property>ccbVapsVapCodeCMSCode</con:property><con:property>ccbVapAmountGrossAmount</con:property><con:property>ccbVapInclIRR</con:property><con:property>ccbPaymentsNumOfPaymentsInAdvance</con:property><con:property>ccbPaymentsPaymentNumberOfPayments</con:property><con:property>ccbPaymentsPaymentFrequency</con:property><con:property>ccbPaymentsPaymentAmountNetAmount</con:property><con:property>ccbPaymentsPaymentAmountTaxAmount</con:property><con:property>ccbPaymentsPayNumberOfPayments</con:property><con:property>ccbPaymentsPayFrequency</con:property><con:property>ccbPaymentsPayAmountNetAmount</con:property><con:property>ccbPaymentsPayAmountTaxAmount</con:property><con:property>ccbAssetLife</con:property><con:property>ccbRemainingAssetLife</con:property><con:property>ccbPurposeCMSCod</con:property><con:property>ccbPurposeExternalCode</con:property><con:property>ccbListPriceGrossAmount</con:property><con:property>ccbsalepriceGrossAmount</con:property><con:property>ccbAssetReferenceCodeCMSCode</con:property><con:property>ccbrvsupportGrossAmount</con:property><con:property>ccbregistrationDate</con:property><con:property>ccbAssetCategory</con:property><con:property>ccbIsNEw</con:property><con:property>ccbVehicleMAkeDesc</con:property><con:property>ccbVariantDesc</con:property><con:property>ccbVehicleExternalVehicleCode</con:property><con:property>ccbvehiclehpiCode</con:property><con:property>ccbVehicleshortModelName</con:property><con:property>ccbvehicleCapId</con:property><con:property>ccbEngineSize</con:property><con:property>ccbPartExchangesAmountGrossAmount</con:property><con:property>ccbAssetCMSType</con:property><con:property>ccbUsageInitialMileage</con:property><con:property>ccbUsageAnnualMileage</con:property><con:property>ccbchargeDetailsChargeType</con:property><con:property>ccbchargedetailsAmount</con:property><con:property>ccbchargedetailstoleranceBasis</con:property><con:property>ccbSecurityAuditMessageId</con:property><con:property>ccbSecurityAuditTimeStamp</con:property><con:property>ccbSecurityAuditClientAppid</con:property><con:property>ccbsecauditUserId</con:property><con:property>ccbsecauditclientlanguage</con:property><con:property>ExpectedBorrowerType</con:property><con:property>CCBcvsmsss</con:property><con:property>CCBtpfaxnooo</con:property><con:property>ccbtptypeee</con:property><con:property>CCBbankAccountIDBPMIddd</con:property><con:property>CCBbankbranchcodeee</con:property><con:property>CCBbankaccounttypeee</con:property><con:property>ccbaddressTypeCmscodeee</con:property><con:property>ccbbuildingnumberrr</con:property><con:property>ccbstreettt</con:property><con:property>ccbposttownnn</con:property><con:property>ccbpostcodeee</con:property><con:property>ccbaddressaddresstypecmscodeee</con:property><con:property>ccbMartialStatusss</con:property><con:property>ccbDateOfBirthhh</con:property><con:property>ccbFirstNameee</con:property><con:property>ccbSurNameee</con:property><con:property>ccbNumOfDependantsss</con:property><con:property>ccbTitleee</con:property><con:property>ccbEmployerrr</con:property><con:property>ccbEmploymentStatusss</con:property><con:property>ccbOccupationnn</con:property><con:property>ccbIdentificationDocNumberrr</con:property><con:property>ccbIssuingEntityyy</con:property><con:property>ccbResidentialStatusCodeCMSCodeee</con:property><con:property>ccbCustomerStatusCMSCodeee</con:property><con:property>ccbCustomerStatusExternalCodeee</con:property><con:property>ccbIsDeceaseddd</con:property><con:property>ccbisNegativeInfooo</con:property><con:property>ccbDriversLiccc</con:property><con:property>ccbDirectMarketingPosttt</con:property><con:property>ccbSuffixxx</con:property><con:property>ccbSuffixCodeCMScodeee</con:property><con:property>ccbSuffixCodeExternalCodeee</con:property><con:property>ccbMaidenNameee</con:property><con:property>ccbMotabilityFlaggg</con:property><con:property>ccbBaselClassCodeCMScodeee</con:property><con:property>ccbBaselClassCodeExternalCodeee</con:property><con:property>ccbCtryResidenceCMSCodeee</con:property><con:property>ccbCtryResidenceExternalCodeee</con:property><con:property>ccbPreviousNameee</con:property><con:property>ccbPrivacyConsenttt</con:property><con:property>roleTwo</con:property><con:property>appuid_10188</con:property><con:property>appscorebandcodecmscode_10188</con:property><con:property>salesPersonBpmid_10188</con:property><con:property>dealerBpmid_10188</con:property><con:property>contactviasms_10188</con:property><con:property>telfaxnumHo_10188</con:property><con:property>telfaxtypeho_10188</con:property><con:property>telfaxnumMobile_10188</con:property><con:property>telfaxtypemobile_10188</con:property><con:property>ibannum_10188</con:property><con:property>swiftcode_10188</con:property><con:property>mandateValid_10188</con:property><con:property>signeddate_10188</con:property><con:property>bankaccountname_10188</con:property><con:property>addraddresstypecmscode_10188</con:property><con:property>addrcountrycodecmscode_10188</con:property><con:property>streetnumber_10188</con:property><con:property>street_10188</con:property><con:property>posttown_10188</con:property><con:property>postcode_10188</con:property><con:property>addraddresstypecmscodetwo_10188</con:property><con:property>addressctrycodecmscodetwo_10188</con:property><con:property>streetnumbertwo_10188</con:property><con:property>streettwo_10188</con:property><con:property>posttowntwo_10188</con:property><con:property>postcodetwo_10188</con:property><con:property>gender_10188</con:property><con:property>dob_10188</con:property><con:property>firstname_10188</con:property><con:property>middlename_10188</con:property><con:property>surname_10188</con:property><con:property>title_10188</con:property><con:property>ctryofbirth_10188</con:property><con:property>preflangcmscode_10188</con:property><con:property>vatcode_10188</con:property><con:property>salutation_10188</con:property><con:property>emailtypecmscode_10188</con:property><con:property>emailaddress_10188</con:property><con:property>isprimarymailing_10188</con:property><con:property>contactviasmssecond_10188</con:property><con:property>telfaxnumHousecond_10188</con:property><con:property>telfaxtypehousecond_10188</con:property><con:property>telfaxnumMobilesecond_10188</con:property><con:property>telfaxtypemobilesecond_10188</con:property><con:property>ibannumsecond_10188</con:property><con:property>swiftcodesecond_10188</con:property><con:property>mandateValidsecond_10188</con:property><con:property>signeddatesecond_10188</con:property><con:property>bankaccountnamesecond_10188</con:property><con:property>addraddresstypecmscodesecond_10188</con:property><con:property>addrcountrycodecmscodesecond_10188</con:property><con:property>streetnumbersecond_10188</con:property><con:property>streetsecond_10188</con:property><con:property>posttownsecond_10188</con:property><con:property>postcodesecond_10188</con:property><con:property>addraddresstypecmscodetwosecond_10188</con:property><con:property>addressctrycodecmscodetwosecond_10188</con:property><con:property>streetnumbertwosecond_10188</con:property><con:property>streettwosecond_10188</con:property><con:property>posttowntwosecond_10188</con:property><con:property>postcodetwosecond_10188</con:property><con:property>gendersecond_10188</con:property><con:property>dobsecond_10188</con:property><con:property>firstnamesecond_10188</con:property><con:property>middlenamesecond_10188</con:property><con:property>surnamesecond_10188</con:property><con:property>titlesecond_10188</con:property><con:property>ctryofbirthsecond_10188</con:property><con:property>preflangcmscodesecond_10188</con:property><con:property>vatcodesecond_10188</con:property><con:property>salutationsecond_10188</con:property><con:property>emailtypecmscodesecond_10188</con:property><con:property>emailaddresssecond_10188</con:property><con:property>isprimarymailingsecond_10188</con:property><con:property>bundleid1_10188</con:property><con:property>contractid1_10188</con:property><con:property>proposalid1_10188</con:property><con:property>currency1_10188</con:property><con:property>masterContractPrimary1_10188</con:property><con:property>masterContractFeeMCU1_10188</con:property><con:property>bundleFeeMCU1_10188</con:property><con:property>printInvoice1_10188</con:property><con:property>paymentFacility1_10188</con:property><con:property>reportingAndRelationsCountry1_10188</con:property><con:property>reportingAndRelationsCompanycmscode1_10188</con:property><con:property>reportingAndRelationsregioncmscode1_10188</con:property><con:property>reportingAndRelationsbranchcmscode1_10188</con:property><con:property>businessDivisioncmscode1_10188</con:property><con:property>businessunitexternalcode1_10188</con:property><con:property>datesstartDate1_10188</con:property><con:property>datesquoteCreationDate1_10188</con:property><con:property>billingday1_10188</con:property><con:property>term1_10188</con:property><con:property>interestratecustomertruerate1_10188</con:property><con:property>commissionTypecmscode1_10188</con:property><con:property>commgrossamount1_10188</con:property><con:property>commnetamount1_10188</con:property><con:property>commtaxamnt1_10188</con:property><con:property>commtaxcodecmscode1_10188</con:property><con:property>commtaxrate1_10188</con:property><con:property>commcomdate1_10188</con:property><con:property>comthirdpartyidbpmid1_10188</con:property><con:property>commissionTypecmscode2_10188</con:property><con:property>commgrossamount2_10188</con:property><con:property>commnetamount2_10188</con:property><con:property>commtaxamnt2_10188</con:property><con:property>commtaxcodecmscode2_10188</con:property><con:property>commtaxrate2_10188</con:property><con:property>commcomdate2_10188</con:property><con:property>comthirdpartyidbpmid2_10188</con:property><con:property>subsidytypecmscode1_10188</con:property><con:property>subsidyproviderbpmid_10188</con:property><con:property>subsidyamountgrossamount_10188</con:property><con:property>subsidyamountnetamount_10188</con:property><con:property>subsidyamounttaxamount_10188</con:property><con:property>subsidytaxcodecmscode_10188</con:property><con:property>subsidytaxrate_10188</con:property><con:property>finexternalcode_10188</con:property><con:property>finprodcodecmscode_10188</con:property><con:property>finisarrears_10188</con:property><con:property>finislease_10188</con:property><con:property>finisstructured_10188</con:property><con:property>amountstotalInterestnetAmount_10188</con:property><con:property>amountsgrosscostnetamount_10188</con:property><con:property>amountsamountfinanednetamount_10188</con:property><con:property>residualsresidualtypecmscode_10188</con:property><con:property>residualvaluenetamount_10188</con:property><con:property>residualrvpercentage_10188</con:property><con:property>residualtypecmscode2_10188</con:property><con:property>residualvaluenetamount2_10188</con:property><con:property>residualrvpercentage2_10188</con:property><con:property>taxtreatmenttaxcode_10188</con:property><con:property>endofcontractoptionProlongLeadDays_10188</con:property><con:property>buybackvalue_10188</con:property><con:property>schedulepaymentspaymenttype_10188</con:property><con:property>schedulepaymentsnumofpayments_10188</con:property><con:property>schedulepaymentsfrequency_10188</con:property><con:property>scheduleamountgrossamount_10188</con:property><con:property>scheduleamountnetamount_10188</con:property><con:property>scheduleamounttaxamount_10188</con:property><con:property>scheduleamounttaxcodecmscode_10188</con:property><con:property>scheduleamounttaxrate_10188</con:property><con:property>schedulepaymentspaymenttype2_10188</con:property><con:property>schedulepaymentsnumofpayments2_10188</con:property><con:property>schedulepaymentsfrequency2_10188</con:property><con:property>scheduleamountgrossamount2_10188</con:property><con:property>scheduleamountnetamount2_10188</con:property><con:property>scheduleamounttaxamount2_10188</con:property><con:property>scheduleamounttaxcodecmscode2_10188</con:property><con:property>scheduleamounttaxrate2_10188</con:property><con:property>assetsassetpurposecmscode_10188</con:property><con:property>assetassetorsecurity_10188</con:property><con:property>assetlistpricenetamount_10188</con:property><con:property>assetsalepricenetamount_10188</con:property><con:property>assettotalcost_10188</con:property><con:property>assetregistrationdate_10188</con:property><con:property>assetmanufactureyear_10188</con:property><con:property>assetmanufactureMonth_10188</con:property><con:property>assetassetCategory_10188</con:property><con:property>assetVehicleMakedesc_10188</con:property><con:property>assetVehiclemodelDesc_10188</con:property><con:property>assetvariantDesc_10188</con:property><con:property>assetdeliveryDate_10188</con:property><con:property>depreciationOptionsdepreciationOptionassetLife_10188</con:property><con:property>optionsandExtrastype_10188</con:property><con:property>optionsandExtraoptionsExternalRef_10188</con:property><con:property>OEpricegrossgrossamount_10188</con:property><con:property>OEpricegrossnetamount_10188</con:property><con:property>OEpricegrosstaxamount_10188</con:property><con:property>OEpricegrosstaxcodecmscode_10188</con:property><con:property>Oepricegrosstaxrate_10188</con:property><con:property>documentsdocumentTypecmscode_10188</con:property><con:property>documentthirdpartyid_10188</con:property><con:property>documentreleasedate_10188</con:property><con:property>documentreferenceNumber_10188</con:property><con:property>documentLocationcmsCode_10188</con:property><con:property>saleconditioncmscode_10188</con:property><con:property>damageconditioncmscode_10188</con:property><con:property>usageunitofmeasure_10188</con:property><con:property>usageinitialMileage_10188</con:property><con:property>usageannualMileage_10188</con:property><con:property>usagechargeschargeDetailschargetype1_10188</con:property><con:property>usagechargeschargeDetailsamount1_10188</con:property><con:property>usagechargeschargeDetailtolerance1_10188</con:property><con:property>usagechargeschargeDetailstolerancebasis1_10188</con:property><con:property>usagechargeschargeDetailschargetype2_10188</con:property><con:property>usagechargeschargeDetailsamount2_10188</con:property><con:property>usagechargeschargeDetailtolerance2_10188</con:property><con:property>usagechargeschargeDetailstolerancebasis2_10188</con:property><con:property>bundleid2contractid2_10188</con:property><con:property>bundleid2proposalid2_10188</con:property><con:property>bundleid2currency2_10188</con:property><con:property>bundleid2masterContractPrimary2_10188</con:property><con:property>bundleid2masterContractFeeMCU2_10188</con:property><con:property>bundleid2bundleFeeMCU2_10188</con:property><con:property>bundleid2paymentFacility2_10188</con:property><con:property>reportingAndRelationsCountry2_10188</con:property><con:property>reportingAndRelationsCompanycmscode2_10188</con:property><con:property>reportingAndRelationsregioncmscode2_10188</con:property><con:property>reportingAndRelationsbranchcmscode2_10188</con:property><con:property>businessDivisioncmscode2_10188</con:property><con:property>businessunitexternalcode2_10188</con:property><con:property>datesstartDate2_10188</con:property><con:property>datesquoteCreationDate2_10188</con:property><con:property>billingday2_10188</con:property><con:property>term2_10188</con:property><con:property>interestratecustomertruerate2_10188</con:property><con:property>finexternalcode2_10188</con:property><con:property>finprodcodecmscode2_10188</con:property><con:property>finisarrears2_10188</con:property><con:property>finislease2_10188</con:property><con:property>finisstructured2_10188</con:property><con:property>amountstotalInterestnetAmount2_10188</con:property><con:property>amountsgrosscostnetamount2_10188</con:property><con:property>amountsamountfinanednetamount2_10188</con:property><con:property>bundle2taxtreatmenttaxcode_10188</con:property><con:property>bundle2vapsvapcodecmscode_10188</con:property><con:property>bundle2vapsvapfinanced_10188</con:property><con:property>bundle2vapsvapnetamount_10188</con:property><con:property>bundle2vapsvapcodecmscode2_10188</con:property><con:property>bundle2vapsvapfinanced2_10188</con:property><con:property>bundle2vapsvapnetamount2_10188</con:property><con:property>bundle2paymentspaymentnumofpayement_10188</con:property><con:property>bundle2payemnts freq2_10188</con:property><con:property>bundle2paymentsamountsgrossamount_10188</con:property><con:property>bundle2paymentsamountsnetamount_10188</con:property><con:property>bundle2paymentsamountstaxamount_10188</con:property><con:property>bundle2paymentsamounttaxcodecmscode_10188</con:property><con:property>bundle2paymentsamountstaxrate_10188</con:property><con:property>bundle2assetpurposecmscode_10188</con:property><con:property>bundle2assetsshortdesc_10188</con:property><con:property>bundle2assetsassetcategory_10188</con:property><con:property>bundle2deprreciationoptionassetlife_10188</con:property><con:property>bundle2OEtype_10188</con:property><con:property>bundle2OptionsExternalref_10188</con:property><con:property>bundle2OEoptionsDescriptions_10188</con:property><con:property>bundle2pricegrossGrossAmount_10188</con:property><con:property>bundle2pricegrossnetAmount_10188</con:property><con:property>bundle2pricetaxAmount_10188</con:property><con:property>bundle2pricegrosstaxcodecmscode_10188</con:property><con:property>bundle2pricegrosstaxrate_10188</con:property><con:property>bundle2assetdummy_10188</con:property><con:property>bundle3identifier3_10188</con:property><con:property>bundle3proposalId_10188</con:property><con:property>bundle3currency_10188</con:property><con:property>bundle3masterContractPrimary_10188</con:property><con:property>bundle3masterContractFeeMCU_10188</con:property><con:property>bundle3bundleFeeMCU_10188</con:property><con:property>bundle3ContractOptionsPaymentFacility_10188</con:property><con:property>bundle3reportingandrelationscountry_10188</con:property><con:property>bundle3companycmscode_10188</con:property><con:property>bundle3regioncmscode_10188</con:property><con:property>bundle3branchcmscode_10188</con:property><con:property>bundle3businessdivisioncmscode_10188</con:property><con:property>bundle3businessunitexternalcode_10188</con:property><con:property>bundle3datesstartdate_10188</con:property><con:property>bundle3quotecreationdate_10188</con:property><con:property>bundle3billingday_10188</con:property><con:property>bundle3term_10188</con:property><con:property>bundle3financeproductcodecmscode_10188</con:property><con:property>bundle3isArrears_10188</con:property><con:property>bundle3isLease_10188</con:property><con:property>bundle3isStructured_10188</con:property><con:property>bundle3taxtreatmenttaxcode_10188</con:property><con:property>bundle3vapcodecmscode_10188</con:property><con:property>bundle3vapsfinanced_10188</con:property><con:property>bundle3vapsamountnetamount_10188</con:property><con:property>bundle3paymentsnumberofpayments_10188</con:property><con:property>bundle3frequency_10188</con:property><con:property>bundle3amountgroosamount_10188</con:property><con:property>bundle3amountnetamount_10188</con:property><con:property>bundle3amounttaxamount_10188</con:property><con:property>bundle3taxcodecmcode_10188</con:property><con:property>bundle3amounttaxrate_10188</con:property><con:property>appinfotenantinfoteanantcode_10188</con:property><con:property>secauditmsgid_10188</con:property><con:property>secaudittimestamp_10188</con:property><con:property>secauditclientappid_10188</con:property><con:property>secaudituserid_10188</con:property><con:property>secauditclientlang_10188</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="groovy" name="DataSetUp" id="165b2114-6e23-4ca2-b623-aabc72b016e8"><con:settings/><con:config><script>def TCName = testRunner.testCase.testSuite.getPropertyValue("TestCaseName")
+if(TCName == "CMS-10188-CreateContractBundle-CustType-I_BMWTEST03" || TCName == "CMS-10188-CreateContractBundle-CustType-C_BMWTEST03" || TCName == "CMS-10188-CreateContractBundle-CustType-P_BMWTEST03" || TCName == "CMS-10188-CreateContractBundle-CustType-S_BMWTEST03")
+{
+	
+custType = context.expand( '${CMS10188DataExcel#CCBCustomerDetailsType}' )
+log.info(custType)
+
+}
+else{
+custType = context.expand( '${CMS10188DataExcel#CCBCustomerDetailsType}' )
+	}
+
+
+if(TCName == "CMS-10188-CreateContractBundle-Role-A_BMWTEST03" || TCName == "CMS-10188-CreateContractBundle-Role-C_BMWTEST03" || TCName == "CMS-10188-CreateContractBundle-Role-G_BMWTEST03" || TCName == "CMS-10188-CreateContractBundle-Role-K_BMWTEST03" ||
+TCName == "CMS-10188-CreateContractBundle-Role-R_BMWTEST03" || TCName == "CMS-10188-CreateContractBundle-Role-S_BMWTEST03" )
+{
+	
+role = context.expand( '${CMS10188DataExcel#CCBrole}' )
+roleTwo = context.expand( '${CMS10188DataExcel#roleTwo}' )
+log.info("role"+ role )
+
+}
+else{
+role = context.expand( '${CMS10188DataExcel#CCBrole}' )
+roleTwo = context.expand( '${CMS10188DataExcel#roleTwo}' )
+}
+
+testRunner.testCase.testSuite.setPropertyValue("CustType",custType )
+
+testRunner.testCase.testSuite.setPropertyValue("Role",role )
+
+testRunner.testCase.testSuite.setPropertyValue("RoleTwo",roleTwo )
+	</script></con:config></con:testStep><con:testStep type="request" name="CreateContractBundle-BMWTEST03" id="8bbf1c84-b1f9-407f-b1e8-bd0fdcb69db0"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>createContractBundle</con:operation><con:request name="CreateContractBundle-BMWTEST03" id="147ffd56-05eb-4612-8885-ddcbe2257ab4"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvbmwdev01:28080/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes" xmlns="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <createContractBundle xmlns:NS1="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation">
+         <contractBundleData>
+            <application>
+               <userId>${CMS10188DataExcel#appuid_10188}</userId>
+               <scoreBandCode>
+                  <cmsCode>${CMS10188DataExcel#appscorebandcodecmscode_10188}</cmsCode>
+               </scoreBandCode>
+            </application>
+            <salesPerson>
+               <thirdPartyId>
+                  <bpmId>${CMS10188DataExcel#salesPersonBpmid_10188}</bpmId>
+               </thirdPartyId>
+            </salesPerson>
+            <dealer>
+               <thirdPartyId>
+                  <bpmId>${CMS10188DataExcel#dealerBpmid_10188}</bpmId>
+               </thirdPartyId>
+            </dealer>
+            <customers>
+               <customer>
+                  <details>
+                     <type>${#TestSuite#CustType}</type>
+                     <thirdPartyId>
+                        <bpmId>${#TestSuite#bpmid}</bpmId>
+                     </thirdPartyId>
+                     <role>${#TestSuite#Role}</role>
+                     <commsChannels>
+                        <contactViaSMS>${CMS10188DataExcel#contactviasms_10188}</contactViaSMS>
+                        <phoneFaxNums>
+                           <telephoneFax>
+                              <phoneFaxNumber>${CMS10188DataExcel#telfaxnumHo_10188}</phoneFaxNumber>
+                              <type>${CMS10188DataExcel#telfaxtypeho_10188}</type>
+                           </telephoneFax>
+                           <telephoneFax>
+                              <phoneFaxNumber>${CMS10188DataExcel#telfaxnumMobile_10188}</phoneFaxNumber>
+                              <type>${CMS10188DataExcel#telfaxtypemobile_10188}</type>
+                           </telephoneFax>
+                        </phoneFaxNums>
+                     </commsChannels>
+                     <bankAccounts>
+                        <bankAccountData>
+                           <ibanNumber>${CMS10188DataExcel#ibannum_10188}</ibanNumber>
+                           <swiftCode>${CMS10188DataExcel#swiftcode_10188}</swiftCode>
+                           <mandate>
+                              <valid>${CMS10188DataExcel#mandateValid_10188}</valid>
+                              <signedDate>${CMS10188DataExcel#signeddate_10188}</signedDate>
+                           </mandate>
+                           <bankAccountName>${CMS10188DataExcel#bankaccountname_10188}</bankAccountName>
+                        </bankAccountData>
+                     </bankAccounts>
+                     <addresses>
+                        <address>
+                           <addressType>
+                              <cmsCode>${CMS10188DataExcel#addraddresstypecmscode_10188}</cmsCode>
+                           </addressType>
+                           <countryCode>
+                              <cmsCode>${CMS10188DataExcel#addrcountrycodecmscode_10188}</cmsCode>
+                           </countryCode>
+                           <streetNumber>${CMS10188DataExcel#streetnumber_10188}</streetNumber>
+                           <street>${CMS10188DataExcel#street_10188}</street>
+                           <postTown>${CMS10188DataExcel#posttown_10188}</postTown>
+                           <postCode>${CMS10188DataExcel#postcode_10188}</postCode>
+                        </address>
+                        <address>
+                           <addressType>
+                              <cmsCode>${CMS10188DataExcel#addraddresstypecmscodetwo_10188}</cmsCode>
+                           </addressType>
+                           <countryCode>
+                              <cmsCode>${CMS10188DataExcel#addressctrycodecmscodetwo_10188}</cmsCode>
+                           </countryCode>
+                           <streetNumber>${CMS10188DataExcel#streetnumbertwo_10188}</streetNumber>
+                           <street>${CMS10188DataExcel#streettwo_10188}</street>
+                           <postTown>${CMS10188DataExcel#posttowntwo_10188}</postTown>
+                           <postCode>${CMS10188DataExcel#postcodetwo_10188}</postCode>
+                        </address>
+                     </addresses>
+                     <gender>${CMS10188DataExcel#gender_10188}</gender>
+                     <dateOfBirth>${CMS10188DataExcel#dob_10188}</dateOfBirth>
+                     <firstName>${CMS10188DataExcel#firstname_10188}</firstName>
+                     <middleName>${CMS10188DataExcel#middlename_10188}</middleName>
+                     <surname>${CMS10188DataExcel#surname_10188}</surname>
+                     <title>${CMS10188DataExcel#title_10188}</title>
+                     <countryOfBirth>${CMS10188DataExcel#ctryofbirth_10188}</countryOfBirth>
+                     <preferredLanguage>
+                        <cmsCode>${CMS10188DataExcel#preflangcmscode_10188}</cmsCode>
+                     </preferredLanguage>
+                     <vatCode>${CMS10188DataExcel#vatcode_10188}</vatCode>
+                     <salutation>${CMS10188DataExcel#salutation_10188}</salutation>
+                     
+                     <emails>
+                        <email>
+                           <emailType>
+                              <cmsCode>${CMS10188DataExcel#emailtypecmscode_10188}</cmsCode>
+                           </emailType>
+                           <emailAddress>${CMS10188DataExcel#emailaddress_10188}</emailAddress>
+                           <isPrimaryMailing>${CMS10188DataExcel#isprimarymailing_10188}</isPrimaryMailing>
+                        </email>
+                     </emails>
+                  </details>
+               </customer>
+               <customer>
+                  <details>
+                     <type>${#TestSuite#CustType}</type>
+                     <thirdPartyId>
+                        <bpmId>${#TestSuite#bpmidsecond}</bpmId>
+                     </thirdPartyId>
+                     <role>${#TestSuite#RoleTwo}</role>
+                     <commsChannels>
+                        <contactViaSMS>${CMS10188DataExcel#contactviasmssecond_10188}</contactViaSMS>
+                        <phoneFaxNums>
+                           <telephoneFax>
+                              <phoneFaxNumber>${CMS10188DataExcel#telfaxnumHousecond_10188}</phoneFaxNumber>
+                              <type>${CMS10188DataExcel#telfaxtypehousecond_10188}</type>
+                           </telephoneFax>
+                           <telephoneFax>
+                              <phoneFaxNumber>${CMS10188DataExcel#telfaxnumMobilesecond_10188}</phoneFaxNumber>
+                              <type>${CMS10188DataExcel#telfaxtypemobilesecond_10188}</type>
+                           </telephoneFax>
+                        </phoneFaxNums>
+                     </commsChannels>
+                     <bankAccounts>
+                        <bankAccountData>
+                           <ibanNumber>${CMS10188DataExcel#ibannumsecond_10188}</ibanNumber>
+                           <swiftCode>${CMS10188DataExcel#swiftcodesecond_10188}</swiftCode>
+                           <mandate>
+                              <valid>${CMS10188DataExcel#mandateValidsecond_10188}</valid>
+                              <signedDate>${CMS10188DataExcel#signeddatesecond_10188}</signedDate>
+                           </mandate>
+                           <bankAccountName>${CMS10188DataExcel#bankaccountnamesecond_10188}</bankAccountName>
+                        </bankAccountData>
+                     </bankAccounts>
+                     <addresses>
+                        <address>
+                           <addressType>
+                              <cmsCode>${CMS10188DataExcel#addraddresstypecmscodesecond_10188}</cmsCode>
+                           </addressType>
+                           <countryCode>
+                              <cmsCode>${CMS10188DataExcel#addrcountrycodecmscodesecond_10188}</cmsCode>
+                           </countryCode>
+                           <streetNumber>${CMS10188DataExcel#streetnumbersecond_10188}</streetNumber>
+                           <street>${CMS10188DataExcel#streetsecond_10188}</street>
+                           <postTown>${CMS10188DataExcel#posttownsecond_10188}</postTown>
+                           <postCode>${CMS10188DataExcel#postcodesecond_10188}</postCode>
+                        </address>
+                        <address>
+                           <addressType>
+                              <cmsCode>${CMS10188DataExcel#addraddresstypecmscodetwosecond_10188}</cmsCode>
+                           </addressType>
+                           <countryCode>
+                              <cmsCode>${CMS10188DataExcel#addressctrycodecmscodetwosecond_10188}</cmsCode>
+                           </countryCode>
+                           <streetNumber>${CMS10188DataExcel#streetnumbertwosecond_10188}</streetNumber>
+                           <street>${CMS10188DataExcel#streettwosecond_10188}</street>
+                           <postTown>${CMS10188DataExcel#posttowntwosecond_10188}</postTown>
+                           <postCode>${CMS10188DataExcel#postcodetwosecond_10188}</postCode>
+                        </address>
+                     </addresses>
+                     <gender>${CMS10188DataExcel#gendersecond_10188}</gender>
+                     <dateOfBirth>${CMS10188DataExcel#dobsecond_10188}</dateOfBirth>
+                     <firstName>${CMS10188DataExcel#firstnamesecond_10188}</firstName>
+                     <middleName>${CMS10188DataExcel#middlenamesecond_10188}</middleName>
+                     <surname>${CMS10188DataExcel#surnamesecond_10188}</surname>
+                     <title>${CMS10188DataExcel#titlesecond_10188}</title>
+                     <countryOfBirth>${CMS10188DataExcel#ctryofbirthsecond_10188}</countryOfBirth>
+                     <preferredLanguage>
+                        <cmsCode>${CMS10188DataExcel#preflangcmscodesecond_10188}</cmsCode>
+                     </preferredLanguage>
+                     <vatCode>${CMS10188DataExcel#vatcodesecond_10188}</vatCode>
+                     <salutation>${CMS10188DataExcel#salutationsecond_10188}</salutation>
+                     
+                     <emails>
+                        <email>
+                           <emailType>
+                              <cmsCode>${CMS10188DataExcel#emailtypecmscodesecond_10188}</cmsCode>
+                           </emailType>
+                           <emailAddress>${CMS10188DataExcel#emailaddresssecond_10188}</emailAddress>
+                           <isPrimaryMailing>${CMS10188DataExcel#isprimarymailingsecond_10188}</isPrimaryMailing>
+                        </email>
+                     </emails>
+                  </details>
+               </customer>
+            </customers>
+            <masterContract>
+               <contractNumber>
+                  
+               </contractNumber>
+               <bundles>
+                  <bundle>
+                     <identifier>${CMS10188DataExcel#bundleid1_10188}</identifier>
+                     <contracts>
+                        <contract>
+                           <identifier>${CMS10188DataExcel#contractid1_10188}</identifier>
+                           <proposalId>${CMS10188DataExcel#proposalid1_10188}</proposalId>
+                           <currency>${CMS10188DataExcel#currency1_10188}</currency>
+                           <masterContractPrimary>${CMS10188DataExcel#masterContractPrimary1_10188}</masterContractPrimary>
+                           <masterContractFeeMCU>${CMS10188DataExcel#masterContractFeeMCU1_10188}</masterContractFeeMCU>
+                           <bundleFeeMCU>${CMS10188DataExcel#bundleFeeMCU1_10188}</bundleFeeMCU>
+                           <invoiceOptions>
+                              <printInvoice>${CMS10188DataExcel#printInvoice1_10188}</printInvoice>
+                           </invoiceOptions>
+                           <contractOptions>
+                              <paymentFacility>${CMS10188DataExcel#paymentFacility1_10188}</paymentFacility>
+                           </contractOptions>
+                           <reportingAndRelations>
+                              <country>${CMS10188DataExcel#reportingAndRelationsCountry1_10188}</country>
+                              <company>
+                                 <cmsCode>${CMS10188DataExcel#reportingAndRelationsCompanycmscode1_10188}</cmsCode>
+                              </company>
+                              <region>
+                                 <cmsCode>${CMS10188DataExcel#reportingAndRelationsregioncmscode1_10188}</cmsCode>
+                              </region>
+                              <branch>
+                                 <cmsCode>${CMS10188DataExcel#reportingAndRelationsbranchcmscode1_10188}</cmsCode>
+                              </branch>
+                              <businessDivision>
+                                 <cmsCode>${CMS10188DataExcel#businessDivisioncmscode1_10188}</cmsCode>
+                              </businessDivision>
+                              <businessUnit>
+                                 <externalCode>${CMS10188DataExcel#businessunitexternalcode1_10188}</externalCode>
+                              </businessUnit>
+                           </reportingAndRelations>
+                           <dates>
+                              <startDate>${CMS10188DataExcel#datesstartDate1_10188}</startDate>
+                              <quoteCreationDate>${CMS10188DataExcel#datesquoteCreationDate1_10188}</quoteCreationDate>
+                           </dates>
+                           <billingDay>${CMS10188DataExcel#billingday1_10188}</billingDay>
+                           <term>${CMS10188DataExcel#term1_10188}</term>
+                           <interestRates>
+                              <customerTrueRate>${CMS10188DataExcel#interestratecustomertruerate1_10188}</customerTrueRate>
+                           </interestRates>
+                           <commissions>
+                              <commission>
+                                 <commissionType>
+                                    <cmsCode>${CMS10188DataExcel#commissionTypecmscode1_10188}</cmsCode>
+                                 </commissionType>
+                                 <amount>
+                                    <grossAmount>${CMS10188DataExcel#commgrossamount1_10188}</grossAmount>
+                                    <netAmount>${CMS10188DataExcel#commnetamount1_10188}</netAmount>
+                                    <taxAmount>${CMS10188DataExcel#commtaxamnt1_10188}</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${CMS10188DataExcel#commtaxcodecmscode1_10188}</cmsCode>
+                                    </taxCode>
+                                    <taxRate>${CMS10188DataExcel#commtaxrate1_10188}</taxRate>
+                                 </amount>
+                                 <commissionDate>${CMS10188DataExcel#commcomdate1_10188}</commissionDate>
+                                 <thirdPartyId>
+                                    <bpmId>${CMS10188DataExcel#comthirdpartyidbpmid1_10188}</bpmId>
+                                 </thirdPartyId>
+                              </commission>
+                              <commission>
+                                 <commissionType>
+                                    <cmsCode>${CMS10188DataExcel#commissionTypecmscode2_10188}</cmsCode>
+                                 </commissionType>
+                                 <amount>
+                                    <grossAmount>${CMS10188DataExcel#commgrossamount2_10188}</grossAmount>
+                                    <netAmount>${CMS10188DataExcel#commnetamount2_10188}</netAmount>
+                                    <taxAmount>${CMS10188DataExcel#commtaxamnt2_10188}</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${CMS10188DataExcel#commtaxcodecmscode2_10188}</cmsCode>
+                                    </taxCode>
+                                    <taxRate>${CMS10188DataExcel#commtaxrate2_10188}</taxRate>
+                                 </amount>
+                                 <commissionDate>${CMS10188DataExcel#commcomdate2_10188}</commissionDate>
+                                 <thirdPartyId>
+                                    <bpmId>${CMS10188DataExcel#comthirdpartyidbpmid2_10188}</bpmId>
+                                 </thirdPartyId>
+                              </commission>
+                           </commissions>
+                           <subsidies>
+                              <subsidy>
+                                 <type>
+                                    <cmsCode>${CMS10188DataExcel#subsidytypecmscode1_10188}</cmsCode>
+                                 </type>
+                                 <provider>
+                                    <bpmId>${CMS10188DataExcel#subsidyproviderbpmid_10188}</bpmId>
+                                 </provider>
+                                 <amount>
+                                    <grossAmount>${CMS10188DataExcel#subsidyamountgrossamount_10188}</grossAmount>
+                                    <netAmount>${CMS10188DataExcel#subsidyamountnetamount_10188}</netAmount>
+                                    <taxAmount>${CMS10188DataExcel#subsidyamounttaxamount_10188}</taxAmount>
+                                    <taxCode>
+                                       <cmsCode>${CMS10188DataExcel#subsidytaxcodecmscode_10188}</cmsCode>
+                                    </taxCode>
+                                    <taxRate>${CMS10188DataExcel#subsidytaxrate_10188}</taxRate>
+                                 </amount>
+                              </subsidy>
+                           </subsidies>
+                           <finance>
+                              <financePlanReferenceCode>
+                                 <externalCode>${CMS10188DataExcel#finexternalcode_10188}</externalCode>
+                              </financePlanReferenceCode>
+                              <financeProductCode>
+                                 <cmsCode>${CMS10188DataExcel#finprodcodecmscode_10188}</cmsCode>
+                              </financeProductCode>
+                              <isArrears>${CMS10188DataExcel#finisarrears_10188}</isArrears>
+                              <isLease>${CMS10188DataExcel#finislease_10188}</isLease>
+                              <isStructured>${CMS10188DataExcel#finisstructured_10188}</isStructured>
+                              <amounts>
+                                 <totalInterest>
+                                    <netAmount>${CMS10188DataExcel#amountstotalInterestnetAmount_10188}</netAmount>
+                                 </totalInterest>
+                                 <grossCost>
+                                    <netAmount>${CMS10188DataExcel#amountsgrosscostnetamount_10188}</netAmount>
+                                 </grossCost>
+                                 <amountFinanced>
+                                    <netAmount>${CMS10188DataExcel#amountsamountfinanednetamount_10188}</netAmount>
+                                 </amountFinanced>
+                                 <residuals>
+                                    <residual>
+                                       <type>
+                                          <cmsCode>${CMS10188DataExcel#residualsresidualtypecmscode_10188}</cmsCode>
+                                       </type>
+                                       <value>
+                                          <netAmount>${CMS10188DataExcel#residualvaluenetamount_10188}</netAmount>
+                                       </value>
+                                       <rvPercentage>${CMS10188DataExcel#residualrvpercentage_10188}</rvPercentage>
+                                    </residual>
+                                    <residual>
+                                       <type>
+                                          <cmsCode>${CMS10188DataExcel#residualtypecmscode2_10188}</cmsCode>
+                                       </type>
+                                       <value>
+                                          <netAmount>${CMS10188DataExcel#residualvaluenetamount2_10188}</netAmount>
+                                       </value>
+                                       <rvPercentage>${CMS10188DataExcel#residualrvpercentage2_10188}</rvPercentage>
+                                    </residual>
+                                 </residuals>
+                              </amounts>
+                              <taxTreatment>
+                                 <taxCode>${CMS10188DataExcel#taxtreatmenttaxcode_10188}</taxCode>
+                              </taxTreatment>
+                           </finance>
+                           <endOfContractOptions>
+                              <endOfContractOption>
+                                 <prolongLeadDays>${CMS10188DataExcel#endofcontractoptionProlongLeadDays_10188}</prolongLeadDays>
+                                 <!--Optional:-->
+                                 <buybackValue>${CMS10188DataExcel#buybackvalue_10188}</buybackValue>
+                              </endOfContractOption>
+                           </endOfContractOptions>
+                           <schedule>
+                              <payments>
+                                 <payment>
+                                    <type>${CMS10188DataExcel#schedulepaymentspaymenttype_10188}</type>
+                                    <numberOfPayments>${CMS10188DataExcel#schedulepaymentsnumofpayments_10188}</numberOfPayments>
+                                    <frequency>${CMS10188DataExcel#schedulepaymentsfrequency_10188}</frequency>
+                                    <amount>
+                                       <grossAmount>${CMS10188DataExcel#scheduleamountgrossamount_10188}</grossAmount>
+                                       <netAmount>${CMS10188DataExcel#scheduleamountnetamount_10188}</netAmount>
+                                       <taxAmount>${CMS10188DataExcel#scheduleamounttaxamount_10188}</taxAmount>
+                                       <taxCode>
+                                          <cmsCode>${CMS10188DataExcel#scheduleamounttaxcodecmscode_10188}</cmsCode>
+                                       </taxCode>
+                                       <taxRate>${CMS10188DataExcel#scheduleamounttaxrate_10188}</taxRate>
+                                    </amount>
+                                 </payment>
+                                 <payment>
+                                    <type>${CMS10188DataExcel#schedulepaymentspaymenttype2_10188}</type>
+                                    <numberOfPayments>${CMS10188DataExcel#schedulepaymentsnumofpayments2_10188}</numberOfPayments>
+                                    <frequency>${CMS10188DataExcel#schedulepaymentsfrequency2_10188}</frequency>
+                                    <amount>
+                                       <grossAmount>${CMS10188DataExcel#scheduleamountgrossamount2_10188}</grossAmount>
+                                       <netAmount>${CMS10188DataExcel#scheduleamountnetamount2_10188}</netAmount>
+                                       <taxAmount>${CMS10188DataExcel#scheduleamounttaxamount2_10188}</taxAmount>
+                                       <taxCode>
+                                          <cmsCode>${CMS10188DataExcel#scheduleamounttaxcodecmscode2_10188}</cmsCode>
+                                       </taxCode>
+                                       <taxRate>${CMS10188DataExcel#scheduleamounttaxrate2_10188}</taxRate>
+                                    </amount>
+                                 </payment>
+                              </payments>
+                           </schedule>
+                           <assets>
+                              <asset>
+                                 <purpose>
+                                    <cmsCode>${CMS10188DataExcel#assetsassetpurposecmscode_10188}</cmsCode>
+                                 </purpose>
+                                 <assetOrSecurity>${CMS10188DataExcel#assetassetorsecurity_10188}</assetOrSecurity>
+                                 <listPrice>
+                                    <netAmount>${CMS10188DataExcel#assetlistpricenetamount_10188}</netAmount>
+                                 </listPrice>
+                                 <salePrice>
+                                    <netAmount>${CMS10188DataExcel#assetsalepricenetamount_10188}</netAmount>
+                                 </salePrice>
+                                 <totalCost>${CMS10188DataExcel#assettotalcost_10188}</totalCost>
+                                 <registrationNumber>${#TestSuite#regNum}</registrationNumber>
+                                 <registrationDate>${CMS10188DataExcel#assetregistrationdate_10188}</registrationDate>
+                                 <vin>${#TestSuite#vin}</vin>
+                                 <manufactureYear>${CMS10188DataExcel#assetmanufactureyear_10188}</manufactureYear>
+                                 <manufactureMonth>${CMS10188DataExcel#assetmanufactureMonth_10188}</manufactureMonth>
+                                 <assetCategory>${CMS10188DataExcel#assetassetCategory_10188}</assetCategory>
+                                 <vehicle>
+                                    <makeDesc>${CMS10188DataExcel#assetVehicleMakedesc_10188}</makeDesc>
+                                    <modelDesc>${CMS10188DataExcel#assetVehiclemodelDesc_10188}</modelDesc>
+                                    <variantDesc>${CMS10188DataExcel#assetvariantDesc_10188}</variantDesc>
+                                    <deliveryDate>${CMS10188DataExcel#assetdeliveryDate_10188}</deliveryDate>
+                                 </vehicle>
+                                 <depreciationOptions>
+                                    <depreciationOption>
+                                       <assetLife>${CMS10188DataExcel#depreciationOptionsdepreciationOptionassetLife_10188}</assetLife>
+                                    </depreciationOption>
+                                 </depreciationOptions>
+                                 <optionsAndExtras>
+                                    <optionsAndExtra>
+                                       <type>${CMS10188DataExcel#optionsandExtrastype_10188}</type>
+                                       <optionsExternalRef>${CMS10188DataExcel#optionsandExtraoptionsExternalRef_10188}</optionsExternalRef>
+                                       <priceGross>
+                                          <grossAmount>${CMS10188DataExcel#OEpricegrossgrossamount_10188}</grossAmount>
+                                          <netAmount>${CMS10188DataExcel#OEpricegrossnetamount_10188}</netAmount>
+                                          <taxAmount>${CMS10188DataExcel#OEpricegrosstaxamount_10188}</taxAmount>
+                                          <taxCode>
+                                             <cmsCode>${CMS10188DataExcel#OEpricegrosstaxcodecmscode_10188}</cmsCode>
+                                          </taxCode>
+                                          <taxRate>${CMS10188DataExcel#Oepricegrosstaxrate_10188}</taxRate>
+                                       </priceGross>
+                                    </optionsAndExtra>
+                                 </optionsAndExtras>
+                                 <documents>
+                                    <document>
+                                       <documentType>
+                                          <cmsCode>${CMS10188DataExcel#documentsdocumentTypecmscode_10188}</cmsCode>
+                                       </documentType>
+                                       <thirdPartyId>
+                                          <bpmId>${CMS10188DataExcel#documentthirdpartyid_10188}</bpmId>
+                                       </thirdPartyId>
+                                       <releaseDate>${CMS10188DataExcel#documentreleasedate_10188}</releaseDate>
+                                       <referenceNumber>${CMS10188DataExcel#documentreferenceNumber_10188}</referenceNumber>
+                                       <location>
+                                          <cmsCode>${CMS10188DataExcel#documentLocationcmsCode_10188}</cmsCode>
+                                       </location>
+                                    </document>
+                                 </documents>
+                                 <saleCondition>
+                                    <cmsCode>${CMS10188DataExcel#saleconditioncmscode_10188}</cmsCode>
+                                 </saleCondition>
+                                 <damageCondition>
+                                    <cmsCode>${CMS10188DataExcel#damageconditioncmscode_10188}</cmsCode>
+                                 </damageCondition>
+                                 <usage>
+                                    <unitOfMeasure>${CMS10188DataExcel#usageunitofmeasure_10188}</unitOfMeasure>
+                                    <initialMileage>${CMS10188DataExcel#usageinitialMileage_10188}</initialMileage>
+                                    <annualMileage>${CMS10188DataExcel#usageannualMileage_10188}</annualMileage>
+                                    <usageCharges>
+                                       <chargeDetails>
+                                          <chargeType>${CMS10188DataExcel#usagechargeschargeDetailschargetype1_10188}</chargeType>
+                                          <amount>${CMS10188DataExcel#usagechargeschargeDetailsamount1_10188}</amount>
+                                          <tolerance>${CMS10188DataExcel#usagechargeschargeDetailtolerance1_10188}</tolerance>
+                                          <toleranceBasis>${CMS10188DataExcel#usagechargeschargeDetailstolerancebasis1_10188}</toleranceBasis>
+                                       </chargeDetails>
+                                       <chargeDetails>
+                                          <chargeType>${CMS10188DataExcel#usagechargeschargeDetailschargetype2_10188}</chargeType>
+                                          <amount>${CMS10188DataExcel#usagechargeschargeDetailsamount2_10188}</amount>
+                                          <tolerance>${CMS10188DataExcel#usagechargeschargeDetailtolerance2_10188}</tolerance>
+                                          <toleranceBasis>${CMS10188DataExcel#usagechargeschargeDetailstolerancebasis2_10188}</toleranceBasis>
+                                       </chargeDetails>
+                                    </usageCharges>
+                                 </usage>
+                              </asset>
+                           </assets>
+                        </contract>
+                        <contract>
+                           <identifier>${CMS10188DataExcel#bundleid2contractid2_10188}</identifier>
+                           <proposalId>${CMS10188DataExcel#bundleid2proposalid2_10188}</proposalId>
+                           <currency>${CMS10188DataExcel#bundleid2currency2_10188}</currency>
+                           <masterContractPrimary>${CMS10188DataExcel#bundleid2masterContractPrimary2_10188}</masterContractPrimary>
+                           <masterContractFeeMCU>${CMS10188DataExcel#bundleid2masterContractFeeMCU2_10188}</masterContractFeeMCU>
+                           <bundleFeeMCU>${CMS10188DataExcel#bundleid2bundleFeeMCU2_10188}</bundleFeeMCU>
+                           <contractOptions>
+                              <paymentFacility>${CMS10188DataExcel#bundleid2paymentFacility2_10188}</paymentFacility>
+                           </contractOptions>
+                           <reportingAndRelations>
+                              <country>${CMS10188DataExcel#reportingAndRelationsCountry2_10188}</country>
+                              <company>
+                                 <cmsCode>${CMS10188DataExcel#reportingAndRelationsCompanycmscode2_10188}</cmsCode>
+                              </company>
+                              <region>
+                                 <cmsCode>${CMS10188DataExcel#reportingAndRelationsregioncmscode2_10188}</cmsCode>
+                              </region>
+                              <branch>
+                                 <cmsCode>${CMS10188DataExcel#reportingAndRelationsbranchcmscode2_10188}</cmsCode>
+                              </branch>
+                              <businessDivision>
+                                 <cmsCode>${CMS10188DataExcel#businessDivisioncmscode2_10188}</cmsCode>
+                              </businessDivision>
+                              <businessUnit>
+                                 <externalCode>${CMS10188DataExcel#businessunitexternalcode2_10188}</externalCode>
+                              </businessUnit>
+                           </reportingAndRelations>
+                           <dates>
+                              <startDate>${CMS10188DataExcel#datesstartDate2_10188}</startDate>
+                              <quoteCreationDate>${CMS10188DataExcel#datesquoteCreationDate2_10188}</quoteCreationDate>
+                           </dates>
+                           <billingDay>${CMS10188DataExcel#billingday2_10188}</billingDay>
+                           <term>${CMS10188DataExcel#term2_10188}</term>
+                           <interestRates>
+                              <customerTrueRate>${CMS10188DataExcel#interestratecustomertruerate2_10188}</customerTrueRate>
+                           </interestRates>
+                           <finance>
+                              <financePlanReferenceCode>
+                                 <externalCode>${CMS10188DataExcel#finexternalcode2_10188}</externalCode>
+                              </financePlanReferenceCode>
+                              <financeProductCode>
+                                 <cmsCode>${CMS10188DataExcel#finprodcodecmscode2_10188}</cmsCode>
+                              </financeProductCode>
+                              <isArrears>${CMS10188DataExcel#finisarrears2_10188}</isArrears>
+                              <isLease>${CMS10188DataExcel#finislease2_10188}</isLease>
+                              <isStructured>${CMS10188DataExcel#finisstructured2_10188}</isStructured>
+                              <amounts>
+                                 <totalInterest>
+                                    <netAmount>${CMS10188DataExcel#amountstotalInterestnetAmount2_10188}</netAmount>
+                                 </totalInterest>
+                                 <grossCost>
+                                    <netAmount>${CMS10188DataExcel#amountsgrosscostnetamount2_10188}</netAmount>
+                                 </grossCost>
+                                 <amountFinanced>
+                                    <netAmount>${CMS10188DataExcel#amountsamountfinanednetamount2_10188}</netAmount>
+                                 </amountFinanced>
+                              </amounts>
+                              <taxTreatment>
+                                 <taxCode>${CMS10188DataExcel#bundle2taxtreatmenttaxcode_10188}</taxCode>
+                              </taxTreatment>
+                           </finance>
+                           <vaps>
+                              <vap>
+                                 <code>
+                                    <cmsCode>${CMS10188DataExcel#bundle2vapsvapcodecmscode_10188}</cmsCode>
+                                 </code>
+                                 <financed>${CMS10188DataExcel#bundle2vapsvapfinanced_10188}</financed>
+                                 <amount>
+                                    <netAmount>${CMS10188DataExcel#bundle2vapsvapnetamount_10188}</netAmount>
+                                 </amount>
+                              </vap>
+                              <vap>
+                                 <code>
+                                    <cmsCode>${CMS10188DataExcel#bundle2vapsvapcodecmscode2_10188}</cmsCode>
+                                 </code>
+                                 <financed>${CMS10188DataExcel#bundle2vapsvapfinanced2_10188}</financed>
+                                 <amount>
+                                    <netAmount>${CMS10188DataExcel#bundle2vapsvapnetamount2_10188}</netAmount>
+                                 </amount>
+                              </vap>
+                           </vaps>
+                           <schedule>
+                              <payments>
+                                 <payment>
+                                    <numberOfPayments>${CMS10188DataExcel#bundle2paymentspaymentnumofpayement_10188}</numberOfPayments>
+                                    <frequency>${CMS10188DataExcel#bundle2payemnts freq2_10188}</frequency>
+                                    <amount>
+                                       <grossAmount>${CMS10188DataExcel#bundle2paymentsamountsgrossamount_10188}</grossAmount>
+                                       <netAmount>${CMS10188DataExcel#bundle2paymentsamountsnetamount_10188}</netAmount>
+                                       <taxAmount>${CMS10188DataExcel#bundle2paymentsamountstaxamount_10188}</taxAmount>
+                                       <taxCode>
+                                          <cmsCode>${CMS10188DataExcel#bundle2paymentsamounttaxcodecmscode_10188}</cmsCode>
+                                       </taxCode>
+                                       <taxRate>${CMS10188DataExcel#bundle2paymentsamountstaxrate_10188}</taxRate>
+                                    </amount>
+                                 </payment>
+                              </payments>
+                           </schedule>
+                           <assets>
+                              <asset>
+                                 <purpose>
+                                    <cmsCode>${CMS10188DataExcel#bundle2assetpurposecmscode_10188}</cmsCode>
+                                 </purpose>
+                                 <shortDesc>${CMS10188DataExcel#bundle2assetsshortdesc_10188}</shortDesc>
+                                 <assetCategory>${CMS10188DataExcel#bundle2assetsassetcategory_10188}</assetCategory>
+                                 <depreciationOptions>
+                                    <depreciationOption>
+                                       <assetLife>${CMS10188DataExcel#bundle2deprreciationoptionassetlife_10188}</assetLife>
+                                    </depreciationOption>
+                                 </depreciationOptions>
+                                 <optionsAndExtras>
+                                    <optionsAndExtra>
+                                       <type>${CMS10188DataExcel#bundle2OEtype_10188}</type>
+                                       <optionsExternalRef>${CMS10188DataExcel#bundle2OptionsExternalref_10188}</optionsExternalRef>
+                                       <optionsDescription>${CMS10188DataExcel#bundle2OEoptionsDescriptions_10188}</optionsDescription>
+                                       <priceGross>
+                                          <grossAmount>${CMS10188DataExcel#bundle2pricegrossGrossAmount_10188}</grossAmount>
+                                          <netAmount>${CMS10188DataExcel#bundle2pricegrossnetAmount_10188}</netAmount>
+                                          <taxAmount>${CMS10188DataExcel#bundle2pricetaxAmount_10188}</taxAmount>
+                                          <taxCode>
+                                             <cmsCode>${CMS10188DataExcel#bundle2pricegrosstaxcodecmscode_10188}</cmsCode>
+                                          </taxCode>
+                                          <taxRate>${CMS10188DataExcel#bundle2pricegrosstaxrate_10188}</taxRate>
+                                       </priceGross>
+                                    </optionsAndExtra>
+                                 </optionsAndExtras>
+                                 <assetDummy>${CMS10188DataExcel#bundle2assetdummy_10188}</assetDummy>
+                              </asset>
+                           </assets>
+                        </contract>
+<!--                        <contract>-->
+<!--                           <identifier>${CMS10188DataExcel#bundle3identifier3_10188}</identifier>-->
+<!--                           <proposalId>${CMS10188DataExcel#bundle3proposalId_10188}</proposalId>-->
+<!--                           <currency>${CMS10188DataExcel#bundle3currency_10188}</currency>-->
+<!--                           <masterContractPrimary>${CMS10188DataExcel#bundle3masterContractPrimary_10188}</masterContractPrimary>-->
+<!--                           <masterContractFeeMCU>${CMS10188DataExcel#bundle3masterContractFeeMCU_10188}</masterContractFeeMCU>-->
+<!--                           <bundleFeeMCU>${CMS10188DataExcel#bundle3bundleFeeMCU_10188}</bundleFeeMCU>-->
+<!--                           <contractOptions>-->
+<!--                              <paymentFacility>${CMS10188DataExcel#bundle3ContractOptionsPaymentFacility_10188}</paymentFacility>-->
+<!--                           </contractOptions>-->
+<!--                           <reportingAndRelations>-->
+<!--                              <country>${CMS10188DataExcel#bundle3reportingandrelationscountry_10188}</country>-->
+<!--                              <company>-->
+<!--                                 <cmsCode>${CMS10188DataExcel#bundle3companycmscode_10188}</cmsCode>-->
+<!--                              </company>-->
+<!--                              <region>-->
+<!--                                 <cmsCode>${CMS10188DataExcel#bundle3regioncmscode_10188}</cmsCode>-->
+<!--                              </region>-->
+<!--                              <branch>-->
+<!--                                 <cmsCode>${CMS10188DataExcel#bundle3branchcmscode_10188}</cmsCode>-->
+<!--                              </branch>-->
+<!--                              <businessDivision>-->
+<!--                                 <cmsCode>${CMS10188DataExcel#bundle3businessdivisioncmscode_10188}</cmsCode>-->
+<!--                              </businessDivision>-->
+<!--                              <businessUnit>-->
+<!--                                 <externalCode>${CMS10188DataExcel#bundle3businessunitexternalcode_10188}</externalCode>-->
+<!--                              </businessUnit>-->
+<!--                           </reportingAndRelations>-->
+<!--                           <dates>-->
+<!--                              <startDate>${CMS10188DataExcel#bundle3datesstartdate_10188}</startDate>-->
+<!--                              <quoteCreationDate>${CMS10188DataExcel#bundle3quotecreationdate_10188}</quoteCreationDate>-->
+<!--                           </dates>-->
+<!--                           <billingDay>${CMS10188DataExcel#bundle3billingday_10188}</billingDay>-->
+<!--                           <term>${CMS10188DataExcel#bundle3term_10188}</term>-->
+<!--                           <finance>-->
+<!--                              <financeProductCode>-->
+<!--                                 <cmsCode>${CMS10188DataExcel#bundle3financeproductcodecmscode_10188}</cmsCode>-->
+<!--                              </financeProductCode>-->
+<!--                              <isArrears>${CMS10188DataExcel#bundle3isArrears_10188}</isArrears>-->
+<!--                              <isLease>${CMS10188DataExcel#bundle3isLease_10188}</isLease>-->
+<!--                              <isStructured>${CMS10188DataExcel#bundle3isStructured_10188}</isStructured>-->
+<!--                              -->
+<!--                              <taxTreatment>-->
+<!--                                 <taxCode>${CMS10188DataExcel#bundle3taxtreatmenttaxcode_10188}</taxCode>-->
+<!--                              </taxTreatment>-->
+<!--                           </finance>-->
+<!--                           <vaps>-->
+<!--                              <vap>-->
+<!--                                 <code>-->
+<!--                                    <cmsCode>${CMS10188DataExcel#bundle3vapcodecmscode_10188}</cmsCode>-->
+<!--                                 </code>-->
+<!--                                 <financed>${CMS10188DataExcel#bundle3vapsfinanced_10188}</financed>-->
+<!--                                 <amount>-->
+<!--                                    <netAmount>${CMS10188DataExcel#bundle3vapsamountnetamount_10188}</netAmount>-->
+<!--                                 </amount>-->
+<!--                              </vap>-->
+<!--                           </vaps>-->
+<!--                           <schedule>-->
+<!--                              <payments>-->
+<!--                                 <payment>-->
+<!--                                    <numberOfPayments>${CMS10188DataExcel#bundle3paymentsnumberofpayments_10188}</numberOfPayments>-->
+<!--                                    <frequency>${CMS10188DataExcel#bundle3frequency_10188}</frequency>-->
+<!--                                    <amount>-->
+<!--                                       <grossAmount>${CMS10188DataExcel#bundle3amountgroosamount_10188}</grossAmount>-->
+<!--                                       <netAmount>${CMS10188DataExcel#bundle3amountnetamount_10188}</netAmount>-->
+<!--                                       <taxAmount>${CMS10188DataExcel#bundle3amounttaxamount_10188}</taxAmount>-->
+<!--                                       <taxCode>-->
+<!--                                          <cmsCode>${CMS10188DataExcel#bundle3taxcodecmcode_10188}</cmsCode>-->
+<!--                                       </taxCode>-->
+<!--                                       <taxRate>${CMS10188DataExcel#bundle3amounttaxrate_10188}</taxRate>-->
+<!--                                    </amount>-->
+<!--                                 </payment>-->
+<!--                              </payments>-->
+<!--                           </schedule>-->
+<!--                        </contract>-->
+                     </contracts>
+                  </bundle>
+               </bundles>
+            </masterContract>
+         </contractBundleData>
+         <applicationInfo>
+            <com:tenantInfo>
+               <com:tenantCode>${CMS10188DataExcel#appinfotenantinfoteanantcode_10188}</com:tenantCode>
+            </com:tenantInfo>
+            <com:securityAudit>
+               <com:messageId>${CMS10188DataExcel#secauditmsgid_10188}</com:messageId>
+               <com:timestamp>${CMS10188DataExcel#secaudittimestamp_10188}</com:timestamp>
+               <com:clientAppId/>
+               <com:userId>${CMS10188DataExcel#secaudituserid_10188}</com:userId>
+               <com:clientLanguage>${CMS10188DataExcel#secauditclientlang_10188}</com:clientLanguage>
+            </com:securityAudit>
+         </applicationInfo>
+      </createContractBundle>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="a5af7b4d-2b89-48a8-b28d-81f4ed91cee2"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="9510a289-eeaf-4f53-b130-71b247e62fec"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="ea910c10-bf3d-487f-ba69-ac474713d5a7"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="datasource" name="DataSourceCorporationCustomer" id="33b7633c-c453-42a4-8de0-2aabd3800a03"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;xml-fragment/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBCALMS2CMS( Default environment )</Connection><query>Select trnslte_llas_value from LINTRANS where trnslte_table ='CORP' and trnslte_src_value = '${#TestSuite#CustType}'</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>trnslte_llas_value</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="DataSourceRole" id="13c35ba0-0cc2-411e-a27f-308b8378a0e9"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;xml-fragment/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBCALMS2CMS( Default environment )</Connection><query>Select trnslte_llas_value from LINTRANS where trnslte_table ='ROLE' and trnslte_src_value = '${#TestSuite#RoleTwo}'</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>trnslte_llas_value</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="DataSource" id="e0fb7dab-da33-413f-a12e-3f125d740687"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;entry key="bpmid" value="${#TestSuite#bpmid}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBCALMS2CMS( Default environment )</Connection><query>SELECT acct_workout_loan_client_type, ACCT_CORPORATION, ACCT_CUST_TYPE, ACCT_ACCOUNT_CONTACT, ACCT_CONTACT_PERSON, ACCT_GRP_CONSLDN_CODE, loan_num, LOAN_ICON_GROUP, LNKNUM_EXTERNAL_REF_FIELD
+FROM LACMSTR, LLOAN, LLNKNUM WHERE LACMSTR.ACCT_BPMID = :bpmid
+and LACMSTR.ACCT_NUMBER = LLOAN.LOAN_ACCT_1 
+and LLOAN.LOAN_ICON_GROUP = LLNKNUM.LNKNUM_INTERNAL_REF_FIELD fetch first 1 row only</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>loan_num</con:property><con:property>LOAN_ICON_GROUP</con:property><con:property>LNKNUM_EXTERNAL_REF_FIELD</con:property><con:property>ACCT_CORPORATION</con:property><con:property>ACCT_CUST_TYPE</con:property><con:property>acct_workout_loan_client_type</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="DBNewCustomerFields" id="f2ac16b4-69fd-4e4c-bdaa-82c1e07b00b6"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;xml-fragment/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBCALMS2CMS( Default environment )</Connection><query>select acct_corporation, acct_cust_type,acct_basel_class_code, acct_previous_name, acct_drivers_lic, acct_privacy_consent, acct_customer_status, acct_Deceased_Flag, acct_neg_info, acct_suffix_alpha, acct_Suffix, acct_maiden_name,
+acct_motability_flag, acct_ctry_Residence, acct_lit_request, acct_marketting from lacmstr where acct_bpmid='${#TestSuite#bpmid}' </query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>acct_cust_type</con:property><con:property>acct_corporation</con:property><con:property>acct_basel_class_code</con:property><con:property>acct_previous_name</con:property><con:property>acct_drivers_lic</con:property><con:property>acct_privacy_consent</con:property><con:property>acct_customer_status</con:property><con:property>acct_Deceased_Flag</con:property><con:property>acct_neg_info</con:property><con:property>acct_suffix_alpha</con:property><con:property>acct_Suffix</con:property><con:property>acct_maiden_name</con:property><con:property>acct_motability_flag</con:property><con:property>acct_ctry_Residence</con:property><con:property>acct_lit_request</con:property><con:property>acct_marketting</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="groovy" name="Validation" id="75308756-7e20-4495-a9c1-2f82d4456d6a"><con:settings/><con:config><script><![CDATA[import com.eviware.soapui.model.testsuite.TestRunner.Status
+import com.eviware.soapui.support.XmlHolder
+
+def env = testRunner.testCase.testSuite.project.activeEnvironment.name
+
+def responseXML = null
+def requestXML = null
+
+if (env == "BMWTEST03"){
+	 responseXML = context.expand('${CreateContractBundle-BMWTEST03#Response}')
+	 requestXML = context.expand('${CreateContractBundle-BMWTEST03#Request}')
+}
+if(env == "BMWDEV01"){
+	 responseXML = context.expand('${CreateContractBundle-BMWDEV01#Response}')
+	 requestXML = context.expand('${CreateContractBundle-BMWDEV01#Request}')
+	}
+
+def response = new XmlHolder(responseXML)
+def request = new XmlHolder(requestXML)
+
+request.namespaces["NS1"]="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation"
+
+response.namespaces["ns4"]="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation" 
+response.namespaces["ns3"]="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ErrorTypes"
+response.namespaces["ns2"]="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes" 
+
+def responseStatus=response.getNodeValue('//ns4:status')
+
+//Error values
+def responseErrorCode=response.getNodeValue('//ns4:error[2]/ns4:code[1]')
+def expectedErrorCode = context.expand('${CMS10188DataExcel#expectedErrorCode}')
+
+def responseExternalContractNumber = response.getNodeValue('//ns4:externalContractNumber')
+def responseCMSId = response.getNodeValue('//ns4:cmsId')
+log.info("response external contract number--->"+responseExternalContractNumber)
+
+def db_lOAN_ICON_GROUP = context.expand( '${DataSource#LOAN_ICON_GROUP}' )
+
+def db_lNKNUM_EXTERNAL_REF_FIELD = context.expand( '${DataSource#LNKNUM_EXTERNAL_REF_FIELD}' )
+
+log.info("db_lOAN_ICON_GROUP" + db_lOAN_ICON_GROUP)
+
+log.info("db_lNKNUM_EXTERNAL_REF_FIELD"+db_lNKNUM_EXTERNAL_REF_FIELD)
+
+
+def requestCustType = context.expand( '${CMS10188DataExcel#CCBCustomerDetailsType}')
+
+def requestBaselCode = context.expand( '${CMS10188DataExcel#baselClasscodecmsCode}' )
+def requestPreviousName = context.expand( '${CMS10188DataExcel#ccbPreviousName}' )
+def requestDriversLicense = context.expand( '${CMS10188DataExcel#ccbDriversLic}' )
+def requestPrivacyConsent = context.expand( '${CMS10188DataExcel#ccbPrivacyConsent}' )
+def requestCustomerStatus = context.expand( '${CMS10188DataExcel#ccbCustomerStatusCMSCode}' )
+def requestDeceased = context.expand( '${CMS10188DataExcel#ccbIsDeceased}' )
+def requestIsNegativeInfo = context.expand( '${CMS10188DataExcel#ccbisNegativeInfo}' )
+def requestDirectMarketingPost = context.expand( '${CMS10188DataExcel#ccbDirectMarketingPost}' )
+def requestSuffix = context.expand( '${CMS10188DataExcel#ccbSuffix}' )
+
+def requestSuffixCode = context.expand( '${CMS10188DataExcel#ccbSuffixCodeCMScode}' )
+def requestMaidenName = context.expand( '${CMS10188DataExcel#ccbMaidenName}' )
+def requestMotabilityFlag = context.expand( '${CMS10188DataExcel#ccbMotabilityFlag}' )
+def requestCountryResidence = context.expand( '${CMS10188DataExcel#ccbCtryResidenceCMSCode}' )
+
+if(requestDirectMarketingPost == "true" || requestDirectMarketingPost == "TRUE")
+{
+reqDirectMarketingPost = 'Y'
+}
+else{
+reqDirectMarketingPost = 'N'
+}
+if(requestPrivacyConsent == "true" || requestPrivacyConsent == "TRUE")
+{
+reqPrivacyConsent = 'Y'
+}
+else{
+reqPrivacyConsent = 'N'
+}
+if(requestDeceased == "true" || requestDeceased == "TRUE")
+{
+reqDeceased = 'Y'
+}
+else{
+reqDeceased = 'N'
+}
+
+if(requestIsNegativeInfo == "true" || requestIsNegativeInfo == "TRUE")
+{
+reqIsNegativeInfo = 'Y'
+}
+else{
+reqIsNegativeInfo = 'N'
+}
+if(requestMotabilityFlag == "true" || requestMotabilityFlag == "TRUE")
+{
+reqMotabilityFlag = 'Y'
+}
+else{
+reqMotabilityFlag = 'N'
+}
+
+
+def db_acct_cust_type = context.expand( '${DBNewCustomerFields#acct_cust_type}' )
+def db_acct_corporation = context.expand( '${DBNewCustomerFields#acct_corporation}' )
+
+def db_acct_basel_class_code = context.expand( '${DBNewCustomerFields#acct_basel_class_code}' )
+def db_acct_previous_name = context.expand( '${DBNewCustomerFields#acct_previous_name}' )
+def db_acct_drivers_lic = context.expand( '${DBNewCustomerFields#acct_drivers_lic}' )
+def db_acct_privacy_consent = context.expand( '${DBNewCustomerFields#acct_privacy_consent}' )
+def db_acct_customer_status = context.expand( '${DBNewCustomerFields#acct_customer_status}' )
+def db_acct_Deceased_Flag = context.expand( '${DBNewCustomerFields#acct_Deceased_Flag}' )
+def db_acct_neg_info = context.expand( '${DBNewCustomerFields#acct_neg_info}' )
+def db_acct_marketting = context.expand( '${DBNewCustomerFields#acct_marketting}' )
+def db_acct_suffix_alpha = context.expand( '${DBNewCustomerFields#acct_suffix_alpha}' )
+def acct_Suffix = context.expand( '${DBNewCustomerFields#acct_Suffix}' )
+def db_acct_maiden_name = context.expand( '${DBNewCustomerFields#acct_maiden_name}' )
+def db_acct_motability_flag = context.expand( '${DBNewCustomerFields#acct_motability_flag}' )
+def db_acct_ctry_Residence = context.expand( '${DBNewCustomerFields#acct_ctry_Residence}' )
+def db_acct_lit_request = context.expand( '${DBNewCustomerFields#acct_lit_request}' )
+
+log.info("response status-->"+responseStatus)
+
+
+
+log.info("rockit--------------------------------------------->")
+
+log.info("responseExternalContractNumber"+responseExternalContractNumber)
+log.info("db_lNKNUM_EXTERNAL_REF_FIELD"+db_lNKNUM_EXTERNAL_REF_FIELD)
+
+log.info("responseCMSId"+responseCMSId)
+log.info("db_lOAN_ICON_GROUP"+db_lOAN_ICON_GROUP)
+
+log.info("requestBaselCode"+requestBaselCode)
+log.info("db_acct_basel_class_code"+db_acct_basel_class_code)
+
+log.info("requestPreviousName"+requestPreviousName)
+log.info("db_acct_previous_name"+db_acct_previous_name)
+
+log.info("requestDriversLicense"+requestDriversLicense)
+log.info("db_acct_drivers_lic"+db_acct_drivers_lic)
+
+
+log.info("requestPrivacyConsent"+requestPrivacyConsent)
+log.info("db_acct_privacy_consent"+db_acct_privacy_consent)
+
+log.info("requestCustomerStatus"+requestCustomerStatus)
+log.info("db_acct_customer_status"+db_acct_customer_status)
+
+log.info("requestDeceased"+requestDeceased)
+log.info("db_acct_Deceased_Flag"+db_acct_Deceased_Flag)
+
+log.info("requestIsNegativeInfo"+requestIsNegativeInfo)
+log.info("db_acct_neg_info"+db_acct_neg_info)
+
+log.info("requestSuffix"+requestSuffix)
+log.info("db_acct_suffix_alpha"+db_acct_suffix_alpha)
+
+ 
+
+log.info("requestSuffixCode"+requestSuffixCode)
+log.info("acct_Suffix"+acct_Suffix)
+
+log.info("requestMaidenName"+requestMaidenName)
+log.info("db_acct_maiden_name"+db_acct_maiden_name)
+
+log.info("requestMotabilityFlag"+requestMotabilityFlag)
+log.info("db_acct_motability_flag"+db_acct_motability_flag)
+
+log.info("requestCountryResidence"+requestCountryResidence)
+log.info("db_acct_ctry_Residence"+db_acct_ctry_Residence)
+
+log.info("db_acct_lit_request"+db_acct_lit_request)
+log.info("reqDirectMarketingPost"+reqDirectMarketingPost)
+
+log.info("endofRockit.........................................")
+
+
+def testResult = 'PASS'
+
+def TCName = testRunner.testCase.testSuite.getPropertyValue("TestCaseName")
+
+def expectedCorporationCustomer = context.expand( '${DataSourceCorporationCustomer#trnslte_llas_value}' )
+
+// is the borrower type is primary or co borrower or Guarantor
+def dbBorrowerType= context.expand( '${DataSourceRole#trnslte_llas_value}' ) // primary borrower or co borrower or guarantor
+def expectedBorrowerType = context.expand( '${CMS10188DataExcel#ExpectedBorrowerType}' )
+
+// 
+def cCBrole = context.expand( '${CMS10188DataExcel#CCBrole}' )
+def dbRole = context.expand( '${DataSource#acct_workout_loan_client_type}' )
+
+
+log.info(cCBrole)
+log.info(dbRole)
+
+if(TCName == "CMS-10188-CreateContractBundle-CustType-I" || TCName == "CMS-10188-CreateContractBundle-CustType-C" || TCName == "CMS-10188-CreateContractBundle-CustType-P" || TCName == "CMS-10188-CreateContractBundle-CustType-S")
+{
+
+if(responseStatus=="Success" &&requestCustType == db_acct_cust_type && db_acct_corporation == expectedCorporationCustomer && responseExternalContractNumber == db_lNKNUM_EXTERNAL_REF_FIELD && 
+responseCMSId == db_lOAN_ICON_GROUP && requestCustomerStatus == db_acct_customer_status &&  reqDirectMarketingPost == db_acct_lit_request  )
+
+{
+	testResult = 'PASS'
+
+	log.info("Inside the successful validations")
+	}
+	else
+	{
+
+	faultString =  response.getNodeValue('//faultstring[1]/text()')
+	log.error "Issue with API response First Valid case : " + faultString
+	testResult = 'FAIL'
+	}
+
+}
+
+
+if(TCName == "CMS-10188-CreateContractBundle-Role-A_BMWTEST03" || TCName == "CMS-10188-CreateContractBundle-Role-C_BMWTEST03" || TCName == "CMS-10188-CreateContractBundle-Role-G_BMWTEST03" || TCName == "CMS-10188-CreateContractBundle-Role-K_BMWTEST03" ||
+TCName == "CMS-10188-CreateContractBundle-Role-R_BMWTEST03" || TCName == "CMS-10188-CreateContractBundle-Role-S_BMWTEST03")
+{
+
+if(responseStatus=="Success" && cCBrole == dbRole && dbBorrowerType == expectedBorrowerType && requestCustType == db_acct_cust_type && db_acct_corporation == expectedCorporationCustomer && responseExternalContractNumber == db_lNKNUM_EXTERNAL_REF_FIELD && responseCMSId == db_lOAN_ICON_GROUP && 
+
+requestCustomerStatus == db_acct_customer_status &&  reqDirectMarketingPost == db_acct_lit_request )
+
+{
+	testResult = 'PASS'
+
+	log.info("Inside the successful validations")
+	}
+	else
+	{
+
+	faultString =  response.getNodeValue('//faultstring[1]/text()')
+	log.error "Issue with API response First Valid case : " + faultString
+	testResult = 'FAIL'
+	}
+
+}
+
+if(TCName == "CMS-10188-CreateContractBundle-InvalidRoleNoCustIndicatedPrimary_BMWTEST03" || TCName == "CMS-10188-CreateContractBundle-InvalidMultiplePrimaryCustomers_BMWTEST03" || TCName == "CMS-10188-CreateContractBundle-InvalidRoleNotSpecified_BMWTEST03")
+{
+if (responseErrorCode == expectedErrorCode)
+{
+testResult = 'PASS'
+}else{
+	faultString =  response.getNodeValue('//faultstring[1]/text()')
+	log.error "Issue with API response invalid : " + faultString
+	testResult = 'FAIL'
+}
+}
+
+
+testRunner.testCase.testSuite.setPropertyValue('TestResult', testResult)]]></script></con:config></con:testStep><con:properties/><con:reportParameters/><con:breakPoints><con:testStepId>f16fb382-829a-436e-874d-0eacb9698ccd</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>ca7f75f9-f0be-427b-a069-1abb5a30cdd1</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>6ba3012d-8343-4faa-bb28-5f7624d5fe0a</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>84c7ed1b-eea4-4bac-b99d-300a52f5446a</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>096c3c16-425c-46e7-ac72-dc5afc951707</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>39ef9878-ce07-43e9-9de7-ee21ed6b5bc5</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>472421da-64fd-47cb-be38-05ed01fe5ee5</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>

@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="2c4779c7-66fd-49c9-aa01-5db97f5cd568" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="getCustomerExposure" searchProperties="true" timeout="0" maxResults="1000000" wsrmEnabled="false" wsrmVersion="1.0" wsrmAckTo="" amfAuthorisation="false" amfEndpoint="" amfLogin="" amfPassword="" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="73f15e58-5355-4cf3-aa8c-1dd64bcd01e2fileName">getCustomerExposure</con:setting><con:setting id="2c4779c7-66fd-49c9-aa01-5db97f5cd568fileName">getCustomerExposure</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="datasource" name="DataExcel" id="96048ab2-09bd-403a-821b-18c3864b17cf"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Excel"><con:configuration><file>${projectDir}/getCustomerExposure.xlsx</file><worksheet>${#Project#workSheet}</worksheet><cell>${#TestSuite#TestStartCell}</cell><ignoreEmpty>false</ignoreEmpty><evaluateFormulas>false</evaluateFormulas></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>testId</con:property><con:property>testName</con:property><con:property>expectedResponseStatus</con:property><con:property>expectedErrorCode</con:property><con:property>expectedErrorDescription</con:property><con:property>expectedFaultCode</con:property><con:property>expectedFaultString</con:property><con:property>messageId</con:property><con:property>timestamp</con:property><con:property>clientAppId</con:property><con:property>auditUserId</con:property><con:property>clientLanguage</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="DB_LACMSTR" id="abe0b76e-47bd-4305-ba58-9ecf36b2e5fb"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;xml-fragment/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBCALMS2CMS( Default environment )</Connection><query>select
+  lm.ACCT_BPMID,
+  count(lm.ACCT_NUMBER) as CNT
+from
+  LACMSTR lm,
+  LLOAN ln
+where
+  lm.ACCT_NUMBER > 1000 and
+  ( 
+   ln.LOAN_ACCT_1 = lm.acct_number or 
+   ln.LOAN_ACCT_2 = lm.acct_number or
+   ln.LOAN_ACCT_3 = lm.acct_number or
+   ln.LOAN_ACCT_4 = lm.acct_number
+  )
+group by
+  lm.ACCT_BPMID
+having
+  count(lm.ACCT_NUMBER) > 2
+</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>ACCT_BPMID</con:property><con:property>CNT</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="groovy" name="BPMIDVariable" id="5c697b75-289e-4f7b-b4db-00f969782cca"><con:settings/><con:config><script>def aCCT_BPMID = context.expand( '${DB_LACMSTR#ACCT_BPMID}' )
+testRunner.testCase.setPropertyValue("ACCT_BPMID",aCCT_BPMID)</script></con:config></con:testStep><con:testStep type="datasource" name="DB_LACMSTR_ACCTNUMBER" id="be366c28-ee94-4e0a-b279-1eaf8b0dcaea"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;xml-fragment/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBCALMS2CMS( Default environment )</Connection><query>select lm.ACCT_NUMBER from LACMSTR lm where
+  lm.ACCT_BPMID = '${#TestCase#ACCT_BPMID}'</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>ACCT_NUMBER</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="request" name="getCustomerExposure" id="1a5f3619-42d4-4be3-81bc-6a90c506df8f"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>getCustomerExposure</con:operation><con:request name="getCustomerExposure" id="91dae714-74ba-4a71-8e1d-5d7ded454a89"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvbmwst01:28080/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CustomerExposure">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <cus:getCustomerExposure>
+         <cus:customerBpId>${DB_LACMSTR#ACCT_BPMID}</cus:customerBpId>
+         <cus:applicationInfo>
+            <com:tenantInfo xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+               <com:tenantCode>test</com:tenantCode>
+            </com:tenantInfo>
+            <com:securityAudit xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+               <com:messageId>${DataExcel#messageId}</com:messageId>
+               <com:timestamp>${DataExcel#timestamp}</com:timestamp>
+               <com:clientAppId>${DataExcel#clientAppId}</com:clientAppId>
+               <com:userId>${DataExcel#auditUserId}</com:userId>
+               <com:clientLanguage>${DataExcel#clientLanguage}</com:clientLanguage>
+            </com:securityAudit>
+         </cus:applicationInfo>
+      </cus:getCustomerExposure>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="139d1f13-1553-4f04-a25e-95729c4e2013"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="02782eb4-ecaf-43ac-8f0c-0a1eeebbdd7a"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="15dff999-92e5-4da2-8a61-2a9da4ce2988"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="95a2ef28-4286-4bbc-8a51-c37e33c44140"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="datasource" name="DB_LLOAN" id="0a752e00-a571-4cab-9011-77f3baa29d2f"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;entry key="DB_LACMSTR_ACCT_NUMBER" value="${DB_LACMSTR#ACCT_BPMID}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBCALMS2CMS( Default environment )</Connection><query>select
+  ln.LOAN_NUM,
+  to_char(to_date(lpad(to_char(ln.LOAN_START_DATE),6,'0'),'ddMMyy'),'yyyy-mm-dd') as START_DATE_CHAR,
+  to_char(to_date(lpad(to_char(LOAN_MATURITY),8,'0'),'ddMMyyyy'),'yyyy-mm-dd') as END_DATE_CHAR,
+  ln.LOAN_AMT_FINANCED,
+  ln.LOAN_TRUE_INT_RATE,
+  ln.LOAN_INSTAL,
+  ln.LOAN_RESIDUAL_VALUE,
+  ln.LOAN_ASSET,
+  ln.LOAN_ACCT_1,
+  ln.LOAN_ACCT_2,
+  ln.LOAN_ACCT_3,
+  ln.LOAN_ACCT_4,
+  ln.LOAN_CUSTOMER_TYPE_1,
+  ln.LOAN_CUSTOMER_TYPE_2,
+  ln.LOAN_CUSTOMER_TYPE_3,
+  ln.LOAN_CUSTOMER_TYPE_4
+from
+  LLOAN ln,
+  LACMSTR lm
+where
+  lm.ACCT_BPMID = :DB_LACMSTR_ACCT_NUMBER and
+  ( 
+   ln.LOAN_ACCT_1 = lm.ACCT_NUMBER or 
+   ln.LOAN_ACCT_2 = lm.ACCT_NUMBER or
+   ln.LOAN_ACCT_3 = lm.ACCT_NUMBER or
+   ln.LOAN_ACCT_4 = lm.ACCT_NUMBER
+  )
+order by
+  ln.LOAN_NUM</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>LOAN_NUM</con:property><con:property>START_DATE_CHAR</con:property><con:property>END_DATE_CHAR</con:property><con:property>LOAN_AMT_FINANCED</con:property><con:property>LOAN_TRUE_INT_RATE</con:property><con:property>LOAN_INSTAL</con:property><con:property>LOAN_RESIDUAL_VALUE</con:property><con:property>LOAN_ASSET</con:property><con:property>LOAN_ACCT_1</con:property><con:property>LOAN_ACCT_2</con:property><con:property>LOAN_ACCT_3</con:property><con:property>LOAN_ACCT_4</con:property><con:property>LOAN_CUSTOMER_TYPE_1</con:property><con:property>LOAN_CUSTOMER_TYPE_2</con:property><con:property>LOAN_CUSTOMER_TYPE_3</con:property><con:property>LOAN_CUSTOMER_TYPE_4</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="groovy" name="Response Validation" id="52a24817-910c-4e88-a0e4-d4ed35cafbed"><con:settings/><con:config><script>import com.eviware.soapui.model.testsuite.TestRunner.Status
+import com.eviware.soapui.support.XmlHolder
+
+//DataExcel
+def DataExcel_testId = context.expand('${DataExcel#testId}')	
+def DataExcel_testName = context.expand('${DataExcel#testName}')	
+def DataExcel_expectedResponseStatus = context.expand('${DataExcel#expectedResponseStatus}')
+def DataExcel_expectedErrorCode = context.expand('${DataExcel#expectedErrorCode}')
+def DataExcel_expectedErrorDescription = context.expand('${DataExcel#expectedErrorDescription}')
+def DataExcel_expectedFaultCode = context.expand('${DataExcel#expectedFaultCode}')
+def DataExcel_expectedFaultString = context.expand('${DataExcel#expectedFaultString}')
+def DataExcel_messageId = context.expand('${DataExcel#messageId}')	
+def DataExcel_timestamp = context.expand('${DataExcel#timestamp}')	
+def DataExcel_clientAppId = context.expand('${DataExcel#clientAppId}')	
+def DataExcel_auditUserId = context.expand('${DataExcel#auditUserId}')	
+def DataExcel_clientLanguage = context.expand('${DataExcel#clientLanguage}')
+
+//getCustomerExposure
+def responseXML = context.expand('${getCustomerExposure#Response}')
+def response = new XmlHolder(responseXML)
+response.namespaces["ns13"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CustomerExposure" 
+response.namespaces["ns12"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/User"  
+response.namespaces["ns11"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Invoice"  
+response.namespaces["ns10"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Asset"  
+response.namespaces["ns9"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Subsidy"
+response.namespaces["ns8"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty"  
+response.namespaces["ns7"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Fee" 
+response.namespaces["ns6"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/AssetUsage" 
+response.namespaces["ns5"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation" 
+response.namespaces["ns4"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract" 
+response.namespaces["ns3"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ErrorTypes" 
+response.namespaces["ns2"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes" 
+response.namespaces["ns1"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/InvoicePayment" 
+
+//DB_LACMSTR
+def DB_LACMSTR_ACCT_NUMBER = context.expand('${DB_LACMSTR#ACCT_BPMID}')
+def DB_LACMSTR_CNT = context.expand('${DB_LACMSTR#CNT}')
+
+//start test
+log.info("****** start test" + DataExcel_testId + " ******") 
+log.info("****** " + DataExcel_testName + " ******") 
+
+def testResult = "PASS"
+
+if(DataExcel_expectedResponseStatus == "true"){
+
+	//Validate response
+	if(response.getNodeValue('exists(//faultCode)') == "true"){
+		testResult = "FAIL" 
+		log.error("Response not as expected") 
+		log.error("&lt;faultCode>: " + response.getNodeValue('//faultCode'))
+		log.error("&lt;faultString>: " + response.getNodeValue('//faultString'))
+	}
+	else{
+		log.info("Response as expected")
+	}
+
+	//Validate number of agreements
+	if(response.getNodeValue('count(//ns13:trackRecord)') == DB_LACMSTR_CNT){
+		log.info('Number of agreements as expected')
+	}
+	else{
+		testResult = "FAIL"
+		log.error("Number of agreements not as expected")
+		log.error("Number of sgreements expected: " + DB_LACMSTR_CNT)
+		log.error("Number of agreements in the response: " + response('count(ns13://trackRecord)'))
+	}
+
+	testRunner.testCase.setPropertyValue("Count", DB_LACMSTR_CNT)
+	testRunner.testCase.setPropertyValue("Iteration", "1")
+
+	//Get agreement numbers
+	def contract = []
+	def count = DB_LACMSTR_CNT as Integer
+	
+	for(i=1; i&lt;=count; i++){
+		contract[i] = response.getNodeValue('//ns13:trackRecord[' + i + ']//ns13:contractNumber')
+		log.info("contract" + i + " " + contract[i])
+		testRunner.testCase.setPropertyValue( "contract" + i, contract[i])
+	}
+}
+
+testRunner.testCase.testSuite.setPropertyValue("TestResult", testResult)
+	
+	
+
+</script></con:config></con:testStep><con:testStep type="groovy" name="Loan Validation" id="977a445a-3993-46f8-87db-f3284c055a9f"><con:settings/><con:config><script>import com.eviware.soapui.model.testsuite.TestRunner.Status
+import com.eviware.soapui.support.XmlHolder
+
+//DataExcel
+def DataExcel_testId = context.expand('${DataExcel#testId}')	
+def DataExcel_testName = context.expand('${DataExcel#testName}')	
+def DataExcel_expectedResponseStatus = context.expand('${DataExcel#expectedResponseStatus}')
+def DataExcel_expectedErrorCode = context.expand('${DataExcel#expectedErrorCode}')
+def DataExcel_expectedErrorDescription = context.expand('${DataExcel#expectedErrorDescription}')
+def DataExcel_expectedFaultCode = context.expand('${DataExcel#expectedFaultCode}')
+def DataExcel_expectedFaultString = context.expand('${DataExcel#expectedFaultString}')
+def DataExcel_messageId = context.expand('${DataExcel#messageId}')	
+def DataExcel_timestamp = context.expand('${DataExcel#timestamp}')	
+def DataExcel_clientAppId = context.expand('${DataExcel#clientAppId}')	
+def DataExcel_auditUserId = context.expand('${DataExcel#auditUserId}')	
+def DataExcel_clientLanguage = context.expand('${DataExcel#clientLanguage}')
+
+//getCustomerExposure
+def responseXML = context.expand('${getCustomerExposure#Response}')
+def response = new XmlHolder(responseXML)
+response.namespaces["ns13"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CustomerExposure" 
+response.namespaces["ns12"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/User"  
+response.namespaces["ns11"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Invoice"  
+response.namespaces["ns10"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/assetDescription"  
+response.namespaces["ns9"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Subsidy"
+response.namespaces["ns8"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty"  
+response.namespaces["ns7"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Fee" 
+response.namespaces["ns6"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/assetDescriptionUsage" 
+response.namespaces["ns5"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation" 
+response.namespaces["ns4"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract" 
+response.namespaces["ns3"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ErrorTypes" 
+response.namespaces["ns2"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes" 
+response.namespaces["ns1"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/InvoicePayment" 
+
+//DB_LACMSTR
+def DB_LACMSTR_ACCT_NUMBER = context.expand( '${DB_LACMSTR_ACCTNUMBER#ACCT_NUMBER}' )
+
+def DB_LACMSTR_CNT = context.expand('${DB_LACMSTR#CNT}')
+
+//DB_LLOAN
+def DB_LLOAN_LOAN_NUM = context.expand('${DB_LLOAN#LOAN_NUM}')
+def DB_LLOAN_START_DATE_CHAR = context.expand('${DB_LLOAN#START_DATE_CHAR}')
+def DB_LLOAN_END_DATE_CHAR = context.expand('${DB_LLOAN#END_DATE_CHAR}')
+def DB_LLOAN_LOAN_AMT_FINANCED = context.expand('${DB_LLOAN#LOAN_AMT_FINANCED}')
+def DB_LLOAN_LOAN_TRUE_INT_RATE = context.expand('${DB_LLOAN#LOAN_TRUE_INT_RATE}')
+def DB_LLOAN_LOAN_INSTAL = context.expand('${DB_LLOAN#LOAN_INSTAL}')
+def DB_LLOAN_LOAN_RESIDUAL_VALUE = context.expand('${DB_LLOAN#LOAN_RESIDUAL_VALUE}')
+def DB_LLOAN_LOAN_ASSET = context.expand('${DB_LLOAN#LOAN_ASSET}')
+def DB_LLOAN_LOAN_ACCT_1 = context.expand('${DB_LLOAN#LOAN_ACCT_1}')
+def DB_LLOAN_LOAN_ACCT_2 = context.expand('${DB_LLOAN#LOAN_ACCT_2}')
+def DB_LLOAN_LOAN_ACCT_3 = context.expand('${DB_LLOAN#LOAN_ACCT_3}')
+def DB_LLOAN_LOAN_ACCT_4 = context.expand('${DB_LLOAN#LOAN_ACCT_4}')
+def DB_LLOAN_LOAN_CUSTOMER_TYPE_1 = context.expand('${DB_LLOAN#LOAN_CUSTOMER_TYPE_1}')
+def DB_LLOAN_LOAN_CUSTOMER_TYPE_2 = context.expand('${DB_LLOAN#LOAN_CUSTOMER_TYPE_2}')
+def DB_LLOAN_LOAN_CUSTOMER_TYPE_3 = context.expand('${DB_LLOAN#LOAN_CUSTOMER_TYPE_3}')
+def DB_LLOAN_LOAN_CUSTOMER_TYPE_4 = context.expand('${DB_LLOAN#LOAN_CUSTOMER_TYPE_4}')
+
+def testResult = context.expand('${#TestSuite#TestResult}')
+
+if(testResult == "PASS"){
+	
+	//Validate contractNumber
+	def count = context.expand('${#TestCase#Count}')
+	def iteration = context.expand('${#TestCase#Iteration}')
+
+	log.info("Count" + count)
+	log.info("Iteration" + iteration)
+
+	def contractNumberFound = 'N'
+	def expected_contractNumber = DB_LLOAN_LOAN_NUM
+	def actual_contractNumber = ""
+
+	for(i=1; i&lt;=count; i++){
+			expected_contractNumber = DB_LLOAN_LOAN_NUM
+//			actual_contractNumber = response.getNodeValue('//ns13:trackRecord[' + i + ']//ns13:contractNumber').replaceAll("^0+", "")
+		actual_contractNumber = response.getNodeValue('//ns13:trackRecord[' + i + ']//ns13:contractNumber')
+		log.info actual_contractNumber
+		log.info  expected_contractNumber
+			if(actual_contractNumber == expected_contractNumber){
+				log.info("i: " + i)
+				contractNumberFound = 'Y'
+				log.info  contractNumberFound
+				break
+			}
+	}
+
+	if(contractNumberFound == 'Y'){
+		log.info("contractNumber[" + i + "] as expected: " + actual_contractNumber)
+	}
+	else{
+		log.error("contractNumber " + expected_contractNumber + " not found in the response")
+	}
+
+	//Validate startDate
+	def expected_startDate = DB_LLOAN_START_DATE_CHAR
+	def actual_startDate = response.getNodeValue('//ns13:trackRecord[' + i + ']//ns13:startDate')
+	if(actual_startDate == expected_startDate){
+		log.info("startDate[" + i + "] as expected: " + actual_startDate)
+	}
+	else{
+		testResult = "FAIL"
+		log.error("startDate[" + i + "] not as expected")
+		log.error("expected startDate: " + expected_startDate)
+		log.error("actual startDate: " + actual_startDate)
+	}
+
+	//Validate maturityDate
+	def expected_maturityDate = DB_LLOAN_END_DATE_CHAR
+	def actual_maturityDate = response.getNodeValue('//ns13:trackRecord[' + i + ']//ns13:maturityDate')
+	if(actual_maturityDate == expected_maturityDate){
+		log.info("maturityDate[" + i + "] as expected: " + actual_maturityDate)
+	}
+	else{
+		testResult = "FAIL"
+		log.error("maturityDate[" + i + "] not as expected")
+		log.error("expected maturityDate: " + expected_maturityDate)
+		log.error("actual maturityDate: " + actual_maturityDate)
+	}
+
+	//Validate amountFinanced
+	def expected_amountFinanced = DB_LLOAN_LOAN_AMT_FINANCED as BigDecimal
+	def actual_amountFinanced = response.getNodeValue('//ns13:trackRecord[' + i + ']//ns13:amountFinanced') as BigDecimal
+	if(actual_amountFinanced == expected_amountFinanced){
+		log.info("amountFinanced[" + i + "] as expected: " + actual_amountFinanced)
+	}
+	else{
+		testResult = "FAIL"
+		log.error("amountFinanced[" + i + "] not as expected")
+		log.error("expected amountFinanced: " + expected_amountFinanced)
+		log.error("actual amountFinanced: " + actual_amountFinanced)
+	}
+
+//	//Validate rental
+//	def expected_rental = DB_LLOAN_LOAN_INSTAL
+//	def actual_rental = response.getNodeValue('//ns13:trackRecord[' + i + ']//ns13:rental')
+//	if(actual_rental == expected_rental){
+//		log.info("rental[" + i + "] as expected: " + actual_rental)
+//	}
+//	else{
+//		testResult = "FAIL"
+//		log.error("rental[" + i + "] not as expected")
+//		log.error("expected rental: " + expected_rental)
+//		log.error("actual rental: " + actual_rental)
+//	}
+
+	//Validate rate
+	def expected_rate = DB_LLOAN_LOAN_TRUE_INT_RATE as BigDecimal
+	def actual_rate = response.getNodeValue('//ns13:trackRecord[' + i + ']//ns13:rate') as BigDecimal
+	if(actual_rate == expected_rate){
+		log.info("rate[" + i + "] as expected: " + actual_rate)
+	}
+	else{
+		testResult = "FAIL"
+		log.error("rate[" + i + "] not as expected")
+		log.error("expected rate: " + expected_rate)
+		log.error("actual rate: " + actual_rate)
+	}
+
+	//Validate residual(VERIFY big DECIMAL)
+	def expected_residual = DB_LLOAN_LOAN_RESIDUAL_VALUE as BigDecimal
+	def actual_residual = response.getNodeValue('//ns13:trackRecord[' + i + ']//ns13:residual') as BigDecimal
+	if(actual_residual == expected_residual){
+		log.info("residual[" + i + "] as expected: " + actual_residual)
+	}
+	else{
+		testResult = "FAIL"
+		log.error("residual[" + i + "] not as expected")
+		log.error("expected residual: " + expected_residual)
+		log.error("actual residual: " + actual_residual)
+	}
+
+	//Validate assetDescription
+	def expected_assetDescription = DB_LLOAN_LOAN_ASSET.trim()
+	def actual_assetDescription = response.getNodeValue('//ns13:trackRecord[' + i + ']//ns13:assetDescription')
+	if (actual_assetDescription == null){
+		actual_assetDescription = ""
+	}
+	if(actual_assetDescription == expected_assetDescription){
+		log.info("assetDescription[" + i + "] as expected: " + actual_assetDescription)
+	}
+	else{
+		testResult = "FAIL"
+		log.error("assetDescription[" + i + "] not as expected")
+		log.error("expected assetDescription: " + expected_assetDescription)
+		log.error("actual assetDescription: " + actual_assetDescription)
+	}
+
+	//Validate type
+	def customerType = ""
+	
+	if(DB_LACMSTR_ACCT_NUMBER == DB_LLOAN_LOAN_ACCT_1){
+		customerType = DB_LLOAN_LOAN_CUSTOMER_TYPE_1
+	}
+	if(DB_LACMSTR_ACCT_NUMBER == DB_LLOAN_LOAN_ACCT_2){
+		customerType = DB_LLOAN_LOAN_CUSTOMER_TYPE_2
+	}
+	if(DB_LACMSTR_ACCT_NUMBER == DB_LLOAN_LOAN_ACCT_3){
+		customerType = DB_LLOAN_LOAN_CUSTOMER_TYPE_3
+	}
+	if(DB_LACMSTR_ACCT_NUMBER == DB_LLOAN_LOAN_ACCT_4){
+		customerType = DB_LLOAN_LOAN_CUSTOMER_TYPE_4
+	}
+
+	
+	def expected_type = ""
+	if(customerType == 'P' || customerType == 'C'){
+		expected_type = 'Borrower'
+	}
+	if(customerType == 'G'){
+		expected_type = 'Guarantor'
+	}
+
+	def actual_type = response.getNodeValue('//ns13:trackRecord[' + i + ']//ns13:type')
+	if(actual_type == expected_type){
+		log.info("type[" + i + "] as expected: " + actual_type)
+	}
+	else{
+		testResult = "FAIL"
+		log.error("type[" + i + "] not as expected")
+		log.error("expected type: " + expected_type)
+		log.error("actual type: " + actual_type)
+	}
+	
+	def itn = iteration as Integer
+	itn++
+	testRunner.testCase.setPropertyValue("Iteration", itn.toString())
+}</script></con:config></con:testStep><con:testStep type="datasourceloop" name="DataSource Loop" id="8068ccc1-3455-43a8-8151-2e8c478db6fb"><con:settings/><con:config><dataSourceStep>DB_LLOAN</dataSourceStep><targetStep>Loan Validation</targetStep></con:config></con:testStep><con:testStep type="request" name="getCustomerExposure 2" id="48989f79-cbaa-4ca4-8333-d0e0a981495c"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>getCustomerExposure</con:operation><con:request name="getCustomerExposure 2" id="0f90e658-2930-4afe-af08-f9c09402af8d"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvbmwdev01:28080/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CustomerExposure" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <cus:getCustomerExposure>\r
+         <cus:customerExposureInput>\r
+            <!--You have a CHOICE of the next 3 items at this level-->\r
+            <!--1 or more repetitions:-->\r
+            <cus:bpid>686194</cus:bpid>\r
+            <!--1 or more repetitions:-->\r
+            <cus:contractNumber>100000129</cus:contractNumber>\r
+            <!--1 or more repetitions:-->\r
+            <cus:applicantReference/>\r
+         </cus:customerExposureInput>\r
+         <cus:applicationInfo>\r
+            <!--Optional:-->\r
+            <com:tenantInfo>\r
+               <com:tenantCode>?</com:tenantCode>\r
+            </com:tenantInfo>\r
+            <!--Optional:-->\r
+            <com:securityAudit>\r
+               <com:messageId>145855676474231</com:messageId>\r
+               <com:timestamp>2019-10-11T20:26:24+10:00</com:timestamp>\r
+               <com:clientAppId>P021992679</com:clientAppId>\r
+               <com:userId>AUTOMATION TESTING</com:userId>\r
+               <com:clientLanguage>en_AU</com:clientLanguage>\r
+            </com:securityAudit>\r
+         </cus:applicationInfo>\r
+      </cus:getCustomerExposure>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="5dde04e6-466a-4bec-943c-6ed55a5e1b09"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="request" name="getCustomerExposure 3" id="8a144c08-07ac-42c9-8f3b-c22982d248bb"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceCustomerSOAP</con:interface><con:operation>getCustomerExposure</con:operation><con:request name="getCustomerExposure 3" id="670adb6e-bd95-4167-9618-43149572ae85"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvcalms01/calms2cms/services/Calms2CMSCustomer</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://www.whiteclarkegroup.com/services/Calms2CMSCustomer/schema/Customer">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <cus:getCustomerExposure>
+         <cus:customerId>
+            <!--You have a CHOICE of the next 2 items at this level-->
+            <cus:customerId>?</cus:customerId>
+            <cus:customerBpId>?</cus:customerBpId>
+         </cus:customerId>
+         <cus:audit>
+             <com:messageId>145855676474231</com:messageId>
+               <com:timestamp>2019-10-11T20:26:24+10:00</com:timestamp>
+               <com:clientAppId>P021992679</com:clientAppId>
+               <com:userId>AUTOMATION TESTING</com:userId>
+               <com:clientLanguage>en_AU</com:clientLanguage>
+         </cus:audit>
+      </cus:getCustomerExposure>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="d0169caf-72ca-4f40-ae34-2feb981c46ec"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:properties><con:property><con:name>Count</con:name><con:value>8</con:value></con:property><con:property><con:name>Iteration</con:name><con:value>9</con:value></con:property><con:property><con:name>agreement1</con:name><con:value xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/></con:property><con:property><con:name>agreement2</con:name><con:value xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/></con:property><con:property><con:name>agreement3</con:name><con:value xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/></con:property><con:property><con:name>contract1</con:name><con:value>100000389</con:value></con:property><con:property><con:name>contract2</con:name><con:value>100000380</con:value></con:property><con:property><con:name>contract3</con:name><con:value>100000388</con:value></con:property><con:property><con:name>contract4</con:name><con:value>100000386</con:value></con:property><con:property><con:name>ACCT_BPMID</con:name><con:value>40010</con:value></con:property><con:property><con:name>contract5</con:name><con:value>100000382</con:value></con:property><con:property><con:name>contract6</con:name><con:value>100000385</con:value></con:property><con:property><con:name>contract7</con:name><con:value>100000383</con:value></con:property><con:property><con:name>contract8</con:name><con:value>100000379</con:value></con:property><con:property><con:name>contract9</con:name><con:value>10088435</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>355f30b4-a3ca-485c-8dbd-40cfa93aa0ca</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>9cc3b958-7adf-4e1e-b426-819a147692ca</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>d204ebaa-e0e5-4da3-982c-f36494e9fc30</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>03f3dd3b-ba2d-45e5-bd7f-7c3f46546033</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>1617b24f-4235-46ac-a164-58e295e522af</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>5d9703e1-94f6-46da-9505-bdcfa4f31079</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="02782eb4-ecaf-43ac-8f0c-0a1eeebbdd7a"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="95a2ef28-4286-4bbc-8a51-c37e33c44140"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>

@@ -1,0 +1,1101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="afe104ef-5ea4-4f84-8519-bb78491b9d6c" discardOkResults="false" failOnError="false" failTestCaseOnErrors="true" keepSession="false" name="UpdateThirdPartyAPIActivation" searchProperties="true" timeout="0" maxResults="5000" wsrmEnabled="false" wsrmVersion="1.0" wsrmAckTo="" amfAuthorisation="false" amfEndpoint="" amfLogin="" amfPassword="" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="8e730d57-592d-437f-8a17-617f7e5af47ffileName">UpdateThirdPartyAPI</con:setting><con:setting id="2272485c-2e57-467f-a3d8-70cff6949022fileName">UpdateThirdPartyAPI</con:setting><con:setting id="e1e7d4f0-8d6d-4209-87f5-0110d919b3bdfileName">UpdateThirdPartyAPIActivation</con:setting><con:setting id="afe104ef-5ea4-4f84-8519-bb78491b9d6cfileName">UpdateThirdPartyAPIActivation</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="Information" id="07454d9d-fd84-4bc0-9758-ac1a5588450d"><con:settings/><con:config><script>//Update Third Party - Dealer 
+
+//Table 1- Company, 2- Region, 3- Branch, 13- Loan Source Group, 14- loan Source Company, 138- Tenancy, 290- Partner code, 177- Account Customer Status, 325- Risk Classification Code has the details 
+
+//Select distinct l.SRCE_CODE as l_SRCE_CODE, l.SRCE_TERRITORY as l_SRCE_TERRITORY, l.SRCE_TYPE as l_SRCE_TYPE,
+//l.srce_group as l_srce_group, l.srce_company as l_srce_company, l.srce_reporting_region as l_srce_reporting_region,
+//l.srce_reporting_branch as l_srce_reporting_branch, l.srce_risk_classification_code as risk_classification_code, lm.acct_contact_person as acct_contact_person,
+//lm.acct_grp_consldn_code as acct_grp_consldn_code ,lm.acct_customer_status as acct_customer_status
+//From LSRCE l, lacmstr lm
+//Where l.SRCE_CODE Like '%1' And l.SRCE_TERRITORY In ('49')
+//order by l.SRCE_CODE desc
+
+//select  country_cms, country_iso, country_code from lctry where country_code='49'
+
+//SELECT ACCT_ACCOUNT_CONTACT, ACCT_CONTACT_PERSON, acct_grp_consldn_code, acct_customer_status FROM LACMSTR WHERE ACCT_BPMID= '26031'</script></con:config></con:testStep><con:testStep type="datasource" name="CMS8323DataExcel" id="c23da18a-0680-40bb-a205-46d6c39eadd6"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Excel"><con:configuration><file>${projectDir}/cms8323UpdateThirdPartyDealer.xlsx</file><worksheet>${#Project#workSheet}</worksheet><cell>${#TestSuite#TestStartCell}</cell><ignoreEmpty>true</ignoreEmpty><evaluateFormulas>false</evaluateFormulas></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>TestCaseId</con:property><con:property>TestCaseName</con:property><con:property>expectedResponseStatus</con:property><con:property>expectedErrorCode</con:property><con:property>expectedErrorDescription</con:property><con:property>expectedFaultCode</con:property><con:property>expectedFaultString</con:property><con:property>partnerType</con:property><con:property>bpmId</con:property><con:property>pmsId</con:property><con:property>cmsId</con:property><con:property>entityType</con:property><con:property>role</con:property><con:property>contactViaSMS</con:property><con:property>phoneFaxNumber</con:property><con:property>phoneType</con:property><con:property>phoneFaxNumberWO</con:property><con:property>phoneTypeWO</con:property><con:property>bankCode</con:property><con:property>branchCode</con:property><con:property>branchName</con:property><con:property>bankAccountType</con:property><con:property>ibanNumber</con:property><con:property>swiftCode</con:property><con:property>sortCode</con:property><con:property>mandateValid</con:property><con:property>mandateReference</con:property><con:property>mandateSignedDate</con:property><con:property>bankAccountName</con:property><con:property>bankAccountNumber</con:property><con:property>isDirectDebitBankAccount</con:property><con:property>externalSystemId</con:property><con:property>thirdPartyRepositoryId</con:property><con:property>addressIdCMSId</con:property><con:property>addressTypeCMSCode</con:property><con:property>addressTypeExternalCode</con:property><con:property>locality</con:property><con:property>buildingNumber</con:property><con:property>buildingName</con:property><con:property>subBuildingNumber</con:property><con:property>streetNumber</con:property><con:property>street</con:property><con:property>postTown</con:property><con:property>county</con:property><con:property>postCode</con:property><con:property>streetType</con:property><con:property>isPrimarymailing</con:property><con:property>addressTypeCMSCodee</con:property><con:property>externalCode</con:property><con:property>Localityy</con:property><con:property>BuildingNumberr</con:property><con:property>BuildingNamee</con:property><con:property>subbuildingNumberr</con:property><con:property>StreetNumberr</con:property><con:property>Streett</con:property><con:property>PostTownn</con:property><con:property>countyy</con:property><con:property>postCodee</con:property><con:property>streetTypee</con:property><con:property>IsPrimaryMailingg</con:property><con:property>gender</con:property><con:property>maritalStatus</con:property><con:property>dateOfBirth</con:property><con:property>firstName</con:property><con:property>middleName</con:property><con:property>surName</con:property><con:property>directMarketingPost</con:property><con:property>numberOfDependants</con:property><con:property>title</con:property><con:property>suffix</con:property><con:property>suffixcmsCode</con:property><con:property>suffixexternalCode</con:property><con:property>socialSecurityNumber</con:property><con:property>socialInsuranceNumber</con:property><con:property>maidenName</con:property><con:property>motabilityFlag</con:property><con:property>countryOfBirth</con:property><con:property>driversLic</con:property><con:property>employer</con:property><con:property>employmentStatus</con:property><con:property>occupation</con:property><con:property>occupationCMSCode</con:property><con:property>occupationExternalCode</con:property><con:property>annualIncome</con:property><con:property>industrySubCodecmsCode</con:property><con:property>industryExternalCode</con:property><con:property>baselClasscodecmsCode</con:property><con:property>baselClasscodeExternalCode</con:property><con:property>ctryNationalitycmsCode</con:property><con:property>ctryNationalityExternalCode</con:property><con:property>preferredLanguagecmsCode</con:property><con:property>preferredLanguageExternalCode</con:property><con:property>previousName</con:property><con:property>privacyConsent</con:property><con:property>IdentificationDocumentTypecmsCode</con:property><con:property>IdentificationDocumentTypeExternalCode</con:property><con:property>IdentificationDocumentissuedDate</con:property><con:property>IdentificationDocumentdateExpired</con:property><con:property>IdentificationDocumentNumber</con:property><con:property>issuingEntity</con:property><con:property>issuingCountryCodecmsCode</con:property><con:property>issuingCountryCodeExternalCode</con:property><con:property>identificationDocumentTypeCodecmsCode</con:property><con:property>identificationDocumentTypeCodeexternalCode</con:property><con:property>IdentificationDocumentissuedDatee</con:property><con:property>IdentificationDocumentdateExpiredd</con:property><con:property>IdentificationDocumentNumberr</con:property><con:property>issuingEntityy</con:property><con:property>issuingCountryCodecmsCodee</con:property><con:property>issuingCountryCodeExternalCodee</con:property><con:property>businessname</con:property><con:property>customerStatuscmsCode</con:property><con:property>customerStatusExternalCode</con:property><con:property>inCorporationDate</con:property><con:property>politicallyExposedPerson</con:property><con:property>isStaff</con:property><con:property>isDeceased</con:property><con:property>contactPerson</con:property><con:property>vatNumber</con:property><con:property>vatCode</con:property><con:property>isNegativeInfo</con:property><con:property>salutation</con:property><con:property>OrganisationTypecmsCode</con:property><con:property>OrganisationTypeExternalCode</con:property><con:property>taxNumber</con:property><con:property>partnerCodecmscode</con:property><con:property>partnerCodeExternalcode</con:property><con:property>industryCodecmsCode</con:property><con:property>industryCodeExternalCode</con:property><con:property>trustVatNo</con:property><con:property>certificateNumber</con:property><con:property>businessTypeDesc</con:property><con:property>businessTypeCodecmsCode</con:property><con:property>businessTypeCodeExternalCode</con:property><con:property>balanceSheetCodecmsCode</con:property><con:property>balanceSheetCodeExternalCode</con:property><con:property>dateOfDeath</con:property><con:property>isPaymentLocking</con:property><con:property>intraGrpConsldnCode</con:property><con:property>emailTypecmsCode</con:property><con:property>emailTypeExternalCode</con:property><con:property>emailAddress</con:property><con:property>isPrimaryMaillingg</con:property><con:property>isConsent</con:property><con:property>thirdPartDetailThirdPartyType</con:property><con:property>thirdPartDetailSourceTypecmsCode</con:property><con:property>thirdPartDetailSourceTypeExternalCode</con:property><con:property>thirdPartyDetailRegion</con:property><con:property>dealerGroupId</con:property><con:property>dealerCompanyId</con:property><con:property>riskClassificationCode</con:property><con:property>dealerBranch</con:property><con:property>tenantCode</con:property><con:property>messageId</con:property><con:property>timestamp</con:property><con:property>clientAppId</con:property><con:property>auditUserId</con:property><con:property>clientLanguage</con:property><con:property>ctryResidence</con:property><con:property>ctryResidenceCMSCode</con:property><con:property>ctryResidenceExternalCode</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="ThirdPartyIdfromDB" id="cd9d3e55-b097-415f-9e63-d07f2d8c7f52"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;xml-fragment/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBCALMS2CMS( Default environment )</Connection><query>Select distinct l.SRCE_CODE as l_SRCE_CODE, l.SRCE_TERRITORY as l_SRCE_TERRITORY, l.SRCE_TYPE as l_SRCE_TYPE,
+l.srce_group as l_srce_group, l.srce_company as l_srce_company, l.srce_reporting_region as l_srce_reporting_region,
+l.srce_reporting_branch as l_srce_reporting_branch, l.srce_risk_classification_code as risk_classification_code, lm.acct_contact_person as acct_contact_person,
+lm.acct_grp_consldn_code as acct_grp_consldn_code ,lm.acct_customer_status as acct_customer_status, lm.acct_bpmid as lm_acct_bpmid
+From LSRCE l, lacmstr lm
+Where l.SRCE_CODE Like '%1' And l.SRCE_TERRITORY In ('49')  --and l.srce_risk_classification_code is not null and l.srce_reporting_branch is not null order by l.SRCE_CODE desc fetch first 1 row only-- and lm.acct_bpmid='${#TestSuite#bpmid}'
+--order by l.SRCE_CODE fetch first 1 row only --desc</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>l_SRCE_CODE</con:property><con:property>l_SRCE_TERRITORY</con:property><con:property>l_SRCE_TYPE</con:property><con:property>l_srce_group</con:property><con:property>l_srce_company</con:property><con:property>l_srce_reporting_region</con:property><con:property>l_srce_reporting_branch</con:property><con:property>risk_classification_code</con:property><con:property>acct_contact_person</con:property><con:property>acct_grp_consldn_code</con:property><con:property>acct_customer_status</con:property><con:property>lm_acct_bpmid</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="ISOTenantCodefromDB" id="02f793bf-4651-4558-8ae7-0fe106df958b"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;xml-fragment/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBCALMS2CMS( Default environment )</Connection><query>select  country_cms, country_iso, country_code from lctry where country_code='49'</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>country_cms</con:property><con:property>country_iso</con:property><con:property>country_code</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="groovy" name="BPMIDforContactDetails" id="18a95e62-a763-4bab-bc00-3af7980e2596"><con:settings/><con:config><script>import java.text.SimpleDateFormat
+
+def bpmId = context.expand( '${ThirdPartyIdfromDB#l_SRCE_CODE}' )
+log.info(bpmId)
+testRunner.testCase.setPropertyValue("ACCT_BPMID",bpmId)
+// passing time stamp
+testRunner.testCase.setPropertyValue("TimeStamp", new SimpleDateFormat("YYYY-MM-dd'T'HH:mm:ss").format(new Date()))
+</script></con:config></con:testStep><con:testStep type="datasource" name="DBNewCustomerFields" id="2cfd451d-367d-4262-98fd-dee67c93818b"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;xml-fragment/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBCALMS2CMS( Default environment )</Connection><query>select acct_basel_class_code, acct_previous_name, acct_drivers_lic, acct_privacy_consent, acct_customer_status, acct_Deceased_Flag, acct_neg_info, acct_suffix_alpha, acct_Suffix, acct_maiden_name,
+acct_motability_flag, acct_ctry_Residence, acct_lit_request, acct_marketting from lacmstr where acct_bpmid='${#TestCase#ACCT_BPMID}' fetch first 1 row only</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>acct_basel_class_code</con:property><con:property>acct_previous_name</con:property><con:property>acct_drivers_lic</con:property><con:property>acct_privacy_consent</con:property><con:property>acct_customer_status</con:property><con:property>acct_Deceased_Flag</con:property><con:property>acct_neg_info</con:property><con:property>acct_suffix_alpha</con:property><con:property>acct_Suffix</con:property><con:property>acct_maiden_name</con:property><con:property>acct_motability_flag</con:property><con:property>acct_ctry_Residence</con:property><con:property>acct_lit_request</con:property><con:property>acct_marketting</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="ContactDetailsFromDB" id="940469bf-4701-453a-81a4-d3b529f61622"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;xml-fragment/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBCALMS2CMS( Default environment )</Connection><query>SELECT ACCT_ACCOUNT_CONTACT, ACCT_CONTACT_PERSON, acct_grp_consldn_code, acct_customer_status FROM LACMSTR WHERE ACCT_BPMID= '${#TestCase#ACCT_BPMID}' fetch first 1 row only</query><fetchSize>1</fetchSize><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>ACCT_CONTACT_PERSON</con:property><con:property>acct_grp_consldn_code</con:property><con:property>acct_customer_status</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="groovy" name="SetDealerDetails" id="dd684412-b75c-49d2-8c02-00a6f38adb60"><con:settings/><con:config><script>def TCName = testRunner.testCase.testSuite.getPropertyValue("TestCaseName")
+if(TCName == "CMS-8323-UpdateThirdPartyAPI" || TCName == "CMS-8323-UpdateThirdPartyAPIInvalidBaselCode" || TCName == "CMS-8323-UpdateThirdPartyAPIInvalidPreviousName" || TCName == "CMS-8323-UpdateThirdPartyAPIInvalidDriversLicense" ||
+TCName == "CMS-8323-UpdateThirdPartyAPIInvalidCustomerStatus" || TCName == "CMS-8323-UpdateThirdPartyAPIInvalidMaidenName" ||
+TCName == "CMS-8323-UpdateThirdPartyAPIInvalidSuffix" || TCName == "CMS-8323-UpdateThirdPartyAPIInvalidSuffixCode" || TCName == "CMS-8323-UpdateThirdPartyAPIInvalidCtryResidence")
+{
+def dealerGroupId = context.expand( '${ThirdPartyIdfromDB#l_srce_group}' )
+def dealerCompanyId = context.expand( '${ThirdPartyIdfromDB#l_srce_company}' )
+def region = context.expand( '${ThirdPartyIdfromDB#l_srce_reporting_region}' )
+def dealerBranch = context.expand( '${ThirdPartyIdfromDB#l_srce_reporting_branch}' )
+def riskClassificationCode = context.expand( '${ThirdPartyIdfromDB#risk_classification_code}' )
+
+testRunner.testCase.testSuite.setPropertyValue("DealerGroupId",dealerGroupId )
+testRunner.testCase.testSuite.setPropertyValue("DealerCompanyId",dealerCompanyId )
+testRunner.testCase.testSuite.setPropertyValue("DealerBranch",dealerBranch )
+testRunner.testCase.testSuite.setPropertyValue("Region",region)
+testRunner.testCase.testSuite.setPropertyValue("RiskClassificationCode",riskClassificationCode)
+}
+
+	</script></con:config></con:testStep><con:testStep type="delay" name="1000" id="1eb69292-a561-4af1-86be-194975639c04"><con:settings/><con:config><delay>2000</delay></con:config></con:testStep><con:testStep type="request" name="UpdateThirdParty- Dealer" id="e9a4addf-bf79-4aea-b539-952bb002f5a9"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>updateThirdParty</con:operation><con:request name="UpdateThirdParty- Dealer" id="43d3b409-0060-42aa-bbdd-1a8bc8d8111c"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvbmwdev01:28080/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+
+   <soapenv:Body>
+   
+      <updateThirdParty xmlns="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty" xmlns:ns2="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+ 
+         <partner>
+            <type>C</type>
+    
+            <thirdPartyId>
+               <bpmId>${ThirdPartyIdfromDB#l_SRCE_CODE}</bpmId>
+            </thirdPartyId>
+            <role>U</role>
+ 
+            <commsChannels>
+             
+               <phoneFaxNums>
+                 
+                  <telephoneFax>
+                     <phoneFaxNumber>+49876543222</phoneFaxNumber>
+                     <type>BUS</type>
+                  </telephoneFax>
+
+                  <telephoneFax>
+                     <phoneFaxNumber>+49876543333</phoneFaxNumber>
+                     <type>HO</type>
+                  </telephoneFax>
+               </phoneFaxNums>
+            </commsChannels>
+            
+            <addresses>
+       
+               <address>
+            
+                  <addressType>
+                     <cmsCode>1</cmsCode>
+                  </addressType>
+           
+                  <countryCode>
+                     <cmsCode>DE</cmsCode>
+                  </countryCode>
+                  <streetNumber>5</streetNumber>
+                  <street>Setzbergstraße</street>
+                  <postTown>München</postTown>
+                  <postCode>81539</postCode>
+                  <isPrimaryMailing>true</isPrimaryMailing>
+               </address>
+         
+               <address>
+            
+                  <addressType>
+                     <cmsCode>2</cmsCode>
+                  </addressType>
+            
+                  <countryCode>
+                     <cmsCode>DE</cmsCode>
+                  </countryCode>
+                  <streetNumber>57</streetNumber>
+                  <street>Hofmannstraße</street>
+                  <postTown>München</postTown>
+                  <postCode>81649</postCode>
+                  <isPrimaryMailing>false</isPrimaryMailing>
+               </address>
+        
+               <address>
+      
+                  <addressType>
+                     <cmsCode>3</cmsCode>
+                  </addressType>
+         
+                  <countryCode>
+                     <cmsCode>DE</cmsCode>
+                  </countryCode>
+                  <streetNumber>26</streetNumber>
+                  <street>Kantstraße</street>
+                  <postTown>München</postTown>
+                  <postCode>560010</postCode>
+                  <isPrimaryMailing>false</isPrimaryMailing>
+               </address>
+            </addresses>
+            <firstName>München</firstName>
+            <surname>München</surname>
+            <countryOfBirth>DE</countryOfBirth>
+             <directMarketingPost>${CMS8323DataExcel#directMarketingPost}</directMarketingPost>
+ <suffix>${CMS8323DataExcel#suffix}</suffix>
+            <suffixCode>
+               <cmsCode>${CMS8323DataExcel#suffixcmsCode}</cmsCode>
+               <externalCode>${CMS8323DataExcel#suffixexternalCode}</externalCode>
+            </suffixCode>
+            <motabilityFlag>${CMS8323DataExcel#motabilityFlag}</motabilityFlag>
+              <maidenName>${CMS8323DataExcel#maidenName}</maidenName>
+          
+            <driversLic>${CMS8323DataExcel#driversLic}</driversLic>
+            
+    <baselClassCode>
+               <cmsCode>${CMS9378DataExcel#baselClasscodecmsCode}</cmsCode>
+            </baselClassCode>
+
+            <ctryResidence>
+               <!--Optional:-->
+               <cmsCode>${CMS8323DataExcel#ctryResidenceCMSCode}</cmsCode>
+               <!--Optional:-->
+               <externalCode>${CMS8323DataExcel#ctryResidenceExternalCode}</externalCode>
+            </ctryResidence>
+<privacyConsent>${CMS8323DataExcel#privacyConsent}</privacyConsent>
+               <previousName>${CMS8323DataExcel#previousName}</previousName>
+            <identifications>
+    
+               <identification>
+           
+                  <identificationDocumentTypeCode>
+                     <cmsCode>1</cmsCode>
+                     <externalCode>1</externalCode>
+                  </identificationDocumentTypeCode>
+               </identification>
+            </identifications>
+
+            <customerStatus>
+               <cmsCode>2</cmsCode>
+          </customerStatus>
+
+           
+            
+            <businessName>München München</businessName>
+            <isDeceased>${CMS8323DataExcel#isDeceased}</isDeceased>
+            <contactPerson>${CMS8323DataExcel#contactPerson}</contactPerson>
+            <vatNumber>DE131652345</vatNumber>
+            <vatCode>0001</vatCode>
+            <isNegativeinfo>${CMS8323DataExcel#isNegativeInfo}</isNegativeinfo>
+
+            <organisationType>
+               <externalCode>AG</externalCode>
+            </organisationType>
+            <taxNumber>11 22 3333</taxNumber>
+  
+            <balanceSheetCode>
+               <externalCode>NON</externalCode>
+            </balanceSheetCode>
+            <isPaymentLocking>false</isPaymentLocking>
+            <intraGrpConsldnCode>${CMS8323DataExcel#intraGrpConsldnCode}</intraGrpConsldnCode>
+
+            <emails>
+  
+               <email>
+       
+                  <emailType>
+                     <cmsCode>1</cmsCode>
+                  </emailType>
+                  <emailAddress>Firmenkunde@Doe26031.de</emailAddress>
+                  <isPrimaryMailing>true</isPrimaryMailing>
+                  <isConsent>true</isConsent>
+               </email>
+            </emails>
+         </partner>
+
+         <thirdPartyDetails>
+
+            <thirdPartyDetail>
+     
+               <dealer>
+                  <thirdPartyType>DEALER</thirdPartyType>
+    
+                  <sourceType>
+                     <cmsCode>1</cmsCode>
+                     <externalCode/>
+                  </sourceType>
+                  <dealerGroupId>1</dealerGroupId>
+                  <dealerCompanyId>1</dealerCompanyId>
+                  <dealerBranch>1</dealerBranch>
+<!--                   <region>${#TestSuite#Region}</region>-->
+  <region>1</region>
+               </dealer>
+               <!--<dealerCompany>-->
+               <!--<thirdPartyType>DEALER</thirdPartyType>-->
+               <!--<sourceType>-->
+               <!--<cmsCode>3</cmsCode>-->
+               <!--</sourceType>-->
+               <!--<dealerGroupId>123</dealerGroupId>-->
+               <!--<dealerCompanyId>777777</dealerCompanyId>-->
+               <!--</dealerCompany>-->
+               <!--<dealerGroup>-->
+               <!--<thirdPartyType>DEALER</thirdPartyType>-->
+               <!--<sourceType>-->
+               <!--<cmsCode>3</cmsCode>-->
+               <!--</sourceType>-->
+               <!--<dealerGroupId>123</dealerGroupId>-->
+               <!---->
+               <!--<dealerCompanyId>777777</dealerCompanyId>-->
+               <!--</dealerGroup>-->
+               
+            
+
+   
+            </thirdPartyDetail>
+         </thirdPartyDetails>
+
+         <applicationInfo>
+    
+            <ns2:tenantInfo>
+               <ns2:tenantCode>DEU</ns2:tenantCode>
+            </ns2:tenantInfo>
+
+            <ns2:securityAudit>
+               <ns2:messageId>458586677035</ns2:messageId>
+               <ns2:timestamp>2006-01-23T18:57:57.035</ns2:timestamp>
+               <ns2:clientAppId/>
+               <ns2:userId>NA</ns2:userId>
+               <ns2:clientLanguage>en_AU</ns2:clientLanguage>
+            </ns2:securityAudit>
+         </applicationInfo>
+      </updateThirdParty>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="6394b8a0-a469-44b2-9f67-7a2e39e20663"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="7633308a-d75f-4225-8100-803c5525f67e"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="cd3cbf16-7bf6-452d-aa43-d58a7794473d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d74599af-5d7c-498a-b762-50be3808d879"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="42e903b6-cb05-4346-91ba-5ce7dfd12804"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="0c4de42d-09a1-4460-b14b-9a570291d6d7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="request" name="UpdateThirdParty- Dealer_old" id="a6d727e6-f397-49cf-b614-dd540e8093fd" disabled="true"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>updateThirdParty</con:operation><con:request name="UpdateThirdParty- Dealer_old" id="43d3b409-0060-42aa-bbdd-1a8bc8d8111c"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvbmwdev01:28080/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+
+   <soapenv:Body>
+   
+      <updateThirdParty xmlns="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty" xmlns:ns2="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+ 
+         <partner>
+            <type>C</type>
+    
+            <thirdPartyId>
+               <bpmId>${ThirdPartyIdfromDB#l_SRCE_CODE}</bpmId>
+            </thirdPartyId>
+            <role>U</role>
+ 
+            <commsChannels>
+             
+               <phoneFaxNums>
+                 
+                  <telephoneFax>
+                     <phoneFaxNumber>+49876543222</phoneFaxNumber>
+                     <type>BUS</type>
+                  </telephoneFax>
+
+                  <telephoneFax>
+                     <phoneFaxNumber>+49876543333</phoneFaxNumber>
+                     <type>HO</type>
+                  </telephoneFax>
+               </phoneFaxNums>
+            </commsChannels>
+            
+            <addresses>
+       
+               <address>
+            
+                  <addressType>
+                     <cmsCode>1</cmsCode>
+                  </addressType>
+           
+                  <countryCode>
+                     <cmsCode>DE</cmsCode>
+                  </countryCode>
+                  <streetNumber>5</streetNumber>
+                  <street>Setzbergstraße</street>
+                  <postTown>München</postTown>
+                  <postCode>81539</postCode>
+                  <isPrimaryMailing>true</isPrimaryMailing>
+               </address>
+         
+               <address>
+            
+                  <addressType>
+                     <cmsCode>2</cmsCode>
+                  </addressType>
+            
+                  <countryCode>
+                     <cmsCode>DE</cmsCode>
+                  </countryCode>
+                  <streetNumber>57</streetNumber>
+                  <street>Hofmannstraße</street>
+                  <postTown>München</postTown>
+                  <postCode>81649</postCode>
+                  <isPrimaryMailing>false</isPrimaryMailing>
+               </address>
+        
+               <address>
+      
+                  <addressType>
+                     <cmsCode>3</cmsCode>
+                  </addressType>
+         
+                  <countryCode>
+                     <cmsCode>DE</cmsCode>
+                  </countryCode>
+                  <streetNumber>26</streetNumber>
+                  <street>Kantstraße</street>
+                  <postTown>München</postTown>
+                  <postCode>560010</postCode>
+                  <isPrimaryMailing>false</isPrimaryMailing>
+               </address>
+            </addresses>
+            <firstName>München</firstName>
+            <surname>München</surname>
+            <countryOfBirth>DE</countryOfBirth>
+             <directMarketingPost>${CMS8323DataExcel#directMarketingPost}</directMarketingPost>
+ <suffix>${CMS8323DataExcel#suffix}</suffix>
+            <suffixCode>
+               <cmsCode>${CMS8323DataExcel#suffixcmsCode}</cmsCode>
+               <externalCode>${CMS8323DataExcel#suffixexternalCode}</externalCode>
+            </suffixCode>
+            <motabilityFlag>${CMS8323DataExcel#motabilityFlag}</motabilityFlag>
+              <maidenName>${CMS8323DataExcel#maidenName}</maidenName>
+          
+            <driversLic>${CMS8323DataExcel#driversLic}</driversLic>
+            
+    <baselClassCode>
+               <cmsCode>${CMS8323DataExcel#baselClasscodecmsCode}</cmsCode>
+            </baselClassCode>
+
+            <ctryResidence>
+               <!--Optional:-->
+               <cmsCode>${CMS8323DataExcel#ctryResidenceCMSCode}</cmsCode>
+               <!--Optional:-->
+               <externalCode>${CMS8323DataExcel#ctryResidenceExternalCode}</externalCode>
+            </ctryResidence>
+<privacyConsent>${CMS8323DataExcel#privacyConsent}</privacyConsent>
+               <previousName>${CMS8323DataExcel#previousName}</previousName>
+            <identifications>
+    
+               <identification>
+           
+                  <identificationDocumentTypeCode>
+                     <cmsCode>1</cmsCode>
+                     <externalCode>1</externalCode>
+                  </identificationDocumentTypeCode>
+               </identification>
+            </identifications>
+
+            <customerStatus>
+               <cmsCode>${CMS8323DataExcel#customerStatuscmsCode}</cmsCode>
+          </customerStatus>
+
+           
+            
+            <businessName>München München</businessName>
+            <isDeceased>${CMS8323DataExcel#isDeceased}</isDeceased>
+            <contactPerson>${CMS8323DataExcel#contactPerson}</contactPerson>
+            <vatNumber>DE131652345</vatNumber>
+            <vatCode>0001</vatCode>
+            <isNegativeinfo>${CMS8323DataExcel#isNegativeInfo}</isNegativeinfo>
+
+            <organisationType>
+               <externalCode>AG</externalCode>
+            </organisationType>
+            <taxNumber>11 22 3333</taxNumber>
+  
+            <balanceSheetCode>
+               <externalCode>NON</externalCode>
+            </balanceSheetCode>
+            <isPaymentLocking>false</isPaymentLocking>
+            <intraGrpConsldnCode>${CMS8323DataExcel#intraGrpConsldnCode}</intraGrpConsldnCode>
+
+            <emails>
+  
+               <email>
+       
+                  <emailType>
+                     <cmsCode>1</cmsCode>
+                  </emailType>
+                  <emailAddress>Firmenkunde@Doe26031.de</emailAddress>
+                  <isPrimaryMailing>true</isPrimaryMailing>
+                  <isConsent>true</isConsent>
+               </email>
+            </emails>
+         </partner>
+
+         <thirdPartyDetails>
+
+            <thirdPartyDetail>
+     
+               <dealer>
+                  <thirdPartyType>DEALER</thirdPartyType>
+    
+                  <sourceType>
+                     <cmsCode>1</cmsCode>
+                     <externalCode/>
+                  </sourceType>
+                  <dealerGroupId>1</dealerGroupId>
+                  <dealerCompanyId>1</dealerCompanyId>
+                  <dealerBranch>1</dealerBranch>
+<!--                   <region>${#TestSuite#Region}</region>-->
+  <region>1</region>
+               </dealer>
+               <!--<dealerCompany>-->
+               <!--<thirdPartyType>DEALER</thirdPartyType>-->
+               <!--<sourceType>-->
+               <!--<cmsCode>3</cmsCode>-->
+               <!--</sourceType>-->
+               <!--<dealerGroupId>123</dealerGroupId>-->
+               <!--<dealerCompanyId>777777</dealerCompanyId>-->
+               <!--</dealerCompany>-->
+               <!--<dealerGroup>-->
+               <!--<thirdPartyType>DEALER</thirdPartyType>-->
+               <!--<sourceType>-->
+               <!--<cmsCode>3</cmsCode>-->
+               <!--</sourceType>-->
+               <!--<dealerGroupId>123</dealerGroupId>-->
+               <!---->
+               <!--<dealerCompanyId>777777</dealerCompanyId>-->
+               <!--</dealerGroup>-->
+               
+            
+
+   
+            </thirdPartyDetail>
+         </thirdPartyDetails>
+
+         <applicationInfo>
+    
+            <ns2:tenantInfo>
+               <ns2:tenantCode>DEU</ns2:tenantCode>
+            </ns2:tenantInfo>
+
+            <ns2:securityAudit>
+               <ns2:messageId>458586677035</ns2:messageId>
+               <ns2:timestamp>2006-01-23T18:57:57.035</ns2:timestamp>
+               <ns2:clientAppId/>
+               <ns2:userId>NA</ns2:userId>
+               <ns2:clientLanguage>en_AU</ns2:clientLanguage>
+            </ns2:securityAudit>
+         </applicationInfo>
+      </updateThirdParty>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="6394b8a0-a469-44b2-9f67-7a2e39e20663"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="7633308a-d75f-4225-8100-803c5525f67e"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="cd3cbf16-7bf6-452d-aa43-d58a7794473d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d74599af-5d7c-498a-b762-50be3808d879"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="42e903b6-cb05-4346-91ba-5ce7dfd12804"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="0c4de42d-09a1-4460-b14b-9a570291d6d7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="groovy" name="Validation" id="4db25801-86f8-4f26-8549-e348b486963a"><con:settings/><con:config><script><![CDATA[import com.eviware.soapui.model.testsuite.TestRunner.Status
+import com.eviware.soapui.support.XmlHolder
+
+def responseXML = context.expand('${UpdateThirdParty- Dealer_old#Response}')
+def response = new XmlHolder(responseXML)
+
+response.namespaces["ns10"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty" 
+response.namespaces["ns2"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes"  
+response.namespaces["ns3"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ErrorTypes" 
+
+def responseErrorCode=response.getNodeValue('//ns3:errorCode')
+def expectedErrorCode = context.expand('${CMS8323DataExcel#expectedErrorCode}')
+
+def requestBPMID = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:thirdPartyId[1]/thir:bpmId[1]}' )
+
+log.info("requestBPMID     :" + requestBPMID)
+
+def responseStatus=response.getNodeValue('//ns10:status')
+def responseTenantCode=response.getNodeValue('//ns2:tenantCode')
+
+def dbTenantCode = context.expand( '${ISOTenantCodefromDB#country_cms}' )
+
+def db_l_SRCE_CODE = context.expand( '${ThirdPartyIdfromDB#l_SRCE_CODE}' )
+
+//def requestDealerGroup = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:thirdPartyDetails[1]/thir:thirdPartyDetail[1]/thir:dealer[1]/thir:dealerGroupId[1]}' )
+//def db_l_srce_group = context.expand( '${ThirdPartyIdfromDB#l_srce_group}' )
+
+def requestRegion = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:thirdPartyDetails[1]/thir:thirdPartyDetail[1]/thir:dealer[1]/thir:region[1]}' )
+def db_l_srce_reporting_region = context.expand( '${ThirdPartyIdfromDB#l_srce_reporting_region}' )
+
+//def requestCompany = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:thirdPartyDetails[1]/thir:thirdPartyDetail[1]/thir:dealer[1]/thir:dealerCompanyId[1]}' )
+//def db_l_srce_company = context.expand( '${ThirdPartyIdfromDB#l_srce_company}' )
+
+//def requestRiskClassificationCode = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:thirdPartyDetails[1]/thir:thirdPartyDetail[1]/thir:dealer[1]/thir:riskClassificationCode[1]}' )
+//def db_risk_classification_code = context.expand( '${ThirdPartyIdfromDB#risk_classification_code}' )
+
+def requestDealerBranch = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:thirdPartyDetails[1]/thir:thirdPartyDetail[1]/thir:dealer[1]/thir:dealerBranch[1]}' )
+def db_l_srce_reporting_branch = context.expand( '${ThirdPartyIdfromDB#l_srce_reporting_branch}' )
+
+def requestContactPerson = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:contactPerson[1]}' )
+def db_acct_contact_person = context.expand( '${ContactDetailsFromDB#ACCT_CONTACT_PERSON}' )
+
+log.info  db_acct_contact_person
+
+def requestIntraGroupConsolidationCode = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:intraGrpConsldnCode[1]}' )
+def db_acct_grp_consldn_code = context.expand( '${ContactDetailsFromDB#acct_grp_consldn_code}' )
+
+def requestCustomerStatus = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:customerStatus[1]/thir:cmsCode[1]}' )
+def db_acct_customer_status = context.expand( '${ContactDetailsFromDB#acct_customer_status}' )
+def requestTimeStamp = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace com=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes\'; declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:applicationInfo[1]/com:securityAudit[1]/com:timestamp[1]}' )
+
+
+// execute the following after the service is ok from env perspective
+//def requestLSRCCode = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:thirdPartyId[1]/thir:bpmId[1]}' )
+//def l_SRCE_CODE_db_UpdateThirdParty = context.expand( '${ThirdPartyIdfromDB#l_SRCE_CODE}' )
+
+def requestBaselClassCode = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:baselClassCode[1]/thir:cmsCode[1]}' )
+def db_acct_basel_class_code = context.expand( '${DBNewCustomerFields#acct_basel_class_code}' )
+
+def requestPreviousName = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:previousName[1]}' )
+def db_acct_previous_name = context.expand( '${DBNewCustomerFields#acct_previous_name}' )
+
+def requestDriversLicense = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:driversLic[1]}' )
+def db_acct_drivers_lic = context.expand( '${DBNewCustomerFields#acct_drivers_lic}' )
+
+def requestPrivacyConsent = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:privacyConsent[1]}' )
+def db_acct_privacy_consent = context.expand( '${DBNewCustomerFields#acct_privacy_consent}' )
+
+log.info("***********************************db_acct_privacy_consent"+db_acct_privacy_consent)
+log.info("***********************************requestPrivacyConsent"+requestPrivacyConsent)
+ if (requestPrivacyConsent == "true" && db_acct_privacy_consent == "Y")
+ 
+ 	requestPrivacyConsent = "Y"
+ else
+ 		requestPrivacyConsent = "N"
+ 	
+
+log.info("---------------------------------------reqprivacy"+requestPrivacyConsent)
+//def requestCustomerStatus = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:customerStatus[1]/thir:cmsCode[1]}' )
+//def db_acct_customer_status = context.expand( '${DBNewCustomerFields#acct_customer_status}' )
+
+def requestDeceased = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:isDeceased[1]}' )
+def db_acct_Deceased_Flag = context.expand( '${DBNewCustomerFields#acct_Deceased_Flag}' )
+
+if (requestDeceased == "true" && db_acct_Deceased_Flag == "Y")
+ 
+ 	requestDeceased = "Y"
+ else
+ 		requestDeceased = "N"
+
+
+def requestIsNegativeInfo = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:isNegativeinfo[1]}' )
+def db_acct_neg_info = context.expand( '${DBNewCustomerFields#acct_neg_info}' )
+
+if (requestIsNegativeInfo == "true" && db_acct_neg_info == "Y")
+ 
+ 	requestIsNegativeInfo = "Y"
+ else
+ 		requestIsNegativeInfo = "N"
+
+def requestDirectMarketingPost = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:directMarketingPost[1]}' )
+def db_acct_marketting = context.expand( '${DBNewCustomerFields#acct_lit_request}' )
+
+if(requestDirectMarketingPost == "true" && db_acct_marketting == "Y")
+requestDirectMarketingPost = "Y"
+else
+requestDirectMarketingPost = "N"
+
+def requestSuffix = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:suffix[1]}' )
+def db_acct_suffix_alpha = context.expand( '${DBNewCustomerFields#acct_suffix_alpha}' )
+
+def requestSuffixCode = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:suffixCode[1]/thir:cmsCode[1]}' )
+def db_acct_Suffix = context.expand( '${DBNewCustomerFields#acct_Suffix}' )
+
+def requestMaidenName = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:maidenName[1]}' )
+def db_acct_maiden_name = context.expand( '${DBNewCustomerFields#acct_maiden_name}' )
+
+def requestMotabilityFlag = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:motabilityFlag[1]}' )
+def db_acct_motability_flag = context.expand( '${DBNewCustomerFields#acct_motability_flag}' )
+
+ if (requestMotabilityFlag == "true" && db_acct_motability_flag == "Y")
+ 
+ 	requestMotabilityFlag = "Y"
+ else
+ 		requestMotabilityFlag = "N"
+
+def requestCountryResidence = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:ctryResidence[1]/thir:cmsCode[1]}' )
+//def requestCountryResidence = context.expand( '${UpdateThirdParty- Dealer#Request#declare namespace thir=\'http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty\'; //thir:updateThirdParty[1]/thir:partner[1]/thir:ctryResidence[1]}' )
+def db_acct_ctry_Residence = context.expand( '${DBNewCustomerFields#acct_ctry_Residence}' )
+
+
+//**********************************************End of Validation for Update Third Party API
+
+def responseTimeStamp = response.getNodeValue('//ns2:timestamp')
+
+def testResult = 'PASS' 
+
+// validate response for Valid Dealer
+def TCName = testRunner.testCase.testSuite.getPropertyValue("TestCaseName")
+log.info "responseStatus"+responseStatus
+log.info("TCName--->"+ TCName)
+	log.info("responseTenantCode---->"+ responseTenantCode )	
+	log.info("dbTenantCode---->" + dbTenantCode)
+	
+	log.info("requestBPMID---->" + requestBPMID)
+	log.info("db_l_SRCE_CODE---->" + db_l_SRCE_CODE)
+	
+//	log.info("requestDealerGroup---->" + requestDealerGroup)
+//	log.info("db_l_srce_group---->" + db_l_srce_group)
+	
+	log.info("requestRegion---->" + requestRegion)
+	log.info("db_l_srce_reporting_region---->" + db_l_srce_reporting_region)
+//	
+//	log.info("requestCompany---->" + requestCompany)
+//	log.info("db_l_srce_company---->" + db_l_srce_company)
+//	
+//	log.info("requestRiskClassificationCode---->" + requestRiskClassificationCode)
+//	log.info("db_risk_classification_code---->" + db_risk_classification_code)
+	
+	log.info("requestDealerBranch---->" + requestDealerBranch)
+	log.info("db_l_srce_reporting_branch---->" + db_l_srce_reporting_branch)
+	
+	log.info("requestContactPerson---->" + requestContactPerson)
+	log.info("db_acct_contact_person---->" + db_acct_contact_person)
+	
+	log.info("requestIntraGroupConsolidationCode---->" + requestIntraGroupConsolidationCode)
+	log.info("db_acct_grp_consldn_code---->" + db_acct_grp_consldn_code)
+	
+	log.info("requestCustomerStatus---->" + requestCustomerStatus)
+	log.info("db_acct_customer_status---->" + db_acct_customer_status)
+	
+	log.info("reqTimestamp----->" + requestTimeStamp)
+	log.info("responseTimestamp-->" + responseTimeStamp)
+
+	
+log.info("requestBPMID"+requestBPMID)
+log.info("db_l_SRCE_CODE"+db_l_SRCE_CODE)
+
+log.info("requestBaselClassCode"+requestBaselClassCode)
+log.info("db_acct_basel_class_code"+db_acct_basel_class_code)
+
+log.info("requestPreviousName"+requestPreviousName)
+log.info("db_acct_previous_name"+db_acct_previous_name)
+
+log.info("requestDriversLicense"+requestDriversLicense)
+log.info("db_acct_drivers_lic"+db_acct_drivers_lic)
+
+log.info("requestPrivacyConsent"+requestPrivacyConsent)
+log.info("db_acct_privacy_consent"+db_acct_privacy_consent)
+
+log.info("requestCustomerStatus"+requestCustomerStatus)
+log.info("db_acct_customer_status"+db_acct_customer_status)
+
+log.info("requestDeceased"+requestDeceased)
+log.info("db_acct_Deceased_Flag"+db_acct_Deceased_Flag)
+
+log.info("requestIsNegativeInfo"+requestIsNegativeInfo)
+log.info("db_acct_neg_info"+db_acct_neg_info)
+
+log.info("requestDirectMarketingPost"+requestDirectMarketingPost)
+log.info("db_acct_marketting"+db_acct_marketting)
+
+log.info("requestSuffix"+requestSuffix)
+log.info("db_acct_suffix_alpha"+db_acct_suffix_alpha)
+
+log.info("requestSuffixCode"+requestSuffixCode)
+log.info("db_acct_Suffix"+db_acct_Suffix)
+
+log.info("requestMaidenName"+requestMaidenName)
+log.info("db_acct_maiden_name"+db_acct_maiden_name)
+
+log.info("requestMotabilityFlag"+requestMotabilityFlag)
+log.info("db_acct_motability_flag"+db_acct_motability_flag)
+
+log.info("requestCountryResidence"+requestCountryResidence)
+log.info("db_acct_ctry_Residence"+db_acct_ctry_Residence)
+
+if (TCName == "CMS-8323-UpdateThirdPartyAPI"){
+
+
+if ( responseStatus == "Success" && responseTenantCode == dbTenantCode && requestBPMID == db_l_SRCE_CODE  && requestRegion == db_l_srce_reporting_region  && requestDealerBranch == db_l_srce_reporting_branch && requestContactPerson == db_acct_contact_person &&
+requestIntraGroupConsolidationCode == db_acct_grp_consldn_code && requestCustomerStatus == db_acct_customer_status && requestTimeStamp == responseTimeStamp && requestBaselClassCode == db_acct_basel_class_code && requestPreviousName==db_acct_previous_name &&
+ requestDriversLicense == db_acct_drivers_lic &&  requestCustomerStatus == db_acct_customer_status && requestSuffix == db_acct_suffix_alpha && requestSuffixCode == db_acct_Suffix && requestMaidenName == db_acct_maiden_name &&
+ requestPrivacyConsent == db_acct_privacy_consent && requestMotabilityFlag == db_acct_motability_flag && requestIsNegativeInfo == db_acct_neg_info && requestDeceased == db_acct_Deceased_Flag &&
+requestDirectMarketingPost == db_acct_marketting && requestPrivacyConsent == db_acct_privacy_consent && requestCountryResidence == db_acct_ctry_Residence)
+
+
+
+// if(requestDirectMarketingPost == "true" && db_acct_marketting == "Y" || requestDirectMarketingPost == "false" && db_acct_marketting == "N")
+
+ //**************************************************
+ // this is throwing error if added in request
+ 
+//requestDirectMarketingPost == db_acct_marketting
+//requestPrivacyConsent == db_acct_privacy_consent
+//*****************************************************
+ 
+//**********************************************//
+// because of bad data in db removed these fields for validation purpose
+//requestCompany == db_l_srce_company && requestRiskClassificationCode == db_risk_classification_code && requestDealerGroup == db_l_srce_group
+//*********************************************//
+
+//requestLSRCCode == db_l_SRCE_CODE_db && requestBaselClassCode == db_acct_basel_class_code && requestPreviousName==db_acct_previous_name &&
+// requestDriversLicense == db_acct_drivers_lic && requestPrivacyConsent == db_acct_privacy_consent && requestCustomerStatus == db_acct_customer_status &&
+// requestDeceased == db_acct_Deceased_Flag && requestIsNegativeInfo == db_acct_neg_info && requestDirectMarketingPost == db_acct_marketting &&
+// requestSuffix == db_acct_suffix_alpha && requestSuffixCode == db_acct_Suffix && requestMaidenName == db_acct_maiden_name &&
+// requestMotabilityFlag == db_acct_motability_flag && requestCountryResidence == db_acct_ctry_Residence
+//
+
+
+
+	log.info("TCName--->"+ TCName)
+	log.info("responseTenantCode---->"+ responseTenantCode )	
+	log.info("dbTenantCode---->" + dbTenantCode)
+	
+	log.info("requestBPMID---->" + requestBPMID)
+	log.info("db_l_SRCE_CODE---->" + db_l_SRCE_CODE)
+	
+//	log.info("requestDealerGroup---->" + requestDealerGroup)
+//	log.info("db_l_srce_group---->" + db_l_srce_group)
+	
+	log.info("requestRegion---->" + requestRegion)
+	log.info("db_l_srce_reporting_region---->" + db_l_srce_reporting_region)
+	
+//	log.info("requestCompany---->" + requestCompany)
+//	log.info("db_l_srce_company---->" + db_l_srce_company)
+	
+//	log.info("requestRiskClassificationCode---->" + requestRiskClassificationCode)
+//	log.info("db_risk_classification_code---->" + db_risk_classification_code)
+	
+	log.info("requestDealerBranch---->" + requestDealerBranch)
+	log.info("db_l_srce_reporting_branch---->" + db_l_srce_reporting_branch)
+	
+	log.info("requestContactPerson---->" + requestContactPerson)
+	log.info("db_acct_contact_person---->" + db_acct_contact_person)
+	
+	log.info("requestIntraGroupConsolidationCode---->" + requestIntraGroupConsolidationCode)
+	log.info("db_acct_grp_consldn_code---->" + db_acct_grp_consldn_code)
+	
+	log.info("requestCustomerStatus---->" + requestCustomerStatus)
+	log.info("db_acct_customer_status---->" + db_acct_customer_status)
+	
+	log.info("reqTimestamp----->" + requestTimeStamp)
+	log.info("responseTimestamp-->" + responseTimeStamp)
+
+
+log.info("requestBPMID"+requestBPMID)
+log.info("db_l_SRCE_CODE"+db_l_SRCE_CODE)
+
+log.info("requestBaselClassCode"+requestBaselClassCode)
+log.info("db_acct_basel_class_code"+db_acct_basel_class_code)
+
+log.info("requestPreviousName"+requestPreviousName)
+log.info("db_acct_previous_name"+db_acct_previous_name)
+
+log.info("requestDriversLicense"+requestDriversLicense)
+log.info("db_acct_drivers_lic"+db_acct_drivers_lic)
+
+log.info("requestPrivacyConsent"+requestPrivacyConsent)
+log.info("db_acct_privacy_consent"+db_acct_privacy_consent)
+
+log.info("requestCustomerStatus"+requestCustomerStatus)
+log.info("db_acct_customer_status"+db_acct_customer_status)
+
+log.info("requestDeceased"+requestDeceased)
+log.info("db_acct_Deceased_Flag"+db_acct_Deceased_Flag)
+
+log.info("requestIsNegativeInfo"+requestIsNegativeInfo)
+log.info("db_acct_neg_info"+db_acct_neg_info)
+
+log.info("requestDirectMarketingPost"+requestDirectMarketingPost)
+log.info("db_acct_marketting"+db_acct_marketting)
+
+log.info("requestSuffix"+requestSuffix)
+log.info("db_acct_suffix_alpha"+db_acct_suffix_alpha)
+
+log.info("requestSuffixCode"+requestSuffixCode)
+log.info("db_acct_Suffix"+db_acct_Suffix)
+
+log.info("requestMaidenName"+requestMaidenName)
+log.info("db_acct_maiden_name"+db_acct_maiden_name)
+
+log.info("requestMotabilityFlag"+requestMotabilityFlag)
+log.info("db_acct_motability_flag"+db_acct_motability_flag)
+
+log.info("requestCountryResidence"+requestCountryResidence)
+log.info("db_acct_ctry_Residence"+db_acct_ctry_Residence)
+
+
+	log.info("response as expected")
+	testResult = 'PASS'
+
+}else{
+
+	faultString =  response.getNodeValue('//faultstring[1]/text()')
+	log.error "Issue with API response First Valid case : " + faultString
+	testResult = 'FAIL'
+}	
+
+
+
+// validating Invalid TenantCode, Invalid Risk ClassificationCode, Invalid CustomerStatus, Invalid Intra group consolidation code, Invalid Dealer Branch, invalid region, invalid source company
+// invalid source group, empty tenant code.
+
+//else if(TCName == "CMS-9378-UpdateThirdParty -DealerInValidTenantCode" || TCName == "CMS-9378-UpdateThirdParty -DealerInValidRiskClassificationCode" || TCName == "CMS-9378-UpdateThirdParty -DealerInValidCustomerStatus" ||
+//TCName == "CMS-9378-UpdateThirdParty -DealerInValidIntraGrpConsldnCode" || TCName == "CMS-9378-UpdateThirdParty -DealerInValidRegion" ||
+//TCName == "CMS-9378-UpdateThirdParty -DealerInValidSourceCompany" || TCName == "CMS-9378-UpdateThirdParty -DealerInValidSourceGroup" || TCName == "CMS-9378-UpdateThirdParty -DealerEmptyTenantCode" ||  TCName == "CMS-9378-UpdateThirdParty -DealerInValidDealerBranch" ){
+//	
+//log.info("inside the TC " + TCName)
+//	
+//// validate response
+//
+//log.info responseErrorCode
+//if (responseErrorCode == expectedErrorCode)
+//{	
+//	log.info("responseErrorCode" + responseErrorCode)
+//	log.info("expectedErrorCode " + expectedErrorCode)
+//
+//	log.info("responseStatus" + responseStatus)
+//		
+//	log.info("responseTenantCode---->" + responseTenantCode)
+//	log.info("dbTenantCode---->" + dbTenantCode)
+//
+//	log.info("requestBPMID---->" + requestBPMID)
+//	log.info("db_l_SRCE_CODE---->" + db_l_SRCE_CODE)
+//	
+//	log.info("requestDealerGroup---->" + requestDealerGroup)
+//	log.info("db_l_srce_group---->" + db_l_srce_group)
+//	
+//	log.info("requestRegion---->" + requestRegion)
+//	log.info("db_l_srce_reporting_region---->" + db_l_srce_reporting_region)
+//	
+//	log.info("requestCompany---->" + requestCompany)
+//	log.info("db_l_srce_company---->" + db_l_srce_company)
+//	
+//	log.info("requestRiskClassificationCode---->" + requestRiskClassificationCode)
+//	log.info("db_risk_classification_code---->" + db_risk_classification_code)
+//	
+//	log.info("requestDealerBranch---->" + requestDealerBranch)
+//	log.info("db_l_srce_reporting_branch---->" + db_l_srce_reporting_branch)
+//	
+//	log.info("requestContactPerson---->" + requestContactPerson)
+//	log.info("db_acct_contact_person---->" + db_acct_contact_person)
+//
+//	log.info("requestIntraGroupConsolidationCode---->" + requestIntraGroupConsolidationCode)
+//	log.info("db_acct_grp_consldn_code---->" + db_acct_grp_consldn_code)
+//	
+//	log.info("requestCustomerStatus---->" + requestCustomerStatus)
+//	log.info("db_acct_customer_status---->" + db_acct_customer_status)
+//	
+//	log.info("Response as expected")
+//	testResult = 'PASS'
+//}else{
+//	faultString =  response.getNodeValue('//faultstring[1]/text()')
+//	log.error "Issue with API response invalid : " + faultString
+//	testResult = 'FAIL'
+//}
+//
+//}
+
+ if(TCName == "CMS-8323-UpdateThirdPartyAPIInvalidBaselCode" || TCName == "CMS-8323-UpdateThirdPartyAPIInvalidDriversLicense" || TCName == "CMS-8323-UpdateThirdPartyAPIInvalidPreviousName" ||
+ TCName == "CMS-8323-UpdateThirdPartyAPIInvalidCustomerStatus" || TCName == "CMS-8323-UpdateThirdPartyAPIInvalidMaidenName" || TCName == "CMS-8323-UpdateThirdPartyAPIInvalidSuffix" || 
+ TCName == "CMS-8323-UpdateThirdPartyAPIInvalidSuffixCode" || TCName == "CMS-8323-UpdateThirdPartyAPIInvalidCtryResidence"){
+if (responseErrorCode == expectedErrorCode)
+{
+	log.info(TCName)
+testResult = 'PASS'
+}else{
+	faultString =  response.getNodeValue('//faultstring[1]/text()')
+	log.error "Issue with API response invalid : " + faultString
+	testResult = 'FAIL'
+}
+}
+
+log.info (testResult)
+testRunner.testCase.testSuite.setPropertyValue('TestResult', testResult)
+
+]]></script></con:config></con:testStep><con:testStep type="request" name="SOAP Request" id="52f47087-6aeb-4e5a-9d3c-146caa097839" disabled="true"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>updateThirdParty</con:operation><con:request name="SOAP Request" id="066aff01-11da-4b76-a40d-72df65f6b676"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvbmwdev01:28080/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">\r
+
+   <soapenv:Body>\r
+   
+      <updateThirdParty xmlns="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty" xmlns:ns2="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">\r
+ 
+         <partner>\r
+            <type>C</type>\r
+    
+            <thirdPartyId>\r
+               <bpmId>${ThirdPartyIdfromDB#l_SRCE_CODE}</bpmId>\r
+            </thirdPartyId>\r
+            <role>U</role>\r
+ 
+            <commsChannels>\r
+             
+               <phoneFaxNums>\r
+                 
+                  <telephoneFax>\r
+                     <phoneFaxNumber>+49876543222</phoneFaxNumber>\r
+                     <type>BUS</type>\r
+                  </telephoneFax>\r
+
+                  <telephoneFax>\r
+                     <phoneFaxNumber>+49876543333</phoneFaxNumber>\r
+                     <type>HO</type>\r
+                  </telephoneFax>\r
+               </phoneFaxNums>\r
+            </commsChannels>\r
+            
+            <addresses>\r
+       
+               <address>\r
+            
+                  <addressType>\r
+                     <cmsCode>1</cmsCode>\r
+                  </addressType>\r
+           
+                  <countryCode>\r
+                     <cmsCode>DE</cmsCode>\r
+                  </countryCode>\r
+                  <streetNumber>5</streetNumber>\r
+                  <street>Setzbergstraße</street>\r
+                  <postTown>München</postTown>\r
+                  <postCode>81539</postCode>\r
+                  <isPrimaryMailing>true</isPrimaryMailing>\r
+               </address>\r
+         
+               <address>\r
+            
+                  <addressType>\r
+                     <cmsCode>2</cmsCode>\r
+                  </addressType>\r
+            
+                  <countryCode>\r
+                     <cmsCode>DE</cmsCode>\r
+                  </countryCode>\r
+                  <streetNumber>57</streetNumber>\r
+                  <street>Hofmannstraße</street>\r
+                  <postTown>München</postTown>\r
+                  <postCode>81649</postCode>\r
+                  <isPrimaryMailing>false</isPrimaryMailing>\r
+               </address>\r
+        
+               <address>\r
+      
+                  <addressType>\r
+                     <cmsCode>3</cmsCode>\r
+                  </addressType>\r
+         
+                  <countryCode>\r
+                     <cmsCode>DE</cmsCode>\r
+                  </countryCode>\r
+                  <streetNumber>26</streetNumber>\r
+                  <street>Kantstraße</street>\r
+                  <postTown>München</postTown>\r
+                  <postCode>560010</postCode>\r
+                  <isPrimaryMailing>false</isPrimaryMailing>\r
+               </address>\r
+            </addresses>\r
+            <firstName>München</firstName>\r
+            <surname>München</surname>\r
+            <countryOfBirth>DE</countryOfBirth>\r
+             <directMarketingPost>${CMS8323DataExcel#directMarketingPost}</directMarketingPost>
+ <suffix>${CMS8323DataExcel#suffix}</suffix>
+            <suffixCode>
+               <cmsCode>${CMS8323DataExcel#suffixcmsCode}</cmsCode>
+               <externalCode>${CMS8323DataExcel#suffixexternalCode}</externalCode>
+            </suffixCode>
+            <motabilityFlag>${CMS8323DataExcel#motabilityFlag}</motabilityFlag>
+              <maidenName>${CMS8323DataExcel#maidenName}</maidenName>
+          
+            <driversLic>${CMS8323DataExcel#driversLic}</driversLic>
+            
+    <baselClassCode>
+               <cmsCode>${CMS8323DataExcel#baselClasscodecmsCode}</cmsCode>
+            </baselClassCode>
+
+            <ctryResidence>
+               <!--Optional:-->
+               <cmsCode>${CMS8323DataExcel#ctryResidenceCMSCode}</cmsCode>
+               <!--Optional:-->
+               <externalCode>${CMS8323DataExcel#ctryResidenceExternalCode}</externalCode>
+            </ctryResidence>
+<privacyConsent>${CMS8323DataExcel#privacyConsent}</privacyConsent>
+               <previousName>${CMS8323DataExcel#previousName}</previousName>
+            <identifications>\r
+    
+               <identification>\r
+           
+                  <identificationDocumentTypeCode>\r
+                     <cmsCode>1</cmsCode>\r
+                     <externalCode>1</externalCode>\r
+                  </identificationDocumentTypeCode>\r
+               </identification>\r
+            </identifications>\r
+
+            <customerStatus>
+               <cmsCode>${CMS8323DataExcel#customerStatuscmsCode}</cmsCode>
+          </customerStatus>
+
+           
+            
+            <businessName>München München</businessName>\r
+            <isDeceased>${CMS8323DataExcel#isDeceased}</isDeceased>\r
+            <contactPerson>${CMS8323DataExcel#contactPerson}</contactPerson>\r
+            <vatNumber>DE131652345</vatNumber>\r
+            <vatCode>0001</vatCode>\r
+            <isNegativeinfo>${CMS8323DataExcel#isNegativeInfo}</isNegativeinfo>\r
+
+            <organisationType>\r
+               <externalCode>AG</externalCode>\r
+            </organisationType>\r
+            <taxNumber>11 22 3333</taxNumber>\r
+  
+            <balanceSheetCode>\r
+               <externalCode>NON</externalCode>\r
+            </balanceSheetCode>\r
+            <isPaymentLocking>false</isPaymentLocking>\r
+            <intraGrpConsldnCode>${CMS8323DataExcel#intraGrpConsldnCode}</intraGrpConsldnCode>\r
+
+            <emails>\r
+  
+               <email>\r
+       
+                  <emailType>\r
+                     <cmsCode>1</cmsCode>\r
+                  </emailType>\r
+                  <emailAddress>Firmenkunde@Doe26031.de</emailAddress>\r
+                  <isPrimaryMailing>true</isPrimaryMailing>\r
+                  <isConsent>true</isConsent>\r
+               </email>\r
+            </emails>\r
+         </partner>\r
+
+         <thirdPartyDetails>\r
+
+            <thirdPartyDetail>\r
+     
+               <dealer>\r
+                  <thirdPartyType>DEALER</thirdPartyType>\r
+    
+                  <sourceType>\r
+                     <cmsCode>1</cmsCode>\r
+                     <externalCode/>\r
+                  </sourceType>\r
+                  <dealerGroupId>1</dealerGroupId>\r
+                  <dealerCompanyId>1</dealerCompanyId>\r
+                  <dealerBranch>1</dealerBranch>
+<!--                   <region>${#TestSuite#Region}</region>-->
+  <region>1</region>
+               </dealer>\r
+               <!--<dealerCompany>-->\r
+               <!--<thirdPartyType>DEALER</thirdPartyType>-->\r
+               <!--<sourceType>-->\r
+               <!--<cmsCode>3</cmsCode>-->\r
+               <!--</sourceType>-->\r
+               <!--<dealerGroupId>123</dealerGroupId>-->\r
+               <!--<dealerCompanyId>777777</dealerCompanyId>-->\r
+               <!--</dealerCompany>-->\r
+               <!--<dealerGroup>-->\r
+               <!--<thirdPartyType>DEALER</thirdPartyType>-->\r
+               <!--<sourceType>-->\r
+               <!--<cmsCode>3</cmsCode>-->\r
+               <!--</sourceType>-->\r
+               <!--<dealerGroupId>123</dealerGroupId>-->\r
+               <!---->\r
+               <!--<dealerCompanyId>777777</dealerCompanyId>-->\r
+               <!--</dealerGroup>-->\r
+               
+            
+
+   
+            </thirdPartyDetail>\r
+         </thirdPartyDetails>\r
+
+         <applicationInfo>\r
+    
+            <ns2:tenantInfo>\r
+               <ns2:tenantCode>DEU</ns2:tenantCode>\r
+            </ns2:tenantInfo>\r
+
+            <ns2:securityAudit>\r
+               <ns2:messageId>458586677035</ns2:messageId>\r
+               <ns2:timestamp>2006-01-23T18:57:57.035</ns2:timestamp>\r
+               <ns2:clientAppId/>\r
+               <ns2:userId>NA</ns2:userId>\r
+               <ns2:clientLanguage>en_AU</ns2:clientLanguage>\r
+            </ns2:securityAudit>\r
+         </applicationInfo>\r
+      </updateThirdParty>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="03fb9566-358f-4ebf-bb3c-8c52dd2494ff"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:properties><con:property><con:name>ACCT_BPMID</con:name><con:value>2601</con:value></con:property><con:property><con:name>TimeStamp</con:name><con:value>2018-01-17T09:43:07</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>0e50777a-f101-4a06-98ad-0ac99e5c6432</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>dacf0559-223d-40ca-983e-8e5b22b97c72</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>4859751e-3ad5-4a02-aafc-0b39b3a7e9f9</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>6fd8dd1d-22c5-400e-a705-65bdf5836bc7</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>683ac78c-f2db-4ba4-a610-7acccc6072dc</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>2938ebcf-9614-4c24-86ff-0fa4e74cd125</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>5df81796-0fdd-406a-bb06-6ec21685403a</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>

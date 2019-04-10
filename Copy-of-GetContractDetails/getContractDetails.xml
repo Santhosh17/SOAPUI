@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="87402b2c-5dd4-4f19-a018-1a6184b2e5a9" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="getContractDetails" searchProperties="true" timeout="0" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="6f11bbb2-10b0-487b-acb3-60ae75809da0fileName">getContractDetails</con:setting><con:setting id="3e0e4305-1cc0-40a4-b6fe-2faf4738f769fileName">getContractDetails</con:setting><con:setting id="87402b2c-5dd4-4f19-a018-1a6184b2e5a9fileName">getContractDetails</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="datasource" name="DataExcel" id="70ee28a1-7ca4-4ae7-816e-ea7f2c4bf07f"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Excel"><con:configuration><file>${projectDir}/getContractDetails.xlsx</file><worksheet>${#Project#workSheet}</worksheet><cell>${#TestSuite#TestStartCell}</cell><ignoreEmpty>false</ignoreEmpty><evaluateFormulas>false</evaluateFormulas></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>testId</con:property><con:property>testName</con:property><con:property>expectedResponseStatus</con:property><con:property>expectedErrorCode</con:property><con:property>expectedErrorDescription</con:property><con:property>expectedFaultCode</con:property><con:property>expectedFaultString</con:property><con:property>externalContractNumber</con:property><con:property>messageId</con:property><con:property>timestamp</con:property><con:property>clientAppId</con:property><con:property>auditUserId</con:property><con:property>clientLanguage</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="DB_LLOAN" id="7ed7cbf5-5dbb-4b8b-99ca-d0ca96beae09"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;entry key="countryCode" value="${#Project#countryCode}" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBCALMS2CMS( Default environment )</Connection><query>select 
+  lk.LNKNUM_EXTERNAL_REF_FIELD,
+  lk.LNKNUM_INTERNAL_REF_FIELD,
+  a.*
+from 
+  cms.LLNKNUM lk,
+  ( 
+   select 
+     ln.*,
+     to_date(lpad(to_char(ln.LOAN_START_DATE),6,'0'),'ddMMyy') as START_DATE, 
+     to_date(lpad(to_char(dt.TABLE_LAST_INT_DEBIT_DDMMYY),6,'0'),'ddMMyy') as IDD, 
+     to_date(lpad(to_char(LOAN_MATURITY),8,'0'),'ddMMyyyy') as END_DATE,
+     to_char(to_date(lpad(to_char(ln.LOAN_START_DATE),6,'0'),'ddMMyy'),'yyyy-mm-dd') as START_DATE_CHAR, 
+     to_char(to_date(lpad(to_char(dt.TABLE_LAST_INT_DEBIT_DDMMYY),6,'0'),'ddMMyy'),'yyyy-mm-dd') as IDD_CHAR,
+     to_char(to_date(lpad(to_char(LOAN_MATURITY),8,'0'),'ddMMyyyy'),'yyyy-mm-dd') as END_DATE_CHAR 
+   from
+    cms.lmcref mcr,
+    cms.lclink lc,
+    cms.LLOAN ln,
+    cms.LLNKNUM lk,
+    cms.VIEW_LTABLE_LAST_DEBIT_DATE dt 
+   where 
+     dt.TABLE_TERRITORY_CODE = ln.LOAN_COUNTRY
+     and ln.loan_num = lc.clink_secondary
+     and mcr.mcref_reference = lc.clink_primary
+     AND lk.lnknum_internal_ref_field = mcr.mcref_reference
+   ) a 
+where 
+a.LOAN_COUNTRY = :countryCode 
+and a.LOAN_STATUS in (0,8,1,3) 
+and a.START_DATE &lt; a.IDD 
+and a.IDD &lt; a.END_DATE</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>LNKNUM_EXTERNAL_REF_FIELD</con:property><con:property>LOAN_NUM</con:property><con:property>IDD_CHAR</con:property><con:property>LOAN_STATUS</con:property><con:property>LOAN_TYPE</con:property><con:property>LOAN_TERM</con:property><con:property>LOAN_REMAIN_MTH</con:property><con:property>START_DATE_CHAR</con:property><con:property>END_DATE_CHAR</con:property><con:property>LOAN_BILLING_DAY</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="DB_LMCLOAN" id="8c20f7d1-de6f-4f79-b79d-998bbd44c978"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.teststeps.datasource.DataSourceContainer@prepared-properties">&lt;xml-fragment/></con:setting></con:settings><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBCALMS2CMS( Default environment )</Connection><query>  select 
+  lk.LNKNUM_EXTERNAL_REF_FIELD,
+  lk.LNKNUM_INTERNAL_REF_FIELD,
+  to_char(to_date(lpad(to_char(ln.MCLOAN_START_DATE),6,'0'),'ddMMyy'),'yyyy-mm-dd') as START_DATE_CHAR, 
+  to_char(to_date(lpad(to_char(MCLOAN_MATURITY),8,'0'),'ddMMyyyy'),'yyyy-mm-dd') as END_DATE_CHAR,
+  ln.*
+from
+  CMS.LLNKNUM lk,
+  CMS.LMCLOAN ln
+where 
+  lk.LNKNUM_INTERNAL_REF_FIELD = ln.MCLOAN_MCR_REFERENCE and 
+  ln.MCLOAN_STATUS in (0,8,1,3)</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>LNKNUM_EXTERNAL_REF_FIELD</con:property><con:property>LNKNUM_INTERNAL_REF_FIELD</con:property><con:property>MCLOAN_MCR_REFERENCE</con:property><con:property>START_DATE_CHAR</con:property><con:property>END_DATE_CHAR</con:property><con:property>MCLOAN_STATUS</con:property><con:property>MCLOAN_TYPE</con:property><con:property>MCLOAN_TERM</con:property><con:property>MCLOAN_REMAIN_MTH</con:property><con:property>MCLOAN_BILLING_DAY</con:property><con:completeLastOperation>true</con:completeLastOperation><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="groovy" name="Set externalContractNumber" id="6c640090-9ed3-4311-89a3-45aad23a2cf8"><con:settings/><con:config><script>def DataExcel_testId = context.expand('${DataExcel#testId}')	
+def DataExcel_externalContractNumber = context.expand('${DataExcel#externalContractNumber}')
+def DB_LLOAN_LNKNUM_EXTERNAL_REF_FIELD = context.expand('${DB_LLOAN#LNKNUM_EXTERNAL_REF_FIELD}')
+def DB_LLOAN_LOAN_NUM = context.expand('${DB_LLOAN#LOAN_NUM}')
+def DB_LMCLOAN_LNKNUM_EXTERNAL_REF_FIELD = context.expand('${DB_LMCLOAN#LNKNUM_EXTERNAL_REF_FIELD}')
+def DB_LMCLOAN_MCLOAN_MCR_REFERENCE = context.expand('${DB_LMCLOAN#MCLOAN_MCR_REFERENCE}')
+
+def externalContractNumber = ''
+
+if(DataExcel_testId == ('1')){
+	externalContractNumber = DB_LLOAN_LNKNUM_EXTERNAL_REF_FIELD
+	contractNumber = DB_LLOAN_LOAN_NUM
+}
+if(DataExcel_testId == ('4')){
+	externalContractNumber = DataExcel_externalContractNumber
+	contractNumber = DataExcel_externalContractNumber
+}
+else{
+	externalContractNumber = DB_LMCLOAN_LNKNUM_EXTERNAL_REF_FIELD
+	contractNumber = DB_LMCLOAN_MCLOAN_MCR_REFERENCE
+}
+
+testRunner.testCase.setPropertyValue('externalContractNumber', externalContractNumber)
+testRunner.testCase.setPropertyValue('contractNumber', contractNumber)
+//testRunner.testCase.testSuite.setPropertyValue("contract", loan_num)
+log.info  "  **************************************"
+log.info "External Contract No: "+externalContractNumber
+log.info "Contract No: "+contractNumber
+log.info  "  **************************************"
+</script></con:config></con:testStep><con:testStep type="request" name="getContractDetails" id="44eb9bd4-825f-48a6-9bb4-761ab4744c95"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>getContractDetails</con:operation><con:request name="getContractDetails" id="c0b45575-a243-45d3-ba31-6b31727e840a"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvbmwst01:28080/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:con="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <con:getContractDetails>
+         <con:contractNumber>
+            <com:externalContractNumber>${#TestCase#externalContractNumber}</com:externalContractNumber>
+         </con:contractNumber>
+         <con:applicationInfo>
+            <com:securityAudit>
+               <com:messageId>1</com:messageId>
+               <com:timestamp>2018-12-07T00:00:00.000+11:00</com:timestamp>
+               <com:clientAppId>${DataExcel#clientAppId}</com:clientAppId>
+               <com:userId>${DataExcel#auditUserId}</com:userId>
+               <com:clientLanguage>en_GB</com:clientLanguage>
+            </com:securityAudit>
+         </con:applicationInfo>
+      </con:getContractDetails>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="1b4dd031-15c4-4fc7-a1d7-1408de3465f7"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Basic</con:authProfile><con:username>admin</con:username><con:password>admin</con:password></con:entry><con:entry environmentId="ae2f71ac-0de0-4b69-ac73-8630e61aee18"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="7792e284-02d0-4501-839c-ba38dd38fe82"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ef9342eb-b9f6-4d15-9a5d-b10e29e6b414"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="7ce2dd57-b06d-43ee-893a-f100e16b6d8a"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1670a6ae-c79c-4fc9-85c4-4f98d5bf6023"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="cf0a8ca1-6d4b-4e39-b4ca-03f6807018e7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="groovy" name="Validation" id="5c97fa31-29a8-453a-930d-6cd03052c565"><con:settings/><con:config><script><![CDATA[import com.eviware.soapui.model.testsuite.TestRunner.Status
+import com.eviware.soapui.support.XmlHolder
+
+//DataExcel
+def DataExcel_testId = context.expand('${DataExcel#testId}')	
+def DataExcel_testName = context.expand('${DataExcel#testName}')	
+def DataExcel_expectedResponseStatus = context.expand('${DataExcel#expectedResponseStatus}')
+def DataExcel_expectedErrorCode = context.expand('${DataExcel#expectedErrorCode}')
+def DataExcel_expectedErrorDescription = context.expand('${DataExcel#expectedErrorDescription}')
+def DataExcel_expectedFaultCode = context.expand('${DataExcel#expectedFaultCode}')
+def DataExcel_expectedFaultString = context.expand('${DataExcel#expectedFaultString}')
+def DataExcel_updateTimestamp = context.expand('${DataExcel#updateTimestamp}')	
+def DataExcel_countryCode = context.expand('${DataExcel#countryCode}')	
+def DataExcel_messageId = context.expand('${DataExcel#messageId}')	
+def DataExcel_timestamp = context.expand('${DataExcel#timestamp}')	
+def DataExcel_clientAppId = context.expand('${DataExcel#clientAppId}')	
+def DataExcel_auditUserId = context.expand('${DataExcel#auditUserId}')	
+def DataExcel_clientLanguage = context.expand('${DataExcel#clientLanguage}')
+
+//getContractDetails
+def responseXML = context.expand('${getContractDetails#Response}')
+def response = new XmlHolder(responseXML)
+response.namespaces["ns13"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Invoice" 
+response.namespaces["ns12"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Subsidy"  
+response.namespaces["ns11"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Asset"  
+response.namespaces["ns10"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty"  
+response.namespaces["ns9"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Fee"
+response.namespaces["ns8"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CustomerExposure"  
+response.namespaces["ns7"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/User" 
+response.namespaces["ns6"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/InvoicePayment" 
+response.namespaces["ns5"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract" 
+response.namespaces["ns4"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledAvtivation" 
+response.namespaces["ns3"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ErrorTypes" 
+response.namespaces["ns2"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes" 
+response.namespaces["ns1"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/AssetUsage" 
+
+//DB_LLOAN
+def DB_LLOAN_LNKNUM_EXTERNAL_REF_FIELD = context.expand('${DB_LLOAN#LNKNUM_EXTERNAL_REF_FIELD}')
+def DB_LLOAN_LOAN_NUM = context.expand('${DB_LLOAN#LOAN_NUM}')
+def DB_LLOAN_IDD_CHAR = context.expand('${DB_LLOAN#IDD_CHAR}')
+def DB_LLOAN_LOAN_STATUS = context.expand('${DB_LLOAN#LOAN_STATUS}')
+def DB_LLOAN_LOAN_TYPE = context.expand('${DB_LLOAN#LOAN_TYPE}')
+def DB_LLOAN_LOAN_TERM = context.expand('${DB_LLOAN#LOAN_TERM}')
+def DB_LLOAN_LOAN_REMAIN_MTH = context.expand('${DB_LLOAN#LOAN_REMAIN_MTH}')
+def DB_LLOAN_START_DATE_CHAR = context.expand('${DB_LLOAN#START_DATE_CHAR}')
+def DB_LLOAN_END_DATE_CHAR = context.expand('${DB_LLOAN#END_DATE_CHAR}')
+def DB_LLOAN_LOAN_BILLING_DAY = context.expand('${DB_LLOAN#LOAN_BILLING_DAY}')
+
+//DB_LMCLOAN
+def DB_LMCLOAN_LNKNUM_EXTERNAL_REF_FIELD = context.expand('${DB_LMCLOAN#LNKNUM_EXTERNAL_REF_FIELD}')
+def DB_LMCLOAN_MCLOAN_MCR_REFERENCE = context.expand('${DB_LMCLOAN#MCLOAN_MCR_REFERENCE}')
+def DB_LMCLOAN_MCLOAN_STATUS = context.expand('${DB_LMCLOAN#MCLOAN_STATUS}')
+def DB_LMCLOAN_MCLOAN_TYPE = context.expand('${DB_LMCLOAN#MCLOAN_TYPE}')
+def DB_LMCLOAN_MCLOAN_TERM = context.expand('${DB_LMCLOAN#MCLOAN_TERM}')
+def DB_LMCLOAN_MCLOAN_REMAIN_MTH = context.expand('${DB_LMCLOAN#MCLOAN_REMAIN_MTH}')
+def DB_LMCLOAN_START_DATE_CHAR = context.expand('${DB_LMCLOAN#START_DATE_CHAR}')
+def DB_LMCLOAN_END_DATE_CHAR = context.expand('${DB_LMCLOAN#END_DATE_CHAR}')
+def DB_LMCLOAN_MCLOAN_BILLING_DAY = context.expand('${DB_LMCLOAN#MCLOAN_BILLING_DAY}')
+
+//externalContractNumber
+def externalContractNumber = context.expand('${#TestCase#externalContractNumber}')
+
+//start test
+log.info('****** start test' + DataExcel_testId + ' ******') 
+log.info('****** ' + DataExcel_testName + ' ******') 
+
+def testResult = 'PASS' 
+
+if(DataExcel_expectedResponseStatus == 'true'){
+
+	//Validate <contractNumber>
+	if(response.getNodeValue('//ns5:externalContractNumber') == externalContractNumber){
+		log.info('contractNumber as expected')
+	}
+	else{
+		testResult = 'FAIL'
+		log.error('contractNumber not as expected') 
+		log.error('expected contractNumber: ' + externalContractNumber)
+		log.error('actual contractNumber: ' + response.getNodeValue('//ns5:contractDetails//ns5:contractNumber'))
+		log.error('<faultCode>: ' + response.getNodeValue('//faultCode'))
+		log.error('<faultString>: ' + response.getNodeValue('//faultString'))
+	}
+
+	//Validate <isMergedContract>
+	def expected_isMergedContract = ''
+	if(DataExcel_testId == ('1' || '4')){
+		expected_isMergedContract = 'false'
+	}
+	else{
+		expected_isMergedContract = 'true'
+	}
+	def actual_isMergedContract = response.getNodeValue('//ns5:isMergedContract')
+	if(actual_isMergedContract == expected_isMergedContract){
+		log.info('<isMergedContract> as expected: ' + actual_isMergedContract)
+	}
+	else{
+		log.error('<isMergedContract> not as expected')
+		log.error('expected <isMergedContract>: ' + expected_isMergedContract)
+		log.error('actual <isMergedContract>: ' + actual_isMergedContract)
+	}	
+
+	//Validate <product>/<code>
+	def expected_productCode = ''
+	if(DataExcel_testId == ('1' || '4')){
+		expected_productCode = DB_LLOAN_LOAN_TYPE	
+	}
+	else{
+		expected_productCode = DB_LMCLOAN_MCLOAN_TYPE
+	}
+	def actual_productCode = response.getNodeValue('//ns5:product/ns2:code')
+	if(actual_productCode == expected_productCode){
+		log.info('<product>/<code> as expected: ' + actual_productCode)
+	}
+	else{
+		log.error('<product>/<code> not as expected')
+		log.error('expected <product>/<code>: ' + expected_productCode)
+		log.error('actual <product>/<code>: ' + actual_productCode)
+	}
+
+	//Validate <status>/<code>
+	def expected_statusCode = ''
+	if(DataExcel_testId == ('1' || '4')){
+		expected_statusCode = DB_LLOAN_LOAN_STATUS
+	}
+	else{
+		expected_statusCode = DB_LMCLOAN_MCLOAN_STATUS
+	}
+	def actual_statusCode = response.getNodeValue('//ns5:status/ns2:code')
+	if(actual_statusCode == expected_statusCode){
+		log.info('<status>/<code> as expected: ' + actual_statusCode)
+	}
+	else{
+		log.error('<status>/<code> not as expected')
+		log.error('expected <status>/<code>: ' + expected_statusCode)
+		log.error('actual <status>/<code>: ' + actual_statusCode)
+	}
+
+	//Validate <term>
+	def expected_term = ''
+	if(DataExcel_testId == ('1' || '4')){
+		expected_term = DB_LLOAN_LOAN_TERM
+	}
+	else{
+		expected_term = DB_LMCLOAN_MCLOAN_TERM
+	}
+	def actual_term = response.getNodeValue('//ns5:term')
+	if(actual_term == expected_term){
+		log.info('<term> as expected: ' + actual_term)
+	}
+	else{
+		log.error('<term> not as expected')
+		log.error('expected <term>: ' + expected_term)
+		log.error('actual <term>: ' + actual_term)
+	}
+
+	//Validate <remainingTerm>
+	def expected_remainingTerm = DB_LLOAN_LOAN_REMAIN_MTH
+	if(DataExcel_testId == ('1' || '4')){
+		expected_remainingTerm = DB_LLOAN_LOAN_REMAIN_MTH
+	}
+	else{
+		expected_remainingTerm = DB_LMCLOAN_MCLOAN_REMAIN_MTH
+	}
+	def actual_remainingTerm = response.getNodeValue('//ns5:remainingTerm')
+	if(actual_remainingTerm == expected_remainingTerm){
+		log.info('<remainingTerm> as expected: ' + actual_remainingTerm)
+	}
+	else{
+		log.error('<remainingTerm> not as expected')
+		log.error('expected <remainingTerm>: ' + expected_remainingTerm)
+		log.error('actual <remainingTerm>: ' + actual_remainingTerm)
+	}
+
+	//Validate <startDate>
+	def expected_startDate = ''
+	if(DataExcel_testId == ('1' || '4')){
+		expected_startDate = DB_LLOAN_START_DATE_CHAR
+	}
+	else{
+		expected_startDate = DB_LMCLOAN_START_DATE_CHAR
+	}
+	def actual_startDate = response.getNodeValue('//ns5:startDate')
+	if(actual_startDate == expected_startDate){
+		log.info('<startDate> as expected: ' + actual_startDate)
+	}
+	else{
+		log.error('<startDate> not as expected')
+		log.error('expected <startDate>: ' + expected_startDate)
+		log.error('actual <startDate>: ' + actual_startDate)
+	}
+
+	//Validate <maturityDate>
+	def expected_maturityDate = ''
+	if(DataExcel_testId == ('1' || '4')){
+		expected_maturityDate = DB_LLOAN_END_DATE_CHAR
+	}
+	else{
+		expected_maturityDate = DB_LMCLOAN_END_DATE_CHAR
+	}
+	def actual_maturityDate = response.getNodeValue('//ns5:maturityDate')
+	if(actual_maturityDate == expected_maturityDate){
+		log.info('<maturityDate> as expected: ' + actual_maturityDate)
+	}
+	else{
+		log.error('<maturityDate> not as expected')
+		log.error('expected <maturityDate>: ' + expected_maturityDate)
+		log.error('actual <maturityDate>: ' + actual_maturityDate)
+	}
+
+	//Validate <billingDay>
+	def expected_billingDay = ''
+	if(DataExcel_testId == ('1' || '4')){
+		expected_billingDay = DB_LLOAN_LOAN_BILLING_DAY
+	}
+	else{
+		expected_billingDay = DB_LMCLOAN_MCLOAN_BILLING_DAY
+	}
+	def actual_billingDay = response.getNodeValue('//ns5:billingDay')
+	if(actual_billingDay == expected_billingDay){
+		log.info('<billingDay> as expected: ' + actual_billingDay)
+	}
+	else{
+		log.error('<billingDay> not as expected')
+		log.error('expected <billingDay>: ' + expected_billingDay)
+		log.error('actual <billingDay>: ' + actual_billingDay)
+	}
+}
+
+if(DataExcel_expectedResponseStatus == 'false'){
+
+	//Validate errorCode
+	if(response.getNodeValue('//ns3:errorCode')== DataExcel_expectedErrorCode){
+		log.info('<errorCode> found as expected') 
+	}
+	else{
+		log.error('<errorCode> not as expected') 
+	}
+
+	//Validate faultString
+	if (response.getNodeValue('//faultstring')== DataExcel_expectedFaultString){
+		log.info('<faultstring> found as expected') 
+	}
+	else{
+		log.error('<faultstring> not as expected') 
+	}
+}
+
+testRunner.testCase.testSuite.setPropertyValue('TestResult', testResult)
+
+]]></script></con:config></con:testStep><con:properties><con:property><con:name>externalContractNumber</con:name><con:value>1100036003</con:value></con:property><con:property><con:name>contractNumber</con:name><con:value>100000022</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>7e3cb922-eafa-44de-8534-bcb81fef43a1</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>3a5e6f2d-24b2-407c-804f-91e03bdea2b6</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="ae2f71ac-0de0-4b69-ac73-8630e61aee18"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="7792e284-02d0-4501-839c-ba38dd38fe82"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ef9342eb-b9f6-4d15-9a5d-b10e29e6b414"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="7ce2dd57-b06d-43ee-893a-f100e16b6d8a"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1670a6ae-c79c-4fc9-85c4-4f98d5bf6023"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="cf0a8ca1-6d4b-4e39-b4ca-03f6807018e7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>

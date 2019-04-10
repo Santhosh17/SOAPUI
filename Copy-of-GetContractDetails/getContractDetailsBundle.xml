@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="50dba5cb-8785-4247-915a-f83404d86dee" discardOkResults="true" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="getContractDetailsBundle" searchProperties="true" timeout="0" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="b3bf5f90-7c12-4a0f-b061-2c2ae1001a5afileName">getContractDetailsContract</con:setting><con:setting id="e3261d5a-e1aa-4f57-9e94-fcfbcf4baf09fileName">getContractDetailsMCR</con:setting><con:setting id="a9bf9092-a0c9-4a7f-8473-370d0b36e2b8fileName">getContractDetailsBundle</con:setting><con:setting id="d6b4cc24-d03e-44cb-a103-741b47211550fileName">getContractDetailsBundle</con:setting><con:setting id="50dba5cb-8785-4247-915a-f83404d86deefileName">getContractDetailsBundle</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="Set ExcelData Row" id="30e67216-829f-4a1b-9e6c-1f1a4aae6172"><con:settings/><con:config><script>testRunner.testCase.testSuite.setPropertyValue("TestStartCell", "A3")</script></con:config></con:testStep><con:testStep type="calltestcase" name="getContractDetails" id="df026100-53b1-451e-9b7c-60b5834ce707"><con:settings/><con:config xsi:type="con:RunTestCaseStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:targetTestCase>3e0e4305-1cc0-40a4-b6fe-2faf4738f769</con:targetTestCase><con:properties><con:property><con:name>externalContractNumber</con:name></con:property><con:property><con:name>contractNumber</con:name></con:property></con:properties><con:returnProperties/><con:runMode>PARALLELL</con:runMode></con:config></con:testStep><con:testStep type="assertionteststep" name="Assert" id="ab0b6de2-7570-4637-9824-5f1221497b85"><con:settings/><con:config xsi:type="con:AssertionTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:entry><con:id>ff1d13df-253d-4180-b333-9331bd6d4c7c</con:id><con:isGroup>false</con:isGroup><con:sourceId>f980c9a4-d011-4090-ad9b-c29a555141c1</con:sourceId><con:propertyName>TestResult</con:propertyName><con:assertion type="Simple Equals" name="Equals" id="209b2326-57d3-422a-b38d-bd376de54d6c"><con:configuration><patternText>PASS</patternText><caseSensitive>true</caseSensitive></con:configuration></con:assertion></con:entry></con:config></con:testStep><con:testStep type="request" name="updatecontractDetails" id="57bf9d18-8507-4604-8094-a4d434e03693" disabled="true"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>updateContractDetails</con:operation><con:request name="updatecontractDetails" id="571f1806-5649-4ff6-b3ac-a1b415c9a1ce"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://mkvsudfsdock11:81/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:con="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <con:updateContractDetails>
+         <con:updateContractDetailsRequest>
+            <con:contractNumber>
+               <!--Optional:-->
+               
+            </con:contractNumber>
+            <con:contractUpdateDetails>
+               <!--Optional:-->
+               <con:customerIntention>
+                  <!--Optional:-->
+                  <con:code>LTABLE211</con:code>
+               </con:customerIntention>
+               <!--Optional:-->
+               <con:hypotheticalFinalRV>M</con:hypotheticalFinalRV>
+               <!--Optional:-->
+               <con:externalContractStatus>
+                  <!--Optional:-->
+                  <con:code>LTABLE 379</con:code>
+               </con:externalContractStatus>
+            </con:contractUpdateDetails>
+         </con:updateContractDetailsRequest>
+         <con:applicationInfo>
+            <!--Optional:-->
+            <com:tenantInfo>
+               <com:tenantCode>${#Project#countryCode}</com:tenantCode>
+            </com:tenantInfo>
+            <!--Optional:-->
+            <com:securityAudit>
+               <com:messageId>?</com:messageId>
+               <com:timestamp>?</com:timestamp>
+               <com:clientAppId>?</com:clientAppId>
+               <com:userId>?</com:userId>
+               <!--Optional:-->
+               <com:authorisingUserId>?</com:authorisingUserId>
+               <com:clientLanguage>?</com:clientLanguage>
+            </com:securityAudit>
+         </con:applicationInfo>
+      </con:updateContractDetails>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="32cb2d24-6408-46da-881e-44ba2c0f6fbd"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:properties/><con:reportParameters/><con:breakPoints><con:testStepId>99d02505-1632-4fa6-a3b9-c22f35a1e5d2</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="ae2f71ac-0de0-4b69-ac73-8630e61aee18"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="7792e284-02d0-4501-839c-ba38dd38fe82"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ef9342eb-b9f6-4d15-9a5d-b10e29e6b414"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="7ce2dd57-b06d-43ee-893a-f100e16b6d8a"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1670a6ae-c79c-4fc9-85c4-4f98d5bf6023"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="cf0a8ca1-6d4b-4e39-b4ca-03f6807018e7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>

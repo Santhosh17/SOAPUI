@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="e6686c9f-2c0f-41b4-b741-ef4c5249ba46" discardOkResults="false" failOnError="false" failTestCaseOnErrors="true" keepSession="false" name="CMS-8323-UpdateThirdPartyAPI" searchProperties="true" timeout="0" maxResults="5000" wsrmEnabled="false" wsrmVersion="1.0" wsrmAckTo="" amfAuthorisation="false" amfEndpoint="" amfLogin="" amfPassword="" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="8e730d57-592d-437f-8a17-617f7e5af47ffileName">UpdateThirdPartyAPI</con:setting><con:setting id="2272485c-2e57-467f-a3d8-70cff6949022fileName">CMS-8323-UpdateThirdPartyAPI</con:setting><con:setting id="e6686c9f-2c0f-41b4-b741-ef4c5249ba46fileName">CMS-8323-UpdateThirdPartyAPI</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="Information" id="9eea6605-40d2-43b5-b2b4-728a571a6406"><con:settings/><con:config><script>//Update Third Party - Dealer run in BMW Test03
+
+// ********************************validations **************************************
+
+// responseTenantCode == dbTenantCode 
+// requestBPMID == db_l_SRCE_CODE  
+// requestContactPerson == db_acct_contact_person 
+// requestCustomerStatus == db_acct_customer_status 
+//requestTimeStamp == responseTimeStamp 
+// requestBaselClassCode == db_acct_basel_class_code 
+//requestPreviousName==db_acct_previous_name 
+// requestDriversLicense == db_acct_drivers_lic 
+// requestCustomerStatus == db_acct_customer_status 
+// requestSuffix == db_acct_suffix_alpha 
+//requestSuffixCode == db_acct_Suffix 
+//requestMaidenName == db_acct_maiden_name 
+// requestPrivacyConsent == db_acct_privacy_consent
+// requestMotabilityFlag == db_acct_motability_flag
+// requestIsNegativeInfo == db_acct_neg_info
+// requestDeceased == db_acct_Deceased_Flag 
+//requestDirectMarketingPost == db_acct_marketting 
+// requestPrivacyConsent == db_acct_privacy_consent
+// requestCountryResidence == db_acct_ctry_Residence
+//***********************************************************************************************************
+
+//Table 1- Company, 2- Region, 3- Branch, 13- Loan Source Group, 14- loan Source Company, 138- Tenancy, 290- Partner code, 177- Account Customer Status, 325- Risk Classification Code has the details 
+
+//Select distinct l.SRCE_CODE as l_SRCE_CODE, l.SRCE_TERRITORY as l_SRCE_TERRITORY, l.SRCE_TYPE as l_SRCE_TYPE,
+//l.srce_group as l_srce_group, l.srce_company as l_srce_company, l.srce_reporting_region as l_srce_reporting_region,
+//l.srce_reporting_branch as l_srce_reporting_branch, l.srce_risk_classification_code as risk_classification_code, lm.acct_contact_person as acct_contact_person,
+//lm.acct_grp_consldn_code as acct_grp_consldn_code ,lm.acct_customer_status as acct_customer_status
+//From LSRCE l, lacmstr lm
+//Where l.SRCE_CODE Like '%1' And l.SRCE_TERRITORY In ('49')
+//order by l.SRCE_CODE desc
+
+//select  country_cms, country_iso, country_code from lctry where country_code='49'
+
+////select acct_basel_class_code, acct_previous_name, acct_drivers_lic, acct_privacy_consent, acct_customer_status, acct_Deceased_Flag, acct_neg_info, acct_suffix_alpha, acct_Suffix, acct_maiden_name,
+//acct_motability_flag, acct_ctry_Residence, acct_lit_request, acct_marketting from lacmstr where acct_bpmid='25'</script></con:config></con:testStep><con:testStep type="groovy" name="Set ExcelData Row" id="6d032cb5-3ea1-430e-8185-4312610942ac"><con:settings/><con:config><script>testRunner.testCase.testSuite.setPropertyValue("TestStartCell", "A3")
+testCaseName = testRunner.testCase.getName()
+testRunner.testCase.testSuite.setPropertyValue("TestCaseName", testCaseName)</script></con:config></con:testStep><con:testStep type="calltestcase" name="Run TestCase" id="a8d5d4a5-c604-4c6d-9222-6193a2ddc9d6"><con:settings/><con:config xsi:type="con:RunTestCaseStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:targetTestCase>e1e7d4f0-8d6d-4209-87f5-0110d919b3bd</con:targetTestCase><con:properties><con:property><con:name>ACCT_BPMID</con:name><con:value>2601</con:value></con:property><con:property><con:name>TimeStamp</con:name><con:value>2018-01-17T09:43:13</con:value></con:property></con:properties><con:returnProperties><con:entry>ACCT_BPMID</con:entry><con:entry>TimeStamp</con:entry></con:returnProperties><con:runMode>PARALLELL</con:runMode></con:config></con:testStep><con:testStep type="assertionteststep" name="Assertion" id="b9f6fff1-e065-4582-a8e6-5a2dfcb35029"><con:settings/><con:config xsi:type="con:AssertionTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:entry><con:id>709df714-9fb8-4b7e-9cc7-5fbd7e3050c9</con:id><con:isGroup>false</con:isGroup><con:sourceId>3e2dbc68-a1b1-429b-8957-e4999cb5bc2d</con:sourceId><con:propertyName>TestResult</con:propertyName><con:assertion type="Simple Equals" name="Equals" id="de11f4fa-e677-4a07-8437-aa7a79a8d410"><con:configuration><patternText>PASS</patternText><caseSensitive>true</caseSensitive></con:configuration></con:assertion></con:entry></con:config></con:testStep><con:properties><con:property><con:name>ACCT_BPMID</con:name><con:value>25301</con:value></con:property><con:property><con:name>TimeStamp</con:name><con:value>2017-08-18T17:25:18</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>0e50777a-f101-4a06-98ad-0ac99e5c6432</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>dacf0559-223d-40ca-983e-8e5b22b97c72</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>4859751e-3ad5-4a02-aafc-0b39b3a7e9f9</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>683ac78c-f2db-4ba4-a610-7acccc6072dc</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>368e37d6-0479-450b-8713-2b30c816f3db</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>

@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="ebe354b2-eba6-4555-ba1f-718370fe53ed" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="AutomatedCreateContractPaymentReversal - MCR" searchProperties="true" maxResults="0" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="c9804e52-5a33-4a28-8769-03f8a192c468fileName">AutomatedCreateContractPaymentReversal---MCR</con:setting><con:setting id="ebe354b2-eba6-4555-ba1f-718370fe53edfileName">AutomatedCreateContractPaymentReversal---MCR</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="Groovy Script" id="61b0e613-8373-42d9-8f70-69a321227e5a"><con:settings/><con:config><script>log.info " createContractReversal for MCR fails as the MCR view does not build automatically, this should pass when the trigger function to rebuild MCR is implemented"</script></con:config></con:testStep><con:testStep type="datasource" name="Data From Excel" id="7312ca48-42e7-459f-9094-1fbd6c42c8ab"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Excel"><con:configuration><file>A:/createContractPaymentReversal.xlsx</file><worksheet>${#Project#Worksheet}</worksheet><cell>A2</cell><ignoreEmpty>false</ignoreEmpty><evaluateFormulas>false</evaluateFormulas></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>row</con:property><con:property>expectedAPIOutput</con:property><con:property>scenario</con:property><con:property>suspense</con:property><con:property>type</con:property><con:property>contractNumber</con:property><con:property>totalTransactionAmount</con:property><con:property>effectiveDate</con:property><con:property>effectiveDateSusp</con:property><con:property>invoiceNumber</con:property><con:property>transactionNumber</con:property><con:property>dishonourReasonCode</con:property><con:property>territorycodeValue</con:property><con:property>territoryCode</con:property><con:property>messageId</con:property><con:property>timestamp</con:property><con:property>clientAppId</con:property><con:property>userId</con:property><con:property>clientLanguage</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="Data from DB" id="9e8d58b9-9ccf-47bf-a850-553b35fad53f"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select * from (
+SELECT SUM(mcuinvoice0_.loninv_due_gross) as due, SUM(mcuinvoice0_.loninv_paid_gross) AS paid, MCUINVOICE0_.LONINV_LOAN, mcuinvoice0_.loninv_invoice_no, lc.clink_primary
+FROM CMS_SCHEMA.LLONINV mcuinvoice0_, CMS_SCHEMA.LCLINK lc, LLOAN l  
+WHERE (mcuinvoice0_.loninv_status IN (0))
+and lc.clink_primary_is_mcref = 'Y' 
+and lc.clink_secondary = MCUINVOICE0_.LONINV_LOAN
+and lc.clink_secondary = l.loan_num
+and l.loan_status not in (2,4,9)
+group by MCUINVOICE0_.LONINV_LOAN, mcuinvoice0_.loninv_invoice_no, lc.clink_primary)
+where paid &lt; due 
+and rownum = 1 </query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>DUE</con:property><con:property>PAID</con:property><con:property>LONINV_LOAN</con:property><con:property>LONINV_INVOICE_NO</con:property><con:property>CLINK_PRIMARY</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="interestDebitDate" id="13a0ac33-f12b-47fb-9df9-b0440f51ae7d"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select to_char(to_date(lpad(to_char(TABLE_LAST_INT_DEBIT_DDMMYY),6,'0'),'ddMMyy'),'YYYY-MM-DD') as INTEREST_DEBIT_DATE  from  View_LTABLE_LAST_DEBIT_DATE where TABLE_TERRITORY_CODE =${Data From Excel#territorycodeValue}</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>INTEREST_DEBIT_DATE</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="groovy" name="Data script" id="c8c0667f-22b5-4258-8b1e-81d604b9e413"><con:settings/><con:config><script>// Data from Database
+//def lONINV_LOAN = context.expand( '${Data from DB#LONINV_LOAN}' )
+def lONINV_LOAN = context.expand( '${Data from DB#CLINK_PRIMARY}' )
+
+def lONINV_INVOICE_NO = context.expand( '${Data from DB#LONINV_INVOICE_NO}' )
+def dUE = context.expand( '${Data from DB#DUE}' )
+def pAID = context.expand( '${Data from DB#PAID}' )
+def userId = context.expand( '${Data From Excel#userId}' )
+def iNTEREST_DEBIT_DATE = context.expand( '${interestDebitDate#INTEREST_DEBIT_DATE}' )
+
+testRunner.testCase.setPropertyValue( "InvoiceNumberpayment", lONINV_INVOICE_NO )
+
+// Data from Excel
+def contractNumber = context.expand( '${Data From Excel#contractNumber}' )
+def invoiceNumber = context.expand( '${Data From Excel#invoiceNumber}' )
+def totalTransactionAmount = context.expand( '${Data From Excel#totalTransactionAmount}' )
+def scenario = context.expand( '${Data From Excel#scenario}' )
+def transactionNumber = context.expand( '${#TestCase#TransactionNumber}' )
+def effectiveDate = context.expand( '${Data From Excel#effectiveDate}' )
+
+
+log.info "contractNumber"+contractNumber
+
+if (contractNumber!= ""){
+	lONINV_LOAN =  contractNumber
+	log.info ""+lONINV_LOAN
+}
+
+if (invoiceNumber!=""){
+	lONINV_INVOICE_NO = invoiceNumber
+}
+
+if (totalTransactionAmount == ""){
+	totalTransactionAmount = dUE.toBigDecimal() - pAID.toBigDecimal()
+}
+
+def totalTransactionAmountPay = dUE.toBigDecimal() - pAID.toBigDecimal()
+
+testRunner.testCase.setPropertyValue( "ContractNumber", lONINV_LOAN )
+testRunner.testCase.setPropertyValue( "InvoiceNumber", lONINV_INVOICE_NO )
+testRunner.testCase.setPropertyValue( "TransactionAmount", totalTransactionAmount.toString() )
+testRunner.testCase.setPropertyValue( "TransactionAmountPayment", totalTransactionAmountPay.toString() )
+testRunner.testCase.setPropertyValue( "EffectiveDate", iNTEREST_DEBIT_DATE )</script></con:config></con:testStep><con:testStep type="request" name="createContractPayment" id="8af35dd9-1edd-4278-a4f3-133da0f2ee07"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>createContractPayment</con:operation><con:request name="createContractPayment" id="fa3f11bd-6155-4fb7-8267-c306d8dce3f2" defaultOutgoingWss="" defaultIncomingWss="" outgoingWss="" incomingWss=""><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvdfsdev01/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:con="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <con:createContractPayment>
+         <con:externalContractNumber>${#TestCase#ContractNumber}</con:externalContractNumber><con:totalTransactionAmount>${#TestCase#TransactionAmountPayment}</con:totalTransactionAmount>
+         <con:effectiveDate>${#TestCase#EffectiveDate}</con:effectiveDate>
+         <con:transactionType>Payment</con:transactionType>
+         <con:paymentType>1</con:paymentType>
+         <con:paymentDescription>Auto payment Description</con:paymentDescription><con:referenceNumber>1234</con:referenceNumber><con:invoiceNumber>${#TestCase#InvoiceNumberpayment}</con:invoiceNumber><con:territoryCode>${Data From Excel#territoryCode}</con:territoryCode>
+         <con:audit>
+            <com:messageId>${Data From Excel#messageId}</com:messageId>
+            <com:timestamp>${Data From Excel#timestamp}</com:timestamp>
+            <com:clientAppId>${Data From Excel#clientAppId}</com:clientAppId>
+            <com:userId>${Data From Excel#userId}</com:userId>
+            <com:clientLanguage>${Data From Excel#clientLanguage}</com:clientLanguage>
+         </con:audit>
+      </con:createContractPayment>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="6571bf8b-2f7e-401a-9136-57787cb5368f"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="ba5f7dc0-e8db-409c-b494-16037c932774"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4afb3ac9-5034-4c9c-8880-fc76dd54bdc6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3413a0c0-76cc-4f43-9482-3efe9e972e81"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a32f4f82-e311-4f8a-ba4f-accdfcbdadcf"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1d61f86f-f9a2-4364-a52c-3d321cfb1a28"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="b796eeee-b2bf-40b2-9d2a-9d00c30d0dab"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="263f20f9-2653-4f33-8d66-1694d38c9931"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1f7152d8-1be5-485f-bc97-18cbc1aa4ba8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="3b0f4fd5-8397-4067-b032-ecfa22cfa5ff"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="02782eb4-ecaf-43ac-8f0c-0a1eeebbdd7a"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="15dff999-92e5-4da2-8a61-2a9da4ce2988"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="delay" name="Delay" id="00f2e44c-b68d-4c20-801b-25f97c5669f6"><con:settings/><con:config><delay>10000</delay></con:config></con:testStep><con:testStep type="request" name="getContractDetails to build MCR View" id="fe5e359f-6f6c-4d5d-8c24-b5746017f823"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>getContractDetails</con:operation><con:request name="getContractDetails to build MCR View" id="b6763ef7-d990-4c94-b6a3-2c4511277e32" defaultOutgoingWss="" defaultIncomingWss="" outgoingWss="" incomingWss=""><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvdfsdev01/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:con="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <con:getContractDetails>
+         <con:externalContractNumber>${#TestCase#ContractNumber}</con:externalContractNumber>
+         <con:audit>
+            <com:messageId>${Data From Excel#messageId}</com:messageId>
+            <com:timestamp>${Data From Excel#timestamp}</com:timestamp>
+            <com:clientAppId>${Data From Excel#clientAppId}</com:clientAppId>
+            <com:userId>${Data From Excel#userId}</com:userId>
+            <com:clientLanguage>${Data From Excel#clientLanguage}</com:clientLanguage>
+         </con:audit>
+      </con:getContractDetails>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="0415e21f-98a6-4d82-a48e-b951042837e6"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="ba5f7dc0-e8db-409c-b494-16037c932774"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4afb3ac9-5034-4c9c-8880-fc76dd54bdc6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3413a0c0-76cc-4f43-9482-3efe9e972e81"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a32f4f82-e311-4f8a-ba4f-accdfcbdadcf"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1d61f86f-f9a2-4364-a52c-3d321cfb1a28"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="b796eeee-b2bf-40b2-9d2a-9d00c30d0dab"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="263f20f9-2653-4f33-8d66-1694d38c9931"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1f7152d8-1be5-485f-bc97-18cbc1aa4ba8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="3b0f4fd5-8397-4067-b032-ecfa22cfa5ff"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="02782eb4-ecaf-43ac-8f0c-0a1eeebbdd7a"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="15dff999-92e5-4da2-8a61-2a9da4ce2988"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="groovy" name="Copy of Groovy Script - Validation" id="6deefd29-940a-4eed-bdee-ab3ea0f4986a"><con:settings/><con:config><script>import com.eviware.soapui.support.XmlHolder
+def response = context.expand( '${createContractPayment#Response}' )
+def scenario = context.expand( '${Data From Excel#scenario}' )
+
+def holder = new XmlHolder(response)
+
+holder.namespaces["ns1"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract"
+holder.namespaces["ns2"]='http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes'
+
+
+try{
+	nodeExists = holder.getNodeValue('exists(//ns1:createContractPaymentResponse/ns1:contractPaymentResponse/ns1:paymentStatus)')
+	if (nodeExists == "true" ){
+		paymentStatus  = holder.getNodeValue('//ns1:createContractPaymentResponse/ns1:contractPaymentResponse/ns1:paymentStatus')
+		log.info "createContractPayment is Success"				
+	}else{
+		faultString = holder.getNodeValue('//faultstring')
+		if (scenario.contains('Invalid Contract')||scenario.contains('No Territory Code') ){
+			log.info "Error Occured- Payment is not success"	
+		}else{
+			log.error "Error Occured- Payment is not success"	
+		}
+		
+		
+}}catch(e){
+		log.error "Error log " + e ;
+}
+</script></con:config></con:testStep><con:testStep type="datasource" name="InvoiceandLoandatabeforeReversal" id="5f91043d-8c77-49a0-80c6-26d49989caf8"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select 
+  l.loninvd_due_date, 
+  l.loninvd_invoice_no, 
+  l.loninvd_loan, 
+  sum(l.loninvd_due_amount) +  sum(l.loninvd_due_vat)  As loninvd_due_amount,
+  sum(l.loninvd_paid) As loninvd_paid
+from CMS_SCHEMA.LLONINVD l 
+where 
+ l.loninvd_loan = '${#TestCase#ContractNumber}'
+  and loninvd_invoice_no= '${#TestCase#InvoiceNumber}'
+group by l.loninvd_due_date, l.loninvd_invoice_no, l.loninvd_loan</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>LONINVD_DUE_DATE</con:property><con:property>LONINVD_INVOICE_NO</con:property><con:property>LONINVD_LOAN</con:property><con:property>LONINVD_DUE_AMOUNT</con:property><con:property>LONINVD_PAID</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="tranNumber" id="ebe2292f-cd10-4ee0-adf4-493b371f5d7a"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select * from(select l.MCTRAN_NO as LOAN_NO_TRANS, l.MCTRAN_MCR_Reference as LOAN_NUM from LMCTRAN l where l.mctran_mcr_reference = '${#TestCase#ContractNumber}' order by l.A4GLIDENTITY desc) where rownum = 1</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>LOAN_NO_TRANS</con:property><con:property>LOAN_NUM</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="groovy" name="assigningTranNumbers" id="04bba374-f791-470e-94e3-3b467e761a31"><con:settings/><con:config><script>// Data from database
+
+def lOAN_NO_TRANS = context.expand( '${tranNumber#LOAN_NO_TRANS}' )
+def iNTEREST_DEBIT_DATE = context.expand( '${interestDebitDate#INTEREST_DEBIT_DATE}' )
+def transactionNumber = context.expand( '${Data From Excel#transactionNumber}' )
+def effectiveDate = context.expand( '${Data From Excel#effectiveDate}' )
+
+
+
+if (transactionNumber!=""){
+	lOAN_NO_TRANS = transactionNumber
+}
+log.info  lOAN_NO_TRANS
+
+if (effectiveDate!= ""){
+	iNTEREST_DEBIT_DATE = " "
+}
+if (lOAN_NO_TRANS==""){
+	lOAN_NO_TRANS ="100"
+}
+
+log.info iNTEREST_DEBIT_DATE 
+testRunner.testCase.setPropertyValue( "TransactionNumber",  lOAN_NO_TRANS )
+testRunner.testCase.setPropertyValue( "EffectiveDateReversal", iNTEREST_DEBIT_DATE )</script></con:config></con:testStep><con:testStep type="request" name="createContractReversal" id="dedb9e6b-0199-4689-8bec-56f58975bf4f"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>createContractReversal</con:operation><con:request name="createContractReversal" id="2af30cb8-d212-40d6-8172-3ae8a0e54f36" defaultOutgoingWss="" defaultIncomingWss="" outgoingWss="" incomingWss=""><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvdfsdev01/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:con="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <con:createContractReversal>
+         <con:externalContractNumber>${#TestCase#ContractNumber}</con:externalContractNumber><con:type>${Data From Excel#type}</con:type>
+         
+         <con:totalTransactionAmount>${#TestCase#TransactionAmount}</con:totalTransactionAmount>
+         <con:effectiveDate>${#TestCase#EffectiveDateReversal}</con:effectiveDate><con:invoiceNumber>${#TestCase#InvoiceNumber}</con:invoiceNumber><con:transactionNumber>${#TestCase#TransactionNumber}</con:transactionNumber><con:dishonourReasonCode>${Data From Excel#dishonourReasonCode}</con:dishonourReasonCode><con:territoryCode>${Data From Excel#territoryCode}</con:territoryCode>
+         <con:audit>
+            <com:messageId>${Data From Excel#messageId}</com:messageId>
+            <com:timestamp>${Data From Excel#timestamp}</com:timestamp>
+            <com:clientAppId>${Data From Excel#clientAppId}</com:clientAppId>
+            <com:userId>${Data From Excel#userId}</com:userId>
+            <com:clientLanguage>${Data From Excel#clientLanguage}</com:clientLanguage>
+         </con:audit>
+      </con:createContractReversal>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="779027eb-53fd-4e51-a083-a5e001a3afaa"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="ba5f7dc0-e8db-409c-b494-16037c932774"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4afb3ac9-5034-4c9c-8880-fc76dd54bdc6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3413a0c0-76cc-4f43-9482-3efe9e972e81"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a32f4f82-e311-4f8a-ba4f-accdfcbdadcf"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1d61f86f-f9a2-4364-a52c-3d321cfb1a28"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="b796eeee-b2bf-40b2-9d2a-9d00c30d0dab"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="263f20f9-2653-4f33-8d66-1694d38c9931"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1f7152d8-1be5-485f-bc97-18cbc1aa4ba8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="3b0f4fd5-8397-4067-b032-ecfa22cfa5ff"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="02782eb4-ecaf-43ac-8f0c-0a1eeebbdd7a"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="15dff999-92e5-4da2-8a61-2a9da4ce2988"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Basic admin</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="datasource" name="tranNumberAfterReversal" id="9d24badc-7efc-4f9a-a760-7e7c126a4bb8"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select l.loan_no_trans,l.loan_NUM from LLOAN l where l.loan_num = ${#TestCase#ContractNumber} order by l.A4GLIDENTITY desc</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>LOAN_NO_TRANS</con:property><con:property>LOAN_NUM</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="getContractTerritoryCode" id="6a85ca58-1127-4b5d-9a69-25e34dc9772c"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select mcloan_country_code as LOAN_COUNTRY from LMCLOAN where mcloan_mcr_reference = '${#TestCase#ContractNumber}'</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>LOAN_COUNTRY</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="firstlRecordFromSuspenseTable" id="7dbb907b-6baa-418e-85f3-e5e9f325acc4"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select * from (select s.A4GLIDENTITY,s.ADV_SUSP_LOGIN_ID,s.ADV_SUSP_TERRITORY_CODE,to_char(to_date(lpad(to_char(s.ADV_SUSP_ID_DATE),8,'0'),'yyyyMMdd'),'YYYY-MM-DD') ADV_SUSP_ID_DATE,s.ADV_SUSP_PMT_OR_DIS,s.ADV_SUSP_LOAN,s.ADV_SUSP_COMMENT from CMS_SCHEMA.LASUSP s  order by s.A4GLIDENTITY desc) where  rownum = 1</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>A4GLIDENTITY</con:property><con:property>ADV_SUSP_LOGIN_ID</con:property><con:property>ADV_SUSP_TERRITORY_CODE</con:property><con:property>ADV_SUSP_ID_DATE</con:property><con:property>ADV_SUSP_PMT_OR_DIS</con:property><con:property>ADV_SUSP_LOAN</con:property><con:property>ADV_SUSP_COMMENT</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="Data from LSUSP table" id="b9fdd308-a371-4e52-bcbd-f486e252c16c"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select * from (select s.A4GLIDENTITY,s.ADV_SUSP_LOGIN_ID,s.ADV_SUSP_TERRITORY_CODE,to_char(to_date(lpad(to_char(s.ADV_SUSP_ID_DATE),8,'0'),'yyyyMMdd'),'YYYY-MM-DD') ADV_SUSP_ID_DATE,s.ADV_SUSP_PMT_OR_DIS,s.ADV_SUSP_LOAN,s.ADV_SUSP_COMMENT from CMS_SCHEMA.LASUSP s  order by s.A4GLIDENTITY desc) where  rownum = 1</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>A4GLIDENTITY</con:property><con:property>ADV_SUSP_LOGIN_ID</con:property><con:property>ADV_SUSP_TERRITORY_CODE</con:property><con:property>ADV_SUSP_ID_DATE</con:property><con:property>ADV_SUSP_PMT_OR_DIS</con:property><con:property>ADV_SUSP_LOAN</con:property><con:property>ADV_SUSP_COMMENT</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="Invoice and Loan data after request" id="d9c0de09-85ef-4b41-a37e-957edb438562"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select 
+  l.loninvd_due_date, 
+  l.loninvd_invoice_no, 
+  l.loninvd_loan, 
+  sum(l.loninvd_due_amount) +  sum(l.loninvd_due_vat)  As loninvd_due_amount,
+  sum(l.loninvd_paid) As loninvd_paid
+from CMS_SCHEMA.LLONINVD l 
+where 
+ l.loninvd_loan = '${#TestCase#ContractNumber}'
+  and loninvd_invoice_no= '${#TestCase#InvoiceNumber}'
+group by l.loninvd_due_date, l.loninvd_invoice_no, l.loninvd_loan</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>LONINVD_DUE_DATE</con:property><con:property>LONINVD_INVOICE_NO</con:property><con:property>LONINVD_LOAN</con:property><con:property>LONINVD_DUE_AMOUNT</con:property><con:property>LONINVD_PAID</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="Loan data after request when Invoice is not provided" id="15bf96e5-e1d6-4924-9f9a-74f3522ea284"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select 
+sum(l.nvtld_paid)+  sum(NVTLD_PAID_VAT)As NVTLD_PAID
+from LNVTLD l 
+where l.nvtld_loan = '${#TestCase#ContractNumber}' 
+and l.nvtld_Assoc_tran = '${#TestCase#TransactionNumber}' </query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>NVTLD_PAID</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="datasource" name="reversalCheck" id="7339a5f1-f3d4-43de-adb8-3ef5217a231d"><con:settings/><con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dataSource type="Data Connection"><con:configuration><Connection>DBConnection( Default environment )</Connection><query>select NVTL_RECORD_STATUS, NVTL_ASSOC_REV_DISH_TRAN 
+from LNVTL 
+where nvtl_loan = '${#TestCase#ContractNumber}'
+and  nvtl_Assoc_tran = '${#TestCase#TransactionNumber}'</query><fetchSize/><stored-procedure>false</stored-procedure></con:configuration></con:dataSource><con:shared>false</con:shared><con:restartShared>false</con:restartShared><con:property>NVTL_RECORD_STATUS</con:property><con:property>NVTL_ASSOC_REV_DISH_TRAN</con:property><con:restartOnRun>true</con:restartOnRun></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script - Validation" id="054fb569-61d6-43a6-a453-35b4dbbd9d46"><con:settings/><con:config><script><![CDATA[log.info  "  ******SCRIPT---CREATE CONTRACT REVERSAL *** *** *** ***"
+
+import com.eviware.soapui.support.XmlHolder
+def response = context.expand( '${createContractReversal#Response}' )
+def holder = new XmlHolder(response)
+
+holder.namespaces["ns1"] = "http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract"
+holder.namespaces["ns2"]='http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes'
+
+// Data from excel
+def scenario = context.expand( '${Data From Excel#scenario}' )
+def expectedAPIOutput = context.expand( '${Data From Excel#expectedAPIOutput}' )
+def suspense = context.expand( '${Data From Excel#suspense}' )
+def territoryCode = context.expand( '${Data From Excel#territoryCode}' )
+def clientAppId = context.expand( '${Data From Excel#clientAppId}' )
+def territorycodeValue = context.expand( '${Data From Excel#territorycodeValue}' )
+def totalTransactionAmount = context.expand( '${Data From Excel#totalTransactionAmount}' )
+
+// DATA from test case
+def contractNumber = context.expand( '${#TestCase#ContractNumber}' )
+def invoiceNumber = context.expand( '${#TestCase#InvoiceNumber}' )
+def transactionAmount = context.expand( '${#TestCase#TransactionAmount}' )
+def effectiveDate = context.expand( '${#TestCase#EffectiveDate}' )
+def transactionNumber = context.expand( '${#TestCase#TransactionNumber}' )
+
+// Data before the request IS EXECUTED
+def dUE = context.expand( '${Data from DB#DUE}' )
+def pAID = context.expand( '${Data from DB#PAID}' )
+
+
+// verify data in LLONINV  after the request
+def lONINVD_DUE_DATE = context.expand( '${Invoice and Loan data after request#LONINVD_DUE_DATE}' )
+def lONINVD_INVOICE_NO = context.expand( '${Invoice and Loan data after request#LONINVD_INVOICE_NO}' )
+def lONINVD_STATUS = context.expand( '${Invoice and Loan data after request#LONINVD_STATUS}' )
+def lONINVD_LOAN = context.expand( '${Invoice and Loan data after request#LONINVD_LOAN}' )
+def lONINVD_DUE_AMOUNT = context.expand( '${Invoice and Loan data after request#LONINVD_DUE_AMOUNT}' )
+def lONINVD_PAID = context.expand( '${Invoice and Loan data after request#LONINVD_PAID}' )
+	
+// Data from LSUSP (suspense record)
+def aDV_SUSP_LOGIN_ID = context.expand( '${Data from LSUSP table#ADV_SUSP_LOGIN_ID}' )
+def aDV_SUSP_TERRITORY_CODE = context.expand( '${Data from LSUSP table#ADV_SUSP_TERRITORY_CODE}' )
+def aDV_SUSP_ID_DATE = context.expand( '${Data from LSUSP table#ADV_SUSP_ID_DATE}' )
+def aDV_SUSP_PMT_OR_DIS = context.expand( '${Data from LSUSP table#ADV_SUSP_PMT_OR_DIS}' )
+def aDV_SUSP_LOAN = context.expand( '${Data from LSUSP table#ADV_SUSP_LOAN}' )
+def aDV_SUSP_COMMENT = context.expand( '${Data from LSUSP table#ADV_SUSP_COMMENT}' )
+
+// transaction Number after reversal
+def transactionNumberAfterReversal = context.expand( '${tranNumberAfterReversal#LOAN_NO_TRANS}' )
+
+// Amount reversed
+def nVTLD_PAID = context.expand( '${Loan data after request when Invoice is not provided#NVTLD_PAID}' )
+
+//reversal transaction check
+def nVTL_RECORD_STATUS = context.expand( '${reversalCheck#NVTL_RECORD_STATUS}' )
+def nVTL_ASSOC_REV_DISH_TRAN = context.expand( '${reversalCheck#NVTL_ASSOC_REV_DISH_TRAN}' )
+
+// getContractTerritory code
+def lOAN_COUNTRY = context.expand( '${getContractTerritoryCode#LOAN_COUNTRY}' )
+
+
+if (scenario.contains('Invalid Contract')){
+		lOAN_COUNTRY = territorycodeValue
+}
+
+log.info "Scenario :   --------------: " + scenario
+log.info "MCR Number ----------------:" +  contractNumber
+
+try{
+if (expectedAPIOutput == 'Success'){
+	nodeExists = holder.getNodeValue('exists( //ns1:createContractReversalResponse/ns1:contractReversalResponse/ns1:paymentStatus)')
+	if (nodeExists == "true" ){
+		paymentStatus  = holder.getNodeValue('//ns1:createContractReversalResponse/ns1:contractReversalResponse/ns1:paymentStatus')
+	
+		if( paymentStatus == expectedAPIOutput){
+		log.info "Contract Number------------:" + contractNumber
+		log.info "Expected output -----:" + expectedAPIOutput
+		log.info "Actual output  -------:" + paymentStatus	
+		}
+	// if it is success verify Loan paid amount is equal to due amount
+	     log.info "Data Validation when Response is success "
+	if  (transactionAmount == nVTLD_PAID ){
+		log.info  "lONINVD_INVOICE_NO   ----------------------------" + lONINVD_INVOICE_NO
+		log.info  "Expected Amount Reversed --------------" + transactionAmount
+		log.info  "Actual Amount Reversed   ------------" + nVTLD_PAID
+				
+	}else{
+		log.info  "lONINVD_INVOICE_NO   ----------------------------" + lONINVD_INVOICE_NO
+		log.info  "Expected Amount Reversed --------------" + pAID
+		log.error  "Actual Amount Reversed  ------------" + nVTLD_PAID
+	}
+
+	log.info "Transaction number Before and after reversal for the contract - "+contractNumber
+	if (transactionNumberAfterReversal.toInteger()- transactionNumber.toInteger() == 1){
+		log.info "Transaction Number before Reversal   "+transactionNumber
+		log.info "Transaction Number after Reversal   "+transactionNumberAfterReversal
+	}else {
+		log.error "Transaction Number before Reversal   "+transactionNumber
+		log.error "Transaction Number after Reversal   "+transactionNumberAfterReversal
+	}
+
+	if (nVTL_RECORD_STATUS =="1" && nVTL_ASSOC_REV_DISH_TRAN == (transactionNumber.toInteger()+1).toString()){
+		log.info "nVTL_RECORD_STATUS updated and the value is --    " + nVTL_RECORD_STATUS
+		log.info "Transaction number before reversal -----------    " + transactionNumber
+		log.info "Transaction number after reversal ------------" + nVTL_ASSOC_REV_DISH_TRAN
+	}else{
+		log.error "nVTL_RECORD_STATUS NOT CORRECT and the value is --" + nVTL_RECORD_STATUS
+		log.info "Transaction number before reversal -----------" + transactionNumber
+		log.error "Transaction number after reversal --" + nVTL_ASSOC_REV_DISH_TRAN
+	}
+	}else{
+		faultString = holder.getNodeValue('//faultstring')
+		log.error "Error Occured"	
+		log.error "Expected output -----:" + expectedAPIOutput
+		log.error "Actual output  -------:" + faultString	
+
+		// Verify data in LSUSP  if susp is "YES"
+		if (!faultString.contains('Unmarshalling Error')){
+
+		if ((aDV_SUSP_TERRITORY_CODE== lOAN_COUNTRY) && (aDV_SUSP_ID_DATE == effectiveDate) && (aDV_SUSP_PMT_OR_DIS =="D") && (aDV_SUSP_LOAN== contractNumber) && (aDV_SUSP_COMMENT == faultString)){
+		log.info "Record is saved to Suspense Table"
+		
+		log.info "Contract Number in LSUSP table  -------"+ aDV_SUSP_LOAN
+		log.info "Contract Number in ExcelTest Data------"+ contractNumber
+		
+		log.info "Territory code in LSUSP table  -------"+ aDV_SUSP_TERRITORY_CODE
+		log.info "Territory code from Contract    ------"+ lOAN_COUNTRY
+
+		log.info "Effective Date in LSUSP table  -------"+ aDV_SUSP_ID_DATE
+		log.info "Effective Date in ExcelTest Data------"+ effectiveDate
+
+		log.info "Payment type in LSUSP table  -------"+ aDV_SUSP_PMT_OR_DIS
+		log.info "Expected  Payment type -------------"+ "D"
+
+		log.info "Comment in LSUSP table  -------"+ aDV_SUSP_COMMENT
+		log.info "Comment in ExcelTest Data------"+ faultString		
+		
+		}else{
+
+		log.error  "Record is not saved to Suspense Table"
+		if (aDV_SUSP_TERRITORY_CODE!=territorycodeValue ){
+		log.error "Territory code in LSUSP table  -------"+ aDV_SUSP_TERRITORY_CODE
+		log.error "Territory code from Contract    ------"+ lOAN_COUNTRY
+		}
+
+		if (aDV_SUSP_ID_DATE != effectiveDate){
+		log.error "Effective Date in LSUSP table  -------"+ aDV_SUSP_ID_DATE
+		log.error "Effective Date in ExcelTest Data------"+ effectiveDate		
+		}
+
+		if (aDV_SUSP_PMT_OR_DIS !="D"){
+		log.error "Payment type in LSUSP table  -------"+ aDV_SUSP_PMT_OR_DIS
+		log.error "Payment type in ExcelTest Data------"+ "P"
+		}
+
+		if (aDV_SUSP_LOAN!= contractNumber ){
+		log.error "Contract Number in LSUSP table  -------"+ aDV_SUSP_LOAN
+		log.error "Contract Number in ExcelTest Data------"+ contractNumber	
+		}
+		if (aDV_SUSP_COMMENT!= faultString){
+		log.error "Comment in LSUSP table  -------"+ aDV_SUSP_COMMENT
+		log.error "Comment in ExcelTest Data------"+ faultString	
+		}			
+		}			
+		}			
+		}		
+		}
+else{
+	
+	value = holder.getNodeValue('//faultstring')
+		if( value.contains( expectedAPIOutput)){
+		log.info "Expected output ------:" + expectedAPIOutput
+		log.info "Actual output  -------:" + value
+
+		// Verify data in LSUSP if susp is "YES"
+					if (suspense =="Yes"){
+						if ((aDV_SUSP_TERRITORY_CODE== lOAN_COUNTRY) && (aDV_SUSP_ID_DATE == effectiveDate) && (aDV_SUSP_PMT_OR_DIS =="D") && (aDV_SUSP_LOAN== contractNumber) && (aDV_SUSP_COMMENT == value)){
+					log.info "As Expected record is saved to Suspense Table"
+					
+					log.info "Contract Number in LSUSP table  -------"+ aDV_SUSP_LOAN
+					log.info "Contract Number in ExcelTEst Data------"+ contractNumber
+					
+					log.info "Territory code in LSUSP table  -------"+ aDV_SUSP_TERRITORY_CODE
+					log.info "Territory code in ExcelTEst Data------"+ lOAN_COUNTRY
+			
+					log.info "Effective Date in LSUSP table  -------"+ aDV_SUSP_ID_DATE
+					log.info "Effective Date in ExcelTEst Data------"+ effectiveDate
+			
+					log.info "Payment type in LSUSP table  -------"+ aDV_SUSP_PMT_OR_DIS
+					log.info "Payment type in ExcelTEst Data------"+ "D"
+			
+					log.info "Comment in LSUSP table  -------"+ aDV_SUSP_COMMENT
+					log.info "Comment in ExcelTEst Data------"+ value		
+					}
+					else{
+			
+					log.error  "Issue with the record saved to Suspense Table"				
+					log.error "Territory code in LSUSP table  -------"+ aDV_SUSP_TERRITORY_CODE
+					log.error "Territory code in ExcelTEst Data------"+ lOAN_COUNTRY			
+
+					log.error "Effective Date in LSUSP table  -------"+ aDV_SUSP_ID_DATE
+					log.error "Effective Date in ExcelTEst Data------"+ effectiveDate	
+
+					log.error "Payment type in LSUSP table  -------"+ aDV_SUSP_PMT_OR_DIS
+					log.error "Payment type in ExcelTEst Data------"+ "D"
+
+					log.error "Contract Number in LSUSP table  -------"+ aDV_SUSP_LOAN
+					log.error "Contract Number in ExcelTEst Data------"+ contractNumber	
+
+					log.error "Comment in LSUSP table  -------"+ aDV_SUSP_COMMENT
+					log.error "Comment in ExcelTEst Data------"+ value				
+					}			
+					}
+					}else{
+						log.error "Expected output ------:" + expectedAPIOutput
+						log.error "Actual output  -------:" + value
+					}
+}}catch(e){
+		log.error "Error log " + e ;
+}
+
+log.info  " *************************************************************** *** *** ***."
+ 
+]]></script></con:config></con:testStep><con:testStep type="datasourceloop" name="DataSource Loop" id="ab61ac6f-3e36-44e5-888b-c3a56c0a7a91"><con:settings/><con:config><dataSourceStep>Data From Excel</dataSourceStep><targetStep>Data from DB</targetStep></con:config></con:testStep><con:properties><con:property><con:name>ContractNumber</con:name><con:value>10082586</con:value></con:property><con:property><con:name>InvoiceNumber</con:name><con:value>21600000000137</con:value></con:property><con:property><con:name>TransactionAmount</con:name><con:value>45972.42</con:value></con:property><con:property><con:name>EffectiveDate</con:name><con:value>2017-05-22</con:value></con:property><con:property><con:name>TransactionNumber</con:name><con:value>15</con:value></con:property><con:property><con:name>TransactionAmountPayment</con:name><con:value>45972.42</con:value></con:property><con:property><con:name>EffectiveDateReversal</con:name><con:value>2017-05-22</con:value></con:property><con:property><con:name>InvoiceNumberpayment</con:name><con:value>21600000000137</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>0f1c63f2-b127-45db-b1f6-5e44fedb49b3</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>97498f6f-109f-41c6-90e9-254e642786d4</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>2bbbb76c-afb0-48d7-811e-f5d0e678d80c</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>dfdedb89-0f48-40ff-aff1-bc1449f97f62</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>a7b5b89d-812e-46c5-bcfd-a561d2283ac2</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>e449c9a2-4025-4ded-8a89-9a4afabf9610</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>67cb919c-c7d4-4d5c-b19c-b2b4527984a9</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>3e367604-a3de-4870-8004-c5720a95adcf</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>f7038d08-552a-4f73-84c4-9fb2f759fc82</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>8b718855-7caa-472c-a8b6-8e6e078439e0</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>9bf96b58-91d2-4907-9680-8b5eb48b0744</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>766dab81-46c6-4f80-b603-05f351663b0a</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>285e89de-4834-426c-8833-eef824a33e38</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>65afd8e5-eaa6-479e-aebe-a16314d605b5</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>c7e8146d-b1e3-4626-8a1b-e3c20a17c784</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>83bbfa39-13ec-417b-b9d4-03f23db8bc77</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>c11bbf8a-7c01-4218-915a-4709ce99e54f</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>a7eaf418-1b69-4966-b220-4d5786b52a37</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>faa512dd-64e5-4025-aac6-631e05e0db92</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>dd821670-b7fc-4c7e-8b4e-bef892ff9eb1</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>16028f70-26f6-4ca1-bac5-7a74b37d50dd</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>3155a22a-a527-4055-9f67-99629303fb6b</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>5fe87649-466e-4745-a22a-35083ae4f222</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>44f5661f-db38-4cd9-8918-65343cec1862</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>c92a45c3-adb6-41d3-a2fc-0aaf645aab80</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>1820b94c-d75a-49cf-8253-e061be0e66db</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>d0dc59b9-387b-40c9-b611-9a29bbf0001f</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>3404103f-d841-406f-a213-ee5d9a4c0ad6</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>bb98bd44-0999-4339-b6f4-2a08601eb123</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>33dd2861-5e2a-4739-98ca-a60ded412473</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>25a3a4d9-acd8-451f-b07e-2fb19263800b</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>89ef1ccc-c974-4eb7-8b9b-db09545364fc</con:testStepId><con:status>ENABLED</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>88c25f70-ec30-4c48-a43f-663d04eabec9</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>8c8e1aba-15be-40c0-8f5c-7c4910ba1b19</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>83a39595-3921-470e-8c0c-fb76f56e6b15</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>57ee4310-885c-4975-b71b-d4f4f6d3b949</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>b1c4db2b-d48b-460b-8c6c-3d2271216541</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>b39ad791-63f6-41a8-9dc5-fefe2ea448ea</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>c7da513e-7935-47e5-84ec-242c5a414e8c</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>62c24368-e2b5-4026-a379-0aadc94a5b84</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>eb846331-49cb-40fc-a9d8-dea46124fa63</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="ba5f7dc0-e8db-409c-b494-16037c932774"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4afb3ac9-5034-4c9c-8880-fc76dd54bdc6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3413a0c0-76cc-4f43-9482-3efe9e972e81"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a32f4f82-e311-4f8a-ba4f-accdfcbdadcf"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="263f20f9-2653-4f33-8d66-1694d38c9931"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1f7152d8-1be5-485f-bc97-18cbc1aa4ba8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="646e67d6-aa98-4b13-bf6d-4dc58edc1b75"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b0665732-cac3-4206-a83b-daa28cab3d19"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="53d9b97b-8073-471c-a279-b4038955f03c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="3b0f4fd5-8397-4067-b032-ecfa22cfa5ff"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="02782eb4-ecaf-43ac-8f0c-0a1eeebbdd7a"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="15dff999-92e5-4da2-8a61-2a9da4ce2988"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a48a545f-36b3-49f1-bade-8da1cb59d2fe"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>

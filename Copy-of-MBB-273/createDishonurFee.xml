@@ -1,0 +1,1158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="02b07ecd-b885-4b6d-ab75-e895a83daabf" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="createDishonurFee" searchProperties="true" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="2bf392dd-7ce4-4f45-85e3-bb8efeb2603bfileName">createInvoiceReversal</con:setting><con:setting id="b473ea3b-4b1e-468a-93a7-a76c25665421fileName">createInvoiceReversal-1</con:setting><con:setting id="0af22173-09a9-4178-a956-a0b233031b28fileName">createInvoiceReversal-2</con:setting><con:setting id="b202d4bf-02dd-4382-a147-982a7aca6f08fileName">createInvoiceReversal-I</con:setting><con:setting id="047200cf-ee80-4379-804e-a9a9d1886f6dfileName">createInvoiceReversal-I-1</con:setting><con:setting id="743cd765-2153-4b13-9b8e-2c402993b136fileName">createDishonurFee</con:setting><con:setting id="daa0679a-a33b-4ce0-b4f5-5e1053dc48ecfileName">createDishonurFee</con:setting><con:setting id="02b07ecd-b885-4b6d-ab75-e895a83daabffileName">createDishonurFee</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="TestCaseInfo" id="9a4126cb-601c-4456-9f7a-4ffa8e621b0d"><con:settings/><con:config><script>/**Follwoing Test covers CMS-T16015
+ * Kanohava ID: CMS-T16015
+ **/</script></con:config></con:testStep><con:testStep type="groovy" name="generateRandomValues" id="16ff4b8a-22aa-4700-a366-aec1bd251f89"><con:settings/><con:config><script>def projName = testRunner.testCase.testSuite.project.name
+def suiteName = testRunner.testCase.testSuite.name
+def tcName   = testRunner.testCase.name
+
+// Use soapUI context object to log project endpoint and Database.
+def endpoint = context.expand( '${#Project#endpoint}' ) 
+
+log.info "*********************************************************************"
+log.info "          Running Project: "  + projName 
+log.info "          Suite: "  + suiteName 
+log.info "          Testcase: " + tcName
+log.info "          Endpoint: " + endpoint
+log.info "*********************************************************************"
+
+log.info "*********************************************************************"
+log.info "Generating Random Values for Contract Activation"
+int a = 9
+componentidentifier = ""
+vin = ""
+bpmid = ""
+bpmid2 = ""
+order = ""
+dealerbpmid = ""
+
+
+for(i = 0; i &lt; 15; i++)
+{
+ random = new Random()
+ randomInteger= random.nextInt(a)
+ componentidentifier = componentidentifier + randomInteger
+}
+testRunner.testCase.testSuite.setPropertyValue("componentidentifier", componentidentifier);
+log.info("componentidentifier number is :" +componentidentifier);
+
+for(i = 0; i &lt; 10; i++)
+{
+random = new Random()
+randomInteger= random.nextInt(a)
+vin = vin + randomInteger
+order = vin
+}
+testRunner.testCase.testSuite.setPropertyValue("vin", vin);
+log.info("          vin number :" +vin);
+testRunner.testCase.testSuite.setPropertyValue("order", order);
+log.info("          order number :" +order);
+
+for(i = 0; i &lt; 6; i++)
+{
+ random = new Random()
+ randomInteger= random.nextInt(a)
+ dealerbpmid = dealerbpmid + randomInteger
+}
+testRunner.testCase.testSuite.setPropertyValue("dealerbpmid", dealerbpmid);
+log.info("		dealerbpmid number :" +dealerbpmid);
+
+for(i = 0; i &lt; 6; i++)
+{
+random = new Random()
+randomInteger= random.nextInt(a)
+bpmid = bpmid + randomInteger
+}
+testRunner.testCase.testSuite.setPropertyValue("bpmid", bpmid);
+log.info("          bpmid number :" +bpmid);
+for(i = 0; i &lt; 6; i++)
+{
+ random = new Random()
+ randomInteger= random.nextInt(a)
+ bpmid2 = bpmid2 + randomInteger
+}
+testRunner.testCase.testSuite.setPropertyValue("bpmid2", bpmid2);
+log.info("bpmid2 number is :" +bpmid2);
+/*
+log.info "*********************************************************************"
+log.info "          EXECUTING API's"
+testRunner.runTestStepByName( "getIDD")
+log.info "          Executed getIDD Step"
+testRunner.runTestStepByName( "updatedealer")
+log.info "          Executed Update Dealer API Step"
+testRunner.runTestStepByName( "JDBC_DealerRequest1")
+testRunner.runTestStepByName( "JDBC_DealerRequest2")
+log.info "          Executed JDBC Update Query Step"
+testRunner.runTestStepByName( "updateThirdParty")
+log.info "          Executed Update 3rd Party API Step" 
+testRunner.runTestStepByName("CreateAContract")
+log.info "          Executed CreateAContract API Step"
+testRunner.runTestStepByName("generateRandomValuesForContract2")
+log.info "          Executed CreateAContract API Step"
+log.info "*********************************************************************"
+*/</script></con:config></con:testStep><con:testStep type="jdbc" name="JDBC Request-getIDD" id="4b843356-71fa-4e32-9be8-e32710641016"><con:settings><con:setting id="prettyPrintResponse">true</con:setting></con:settings><con:config xsi:type="con:JdbcRequestTestStep" convertColumnNamesToUpperCase="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dbConnectionName>DBCALMS2CMS</con:dbConnectionName><con:driver>oracle.jdbc.driver.OracleDriver</con:driver><con:connectionString>jdbc:oracle:thin:CMS/password@//mkvsudfsdock06:1522/ORCL</con:connectionString><con:password/><con:connectionProperties/><con:query>select LAST_DDMMYY_IDB from CMS.VIEW_CRAINTERESTDEBITDATE where TABLE_TERRITORY_CODE = 149</con:query><con:properties/></con:config></con:testStep><con:testStep type="groovy" name="getIDD" id="fd314e61-474a-4a59-b9a6-46bcad76c438"><con:settings/><con:config><script>import com.eviware.soapui.model.testsuite.TestRunner.Status
+def groovyUtils = new com.eviware.soapui.support.GroovyUtils(context)
+import com.eviware.soapui.support.XmlHolder
+
+log.info"################## Running JDBC Request To Get CMSID #####################"
+testRunner.runTestStepByName("JDBC Request-getIDD")
+def responseToGetCMSID = groovyUtils.getXmlHolder ("JDBC Request-getIDD#ResponseAsXml");
+def cmsIDD = responseToGetCMSID.getNodeValue ("//LAST_DDMMYY_IDB") ;
+if(cmsIDD.length()==5){
+	cmsIDD = "0"+cmsIDD;
+}
+
+Date  newdate = new Date().parse("ddmmyy", cmsIDD)
+
+def convertedCMSIDDYear = newdate.format("yyyy")
+Integer convertedCMSIDD1 = Integer.parseInt(convertedCMSIDDYear)
+log.info "convertedCMSIDD1 = "+convertedCMSIDD1
+
+def convertedCMSIDDMonth = newdate.format("mm")
+Integer convertedCMSIDD2 = Integer.parseInt(convertedCMSIDDMonth)
+log.info "convertedCMSIDD2 = "+convertedCMSIDD2
+
+def convertedCMSIDDDay = newdate.format("dd")
+Integer convertedCMSIDD3 = Integer.parseInt(convertedCMSIDDDay)
+log.info "convertedCMSIDD3 = "+convertedCMSIDD3
+
+import java.text.SimpleDateFormat;
+Calendar cal = Calendar.getInstance();
+cal.set(convertedCMSIDD1,convertedCMSIDD2,convertedCMSIDD3);
+//-3 for 2 months backdated because Calendar month starts from zero
+cal.add(Calendar.MONTH, -3);
+SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
+def contractStartDate = s.format(new Date(cal.getTimeInMillis()));
+
+//def convertedCMSIDD = newdate.format("yyyy-mm-dd")
+
+log.info "Generated CMSIDD = "+contractStartDate
+
+testRunner.testCase.testSuite.setPropertyValue("cmsIDD", contractStartDate);
+log.info"################## Completed JDBC Request To Get CMSID #####################"</script></con:config></con:testStep><con:testStep type="request" name="updatedealer" id="1a154de0-2045-4499-a219-0adfcfd5b123"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>updateThirdParty</con:operation><con:request name="updatedealer" id="83d9c385-f749-4d72-b7b0-4f4fe7874b70"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://${#Project#endpoint}/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:thir="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <thir:updateThirdParty>
+         <thir:partner>
+            <thir:type>C</thir:type>
+            <thir:thirdPartyId>
+               <thir:bpmId>${#TestSuite#dealerbpmid}</thir:bpmId>
+            </thir:thirdPartyId>
+            <thir:commsChannels>
+               <thir:contactViaSMS>true</thir:contactViaSMS>
+               <thir:phoneFaxNums>
+                  <!--Zero or more repetitions:-->
+                  <thir:telephoneFax>
+                     <thir:phoneFaxNumber>+49891234567</thir:phoneFaxNumber>
+                     <thir:type>BUSFAX</thir:type>
+                  </thir:telephoneFax>
+                  <thir:telephoneFax>
+                     <thir:phoneFaxNumber>+49891234567</thir:phoneFaxNumber>
+                     <thir:type>BUS</thir:type>
+                  </thir:telephoneFax>
+               </thir:phoneFaxNums>
+            </thir:commsChannels>
+            <thir:bankAccounts>
+               <thir:bankAccountData>
+                  <thir:bankAccountId>
+                     <thir:bpmId>${#TestSuite#dealerbpmid}</thir:bpmId>
+                  </thir:bankAccountId>
+                  <thir:mandate>
+                     <thir:valid>true</thir:valid>
+                     <thir:reference>${#TestSuite#dealerbpmid}</thir:reference>
+                     <thir:signedDate>2018-10-04Z</thir:signedDate>
+                  </thir:mandate>
+               </thir:bankAccountData>
+            </thir:bankAccounts>
+            <thir:addresses>
+               <!--Zero or more repetitions:-->
+               <thir:address>
+                  <thir:addressId>
+                     <thir:externalSystemId>${#TestSuite#dealerbpmid}</thir:externalSystemId>
+                     <thir:thirdPartyRepositoryId/>
+                  </thir:addressId>
+                  <thir:addressType>
+                     <thir:cmsCode>0001</thir:cmsCode>
+                  </thir:addressType>
+                  <thir:countryCode>
+                     <thir:cmsCode>DE</thir:cmsCode>
+                  </thir:countryCode>
+                  
+                  <thir:streetNumber>2</thir:streetNumber>
+                  <thir:street>Mega Street</thir:street>
+                  <thir:postTown>Small Town</thir:postTown>
+                  <thir:postCode>570026</thir:postCode>
+                  <thir:isPrimaryMailing>true</thir:isPrimaryMailing>
+               </thir:address>
+            </thir:addresses>
+            <thir:gender>M</thir:gender>
+            <thir:dateOfBirth>1991-04-10Z</thir:dateOfBirth>
+            <thir:firstName>GLADSON</thir:firstName>
+            <thir:surname>ANTONY</thir:surname>
+            <thir:directMarketingPost>true</thir:directMarketingPost>
+            <thir:title>Mr</thir:title>
+            <thir:preferredLanguage>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:preferredLanguage>
+            <thir:businessName>DFS DEALER</thir:businessName>
+            <thir:incorporationDate>2010-03-16+01:00</thir:incorporationDate>
+            <thir:politicallyExposedPerson>true</thir:politicallyExposedPerson>
+            <thir:contactPerson>BLACKWELL</thir:contactPerson>
+            <thir:vatNumber>${#TestSuite#dealerbpmid}</thir:vatNumber>
+            <thir:vatCode>0001</thir:vatCode>
+            <thir:isNegativeinfo>false</thir:isNegativeinfo>
+            <thir:taxNumber>${#TestSuite#dealerbpmid}</thir:taxNumber>
+            <thir:isPaymentLocking>false</thir:isPaymentLocking>
+            <thir:emails>
+               <!--Zero or more repetitions:-->
+               <thir:email>
+                  <thir:emailType>
+                     <thir:cmsCode>001</thir:cmsCode>
+                  </thir:emailType>
+                  <thir:emailAddress>Private@Email.ID</thir:emailAddress>
+                  <thir:isPrimaryMailing>true</thir:isPrimaryMailing>
+                  <thir:isConsent>true</thir:isConsent>
+               </thir:email>
+              </thir:emails>
+         </thir:partner>
+         <thir:thirdPartyDetails>
+            <!--Zero or more repetitions:-->
+            <thir:thirdPartyDetail>
+               <thir:dealer>
+                  <thir:thirdPartyType>DEALER</thir:thirdPartyType>
+                  <thir:sourceType>
+                     <thir:cmsCode>1</thir:cmsCode>
+                  </thir:sourceType>
+                  <thir:region>1</thir:region>
+                  <thir:dealerGroupId>1</thir:dealerGroupId>
+                  <thir:dealerId>${#TestSuite#dealerbpmid}</thir:dealerId>
+               </thir:dealer>
+            </thir:thirdPartyDetail>
+         </thir:thirdPartyDetails>
+         <thir:applicationInfo>
+            <!--Optional:-->
+            <com:tenantInfo>
+               <com:tenantCode>149</com:tenantCode>
+            </com:tenantInfo>
+            <!--Optional:-->
+            <com:securityAudit>
+               <com:messageId>1</com:messageId>
+               <com:timestamp>2018-03-05T13:59:00.000Z</com:timestamp>
+               <com:clientAppId>MDM</com:clientAppId>
+               <com:userId>GLADSON</com:userId>
+               <com:clientLanguage>en_GB</com:clientLanguage>
+            </com:securityAudit>
+         </thir:applicationInfo>
+      </thir:updateThirdParty>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="8b2dfb5c-c6bf-4d63-96b2-99a52ccea127"/><con:assertion type="Simple Contains" id="aab73b15-b722-47dc-a046-6bd38637b9ce" name="Contains"><con:configuration><token>success</token><ignoreCase>true</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="1001896e-5790-445c-9138-036d7cc48133"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="request" name="updateThirdParty" id="2680e3c3-06b1-49c3-93c3-842bf66c28c5"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>updateThirdParty</con:operation><con:request name="updateThirdParty" id="83d9c385-f749-4d72-b7b0-4f4fe7874b70"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://${#Project#endpoint}/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:thir="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <thir:updateThirdParty>
+         <thir:partner>
+            <thir:type>I</thir:type>
+            <thir:thirdPartyId>
+               <thir:bpmId>${#TestSuite#bpmid}</thir:bpmId>
+               <thir:entityType>1</thir:entityType>
+            </thir:thirdPartyId>
+            <thir:commsChannels>
+               <thir:contactViaSMS>true</thir:contactViaSMS>
+               <thir:phoneFaxNums>
+                  <thir:telephoneFax>
+                     <thir:phoneFaxNumber>9000000001</thir:phoneFaxNumber>
+                     <thir:type>MOB</thir:type>
+                  </thir:telephoneFax>
+                  <thir:telephoneFax>
+                     <thir:phoneFaxNumber>9000000002</thir:phoneFaxNumber>
+                     <thir:type>HO</thir:type>
+                  </thir:telephoneFax>
+                  <thir:telephoneFax>
+                     <thir:phoneFaxNumber>9000000003</thir:phoneFaxNumber>
+                     <thir:type>BUS</thir:type>
+                  </thir:telephoneFax>
+                  <thir:telephoneFax>
+                     <thir:phoneFaxNumber>9000000004</thir:phoneFaxNumber>
+                     <thir:type>FAX</thir:type>
+                  </thir:telephoneFax>
+               </thir:phoneFaxNums>
+            </thir:commsChannels>
+            <thir:bankAccounts>
+               <thir:bankAccountData>
+                  <thir:bankAccountId>
+                     <thir:bpmId>${#TestSuite#bpmid}</thir:bpmId>
+                     <thir:cmsId>120002</thir:cmsId>
+                  </thir:bankAccountId>
+                  <thir:bankCode>120002</thir:bankCode>
+                  <thir:branchCode>120002</thir:branchCode>
+                  <thir:branchName>Test branch</thir:branchName>
+                  <thir:bankAccountType>1</thir:bankAccountType>
+                  <thir:ibanNumber>DE89370400440532013000</thir:ibanNumber>
+                  <thir:swiftCode>120002</thir:swiftCode>
+                  <thir:sortCode>120002</thir:sortCode>
+                  <thir:mandate>
+                     <thir:valid>true</thir:valid>
+                     <thir:reference>${#TestSuite#bpmid}</thir:reference>
+                     <thir:signedDate>2018-01-08</thir:signedDate>
+                     <thir:company>
+                        <thir:cmsCode>1</thir:cmsCode>
+                     </thir:company>
+                  </thir:mandate>
+                  <thir:bankAccountName>GLADSON ANTONY</thir:bankAccountName>
+                  <thir:bankAccountNumber>120002</thir:bankAccountNumber>
+                  <thir:isDirectDebitBankAccount>true</thir:isDirectDebitBankAccount>
+               </thir:bankAccountData>
+            </thir:bankAccounts>
+            <thir:addresses>
+               <thir:address>
+                  <thir:addressId>
+                     <thir:externalSystemId>${#TestSuite#bpmid}</thir:externalSystemId>
+                     <thir:thirdPartyRepositoryId/>
+                     <thir:cmsId>120002</thir:cmsId>
+                  </thir:addressId>
+                  <thir:addressType>
+                     <thir:cmsCode>7</thir:cmsCode>
+                  </thir:addressType>
+                  <thir:locality>DE</thir:locality>
+                  <thir:countryCode>
+                     <thir:cmsCode>DE</thir:cmsCode>
+                  </thir:countryCode>
+                  <thir:stateProvinceCode>
+                     <thir:cmsCode>DE</thir:cmsCode>
+                  </thir:stateProvinceCode>
+                  <thir:buildingNumber>12</thir:buildingNumber>
+                  <thir:buildingName>Big Building</thir:buildingName>
+                  <thir:subBuildingNumber>44</thir:subBuildingNumber>
+                  <thir:streetNumber>14</thir:streetNumber>
+                  <thir:street>Great Street</thir:street>
+                  <thir:postTown>Big Town</thir:postTown>
+                  <thir:county>Mega County</thir:county>
+                  <thir:postCode>570026</thir:postCode>
+                  <thir:streetType>Main</thir:streetType>
+                  <thir:isPrimaryMailing>true</thir:isPrimaryMailing>
+               </thir:address>
+            </thir:addresses>
+            <thir:gender>M</thir:gender>
+            <thir:maritalStatus>S</thir:maritalStatus>
+            <thir:dateOfBirth>1991-04-10</thir:dateOfBirth>
+            <thir:firstName>GLADSON</thir:firstName>
+            <thir:middleName>MARCUS</thir:middleName>
+            <thir:surname>ANTONY</thir:surname>
+            <thir:directMarketingPost>false</thir:directMarketingPost>
+            <thir:numberOfDependants>2</thir:numberOfDependants>
+            <thir:title>Mr</thir:title>
+            <thir:socialSecurityNumber>120002</thir:socialSecurityNumber>
+            <thir:socialInsuranceNumber>120002</thir:socialInsuranceNumber>
+            <thir:countryOfBirth>DE</thir:countryOfBirth>
+            <thir:driversLic>120002</thir:driversLic>
+            <thir:employer>WCG - India</thir:employer>
+            <thir:employmentStatus>1</thir:employmentStatus>
+            <thir:occupation>TEST ANALYST</thir:occupation>
+            <thir:occupationCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:occupationCode>
+            <thir:annualIncome>20000</thir:annualIncome>
+            <thir:industrySubCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:industrySubCode>
+            <!--<thir:baselClassCode>-->
+            <!--<thir:cmsCode>1</thir:cmsCode>-->
+            <!--</thir:baselClassCode>-->
+            <thir:ctryNationality>
+               <thir:cmsCode>DE</thir:cmsCode>
+            </thir:ctryNationality>
+            <!--<thir:ctryResidence>-->
+            <!--<thir:cmsCode>DE</thir:cmsCode>-->
+            <!--</thir:ctryResidence>-->
+            <thir:preferredLanguage>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:preferredLanguage>
+            <thir:privacyConsent>false</thir:privacyConsent>
+            <thir:identifications>
+               <thir:identification>
+                  <thir:identificationDocumentTypeCode>
+                     <thir:cmsCode>1</thir:cmsCode>
+                  </thir:identificationDocumentTypeCode>
+                  <thir:issuedDate>2018-01-08</thir:issuedDate>
+                  <thir:dateExpired>2028-01-07</thir:dateExpired>
+<!--                  <thir:identificationDocumentNumber>120002</thir:identificationDocumentNumber>-->
+                  <thir:issuingEntity>Passport Office</thir:issuingEntity>
+                  <thir:issuingCountryCode>
+                     <thir:cmsCode>DE</thir:cmsCode>
+                  </thir:issuingCountryCode>
+               </thir:identification>
+            </thir:identifications>
+            <thir:businessName>GLADSON ANTONY</thir:businessName>
+            <!--<thir:customerStatus>-->
+            <!--<thir:cmsCode>00001</thir:cmsCode>-->
+            <!--</thir:customerStatus>-->
+            <thir:incorporationDate>2018-01-01</thir:incorporationDate>
+            <thir:politicallyExposedPerson>false</thir:politicallyExposedPerson>
+            <thir:isStaff>false</thir:isStaff>
+            <thir:isDeceased>false</thir:isDeceased>
+            <thir:contactPerson>BLACKWELL</thir:contactPerson>
+            <thir:vatNumber>120002</thir:vatNumber>
+            <thir:vatCode>3</thir:vatCode>
+            <thir:isNegativeinfo>false</thir:isNegativeinfo>
+            <thir:salutation>Sir</thir:salutation>
+            <thir:organisationType>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:organisationType>
+            <thir:taxNumber>120002</thir:taxNumber>
+            <thir:industryCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:industryCode>
+            <thir:trustVatNo>120002</thir:trustVatNo>
+            <thir:certificateNumber>120002</thir:certificateNumber>
+            <thir:businessTypeDesc>GLADSON ENTERPRISE</thir:businessTypeDesc>
+            <thir:businessTypeCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:businessTypeCode>
+            <thir:residentialStatusCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:residentialStatusCode>
+            <thir:balanceSheetCode>
+               <thir:cmsCode>1</thir:cmsCode>
+            </thir:balanceSheetCode>
+            <thir:isPaymentLocking>false</thir:isPaymentLocking>
+            <thir:intraGrpConsldnCode>120002</thir:intraGrpConsldnCode>
+            <thir:emails>
+               <!--Zero or more repetitions:-->
+               <thir:email>
+                  <thir:emailType>
+                     <thir:cmsCode>001</thir:cmsCode>
+                  </thir:emailType>
+                  <thir:emailAddress>Private@Email.ID</thir:emailAddress>
+                  <thir:isPrimaryMailing>true</thir:isPrimaryMailing>
+                  <thir:isConsent>true</thir:isConsent>
+               </thir:email>
+              </thir:emails>
+            <thir:billingOption>I</thir:billingOption>
+         </thir:partner>
+         <thir:applicationInfo>
+            <com:tenantInfo>
+               <com:tenantCode>149</com:tenantCode>
+            </com:tenantInfo>
+            <com:securityAudit>
+               <com:messageId>1520993459235</com:messageId>
+               <com:timestamp>2018-03-14T02:10:59.235Z</com:timestamp>
+               <com:clientAppId>P1100000001</com:clientAppId>
+               <com:userId>2416</com:userId>
+               <com:clientLanguage>en_US</com:clientLanguage>
+            </com:securityAudit>
+         </thir:applicationInfo>
+      </thir:updateThirdParty>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="8b2dfb5c-c6bf-4d63-96b2-99a52ccea127"/><con:assertion type="Simple Contains" id="5d4e9f7a-63a9-451a-b182-32dc8614a483" name="Contains"><con:configuration><token>success</token><ignoreCase>true</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="1001896e-5790-445c-9138-036d7cc48133"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="jdbc" name="JDBC_DealerRequest1" id="e1cad964-3f6f-4a2b-a32f-8a7d21c42ac9"><con:settings><con:setting id="prettyPrintResponse">true</con:setting></con:settings><con:config xsi:type="con:JdbcRequestTestStep" convertColumnNamesToUpperCase="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dbConnectionName>DBCALMS2CMS</con:dbConnectionName><con:driver>oracle.jdbc.driver.OracleDriver</con:driver><con:connectionString>jdbc:oracle:thin:CMS/password@//mkvsudfsdock06:1522/ORCL</con:connectionString><con:password/><con:connectionProperties/><con:query>UPDATE CMS.LSRCE 
+    SET
+        SRCE_TERRITORY = '149',
+        SRCE_ACTIVE = '1'
+WHERE
+    SRCE_CODE = ${#TestSuite#dealerbpmid}</con:query><con:storedProcedure>false</con:storedProcedure><con:properties/></con:config></con:testStep><con:testStep type="jdbc" name="JDBC_DealerRequest2" id="19b8a460-95dd-47a8-87db-773e2dc9cfb6"><con:settings><con:setting id="prettyPrintResponse">true</con:setting></con:settings><con:config xsi:type="con:JdbcRequestTestStep" convertColumnNamesToUpperCase="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dbConnectionName>DBCALMS2CMS</con:dbConnectionName><con:driver>oracle.jdbc.driver.OracleDriver</con:driver><con:connectionString>jdbc:oracle:thin:CMS/password@//mkvsudfsdock06:1522/ORCL</con:connectionString><con:password/><con:connectionProperties/><con:query>COMMIT</con:query><con:storedProcedure>false</con:storedProcedure><con:properties/></con:config></con:testStep><con:testStep type="request" name="CreateAContract" id="a1ea40ce-43ba-4fb9-8e24-83b9128b6885"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>createContractBundle</con:operation><con:request name="CreateAContract" id="49a926c4-56fb-433d-870d-88f2c8f7e2e4"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://${#Project#endpoint}/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+   <soap:Body>
+      <ns12:createContractBundle xmlns="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes" xmlns:ns2="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract" xmlns:ns3="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ErrorTypes" xmlns:ns4="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Asset" xmlns:ns5="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Fee" xmlns:ns6="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/InvoicePayment" xmlns:ns7="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/ThirdParty" xmlns:ns8="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Subsidy" xmlns:ns9="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Invoice" xmlns:ns10="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/EndOfContract" xmlns:ns11="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Document" xmlns:ns12="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/BundledActivation" xmlns:ns13="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/AssetUsage" xmlns:ns14="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/User" xmlns:ns15="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CreatePaymentBlock" xmlns:ns16="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CustomerExposure">
+         <ns12:contractBundleData>
+            <ns12:application>
+               <ns12:userId>sales5</ns12:userId>
+               <ns12:scoreBandCode>
+                  <ns12:cmsCode>1</ns12:cmsCode>
+               </ns12:scoreBandCode>
+               <ns12:channelCode>MBB_GB</ns12:channelCode>
+               <ns12:brandId>1</ns12:brandId>
+            </ns12:application>
+            <ns12:salesPerson>
+               <ns12:thirdPartyId>
+                  <ns12:bpmId>1220</ns12:bpmId>
+               </ns12:thirdPartyId>
+            </ns12:salesPerson>
+            <ns12:dealer>
+               <ns12:thirdPartyId>
+                  <ns12:bpmId>${#TestSuite#dealerbpmid}</ns12:bpmId>
+               </ns12:thirdPartyId>
+               <ns12:dealershipName>Stern Auto GmbH</ns12:dealershipName>
+               <ns12:dealerId>${#TestSuite#dealerbpmid}</ns12:dealerId>
+            </ns12:dealer>
+            <ns12:customers>
+               <ns12:customer>
+                  <ns12:details>
+                     <ns12:type>I</ns12:type>
+                     <ns12:thirdPartyId>
+                        <ns12:bpmId>${#TestSuite#bpmid}</ns12:bpmId>
+                     </ns12:thirdPartyId>
+                     <ns12:role>A</ns12:role>
+                     <ns12:bankAccounts>
+                        <ns12:bankAccountData>
+                           <ns12:bankAccountId>
+                              <ns12:bpmId>${#TestSuite#bpmid}</ns12:bpmId>
+                           </ns12:bankAccountId>
+                           <ns12:mandate>
+                              <ns12:valid>true</ns12:valid>
+                           </ns12:mandate>
+                           <ns12:bankAccountName>Test Account</ns12:bankAccountName>
+                        </ns12:bankAccountData>
+                     </ns12:bankAccounts>
+                     <ns12:addresses>
+                        <ns12:address>
+                           <ns12:addressId>
+                              <ns12:bpmId>${#TestSuite#bpmid}</ns12:bpmId>
+                           </ns12:addressId>
+                           <ns12:addressType>
+                              <ns12:cmsCode>7</ns12:cmsCode>
+                           </ns12:addressType>
+                           <ns12:locality>FRANKFURT</ns12:locality>
+                           <ns12:buildingNumber>11</ns12:buildingNumber>
+                           <ns12:street>ZUM ERLENGRUND</ns12:street>
+                           <ns12:postCode>60467</ns12:postCode>
+                           <ns12:isPrimaryMailing>true</ns12:isPrimaryMailing>
+                           <ns12:isBillingAddress>true</ns12:isBillingAddress>
+                        </ns12:address>
+                     </ns12:addresses>
+                     <ns12:gender>M</ns12:gender>
+                     <ns12:maritalStatus>S</ns12:maritalStatus>
+                     <ns12:dateOfBirth>1991-04-10</ns12:dateOfBirth>
+                     <ns12:firstName>GLADSON</ns12:firstName>
+                     <ns12:middleName>A</ns12:middleName>
+                     <ns12:surname>APPROVE</ns12:surname>
+                     <ns12:directMarketingPost>false</ns12:directMarketingPost>
+                     <ns12:title>MR</ns12:title>
+                     <ns12:residentialStatusCode>
+                        <ns12:cmsCode>O</ns12:cmsCode>
+                     </ns12:residentialStatusCode>
+                     <ns12:docDeliveryMethod>
+                        <ns12:cmsCode>2</ns12:cmsCode>
+                     </ns12:docDeliveryMethod>
+                  </ns12:details>
+               </ns12:customer>
+            </ns12:customers>
+            <ns12:masterContract>
+               <ns12:contractNumber>
+                  <ns12:externalContractNumber>${#TestSuite#vin}</ns12:externalContractNumber>
+               </ns12:contractNumber>
+               <ns12:bundles>
+                  <ns12:bundle>
+                     <ns12:identifier>1</ns12:identifier>
+                     <ns12:contracts>
+                        <ns12:contract>
+                           <ns12:identifier>1</ns12:identifier>
+                           <ns12:componentIdentifiers>
+                            <componentIdentifier>${#TestSuite#componentidentifier}</componentIdentifier>
+                            <originalComponentIdentifier>${#TestSuite#componentidentifier}</originalComponentIdentifier>
+                           </ns12:componentIdentifiers>
+                           <ns12:proposalId>9500001026</ns12:proposalId>
+                           <ns12:bundlePrimary>true</ns12:bundlePrimary>
+                           <ns12:invoiceOptions>
+                              <ns12:invoicing>true</ns12:invoicing>
+                              <ns12:invoiceType>I</ns12:invoiceType>
+                              <ns12:invoiceGroupName>TESTCONSOLIDATE</ns12:invoiceGroupName>
+                              <ns12:paymentTerm>0</ns12:paymentTerm>
+                           </ns12:invoiceOptions>
+                           <ns12:contractOptions>
+                              <ns12:isRegulated>false</ns12:isRegulated>
+                              <ns12:paymentFacility>4</ns12:paymentFacility>
+                           </ns12:contractOptions>
+                           <ns12:reportingAndRelations>
+                              <ns12:country>DE</ns12:country>
+                              <ns12:company>
+                                 <ns12:cmsCode>1</ns12:cmsCode>
+                              </ns12:company>
+                              <ns12:region>
+                                 <ns12:cmsCode>1</ns12:cmsCode>
+                              </ns12:region>
+                              <ns12:branch>
+                                 <ns12:cmsCode>1</ns12:cmsCode>
+                              </ns12:branch>
+                              <ns12:businessDivision>
+                                 <ns12:cmsCode>1</ns12:cmsCode>
+                              </ns12:businessDivision>
+                              <ns12:businessUnit>
+                                 <ns12:externalCode>0200</ns12:externalCode>
+                              </ns12:businessUnit>
+                              
+                              <ns12:purpose>
+                                 <ns12:cmsCode>1</ns12:cmsCode>
+                              </ns12:purpose>
+                           </ns12:reportingAndRelations>
+                           <ns12:directDebit>
+                              <ns12:frequency>B</ns12:frequency>
+                              <ns12:frequencyDay1>10</ns12:frequencyDay1>
+                              <ns12:frequencyDay2>25</ns12:frequencyDay2>
+                           </ns12:directDebit>
+                           <ns12:dates>
+                              <ns12:startDate>${#TestSuite#cmsIDD}</ns12:startDate>
+                           </ns12:dates>
+<!--                           <ns12:billingDay>10</ns12:billingDay>
+-->
+                           <ns12:term>12</ns12:term>
+                           <ns12:interestRates>
+                              <ns12:apr>6.1574</ns12:apr>
+                              <ns12:customerNominalRate>5.9901</ns12:customerNominalRate>
+                              <ns12:customerTrueRate>6.1573</ns12:customerTrueRate>
+                           </ns12:interestRates>
+                           <ns12:commissions>
+                              <ns12:commission>
+                                 <ns12:commissionType>
+                                    <ns12:cmsCode>2</ns12:cmsCode>
+                                 </ns12:commissionType>
+                                 <ns12:amount>
+                                    <ns12:grossAmount>118.39</ns12:grossAmount>
+                                    <ns12:netAmount>99.49</ns12:netAmount>
+                                    <ns12:taxAmount>18.90</ns12:taxAmount>
+                                    <ns12:taxCode>
+                                       <ns12:cmsCode>6000</ns12:cmsCode>
+                                    </ns12:taxCode>
+                                    <ns12:taxRate>19.00</ns12:taxRate>
+                                 </ns12:amount>
+                                 <ns12:commissionDate>2018-07-10Z</ns12:commissionDate>
+                                 
+                                 
+                              </ns12:commission>
+                           </ns12:commissions>
+                           <ns12:finance>
+                              <ns12:financePlanReferenceCode>
+                                 <ns12:cmsCode>5</ns12:cmsCode>
+                                 <ns12:externalCode>F5</ns12:externalCode>
+                              </ns12:financePlanReferenceCode>
+                              <ns12:financeProductCode>
+                                 <ns12:cmsCode>5</ns12:cmsCode>
+                                 <ns12:externalCode>F5</ns12:externalCode>
+                              </ns12:financeProductCode>
+                              <ns12:isArrears>false</ns12:isArrears>
+                              <ns12:isLease>true</ns12:isLease>
+                              <ns12:isStructured>true</ns12:isStructured>
+                              <ns12:isMainQuote>true</ns12:isMainQuote>
+                              <ns12:settlement>0.00</ns12:settlement>
+                              <ns12:amounts>
+                                 <ns12:amountPayable>
+                                    <ns12:total>
+                                       <ns12:grossAmount>20778.54</ns12:grossAmount>
+                                       <ns12:netAmount>17460.96</ns12:netAmount>
+                                    </ns12:total>
+                                 </ns12:amountPayable>
+                                 <ns12:totalInterest>
+                                    <ns12:grossAmount>614.20</ns12:grossAmount>
+                                    <ns12:netAmount>614.20</ns12:netAmount>
+                                 </ns12:totalInterest>
+                                 <ns12:grossCost>
+                                    <ns12:grossAmount>19346.76</ns12:grossAmount>
+                                    <ns12:netAmount>19346.76</ns12:netAmount>
+                                 </ns12:grossCost>
+                                 <ns12:depositSupport>
+                                    <ns12:grossAmount>0.00</ns12:grossAmount>
+                                    <ns12:netAmount>0.00</ns12:netAmount>
+                                 </ns12:depositSupport>
+                                 <ns12:tradeIn>
+                                    <ns12:grossAmount>0.00</ns12:grossAmount>
+                                    <ns12:netAmount>0.00</ns12:netAmount>
+                                 </ns12:tradeIn>
+                                 <ns12:deposits>
+                                    <ns12:deposit>
+                                       <ns12:type>1</ns12:type>
+                                       <ns12:amount>
+                                          <ns12:grossAmount>0.00</ns12:grossAmount>
+                                          <ns12:netAmount>0.00</ns12:netAmount>
+                                       </ns12:amount>
+                                    </ns12:deposit>
+                                 </ns12:deposits>
+                                 <ns12:residuals>
+                                    <ns12:residual>
+                                       <ns12:type>
+                                          <ns12:cmsCode>1</ns12:cmsCode>
+                                       </ns12:type>
+                                       <ns12:value>
+                                          <ns12:grossAmount>0</ns12:grossAmount>
+                                          <ns12:netAmount>0</ns12:netAmount>
+                                       </ns12:value>
+                                       <!--<ns12:rvPercentage>12.92</ns12:rvPercentage>-->
+                                       <ns12:rvPercentage>0</ns12:rvPercentage>
+                                    </ns12:residual>
+                                 </ns12:residuals>
+                                 <ns12:balloon>
+                                    <ns12:balloonAmount>
+                                       <ns12:grossAmount>0.00</ns12:grossAmount>
+                                       <ns12:netAmount>0.00</ns12:netAmount>
+                                    </ns12:balloonAmount>
+                                    <ns12:balloonPercentage>0.00</ns12:balloonPercentage>
+                                 </ns12:balloon>
+                              </ns12:amounts>
+                              <ns12:taxTreatment>
+                                 <ns12:taxCode>6000</ns12:taxCode>
+                              </ns12:taxTreatment>
+                              
+                              <ns12:isPromo>false</ns12:isPromo>
+                              <ns12:isNetSettlements>false</ns12:isNetSettlements>
+                              <ns12:rvDealerOriginated>false</ns12:rvDealerOriginated>
+                           </ns12:finance>
+                           <ns12:endOfContractOptions>
+                              <ns12:endOfContractOption>
+                                 <ns12:endOfContractparties>
+                                    <ns12:endOfContractparty>
+                                       <ns12:eocPartyId>
+                                          <ns12:bpmId>${#TestSuite#dealerbpmid}</ns12:bpmId>
+                                          <ns12:entityType>9</ns12:entityType>
+                                       </ns12:eocPartyId>
+                                       <ns12:optionToBuy>
+                                          <ns12:cmsCode>1</ns12:cmsCode>
+                                       </ns12:optionToBuy>
+                                       <ns12:buybackSetValue>
+                                          <ns12:cmsCode>1</ns12:cmsCode>
+                                       </ns12:buybackSetValue>
+                                    </ns12:endOfContractparty>
+                                 </ns12:endOfContractparties>
+                                 <ns12:returnLocation>
+                                    <ns12:bpmId>${#TestSuite#dealerbpmid}</ns12:bpmId>
+                                 </ns12:returnLocation>
+                                 <ns12:autoProlongation>false</ns12:autoProlongation>
+                              </ns12:endOfContractOption>
+                           </ns12:endOfContractOptions>
+                           <ns12:schedule>
+                              <!--<ns12:numberOfPaymentsInAdvance>2</ns12:numberOfPaymentsInAdvance>-->
+                              <ns12:payments>
+                                 <ns12:payment>
+                                    <ns12:numberOfPayments>12</ns12:numberOfPayments>
+                                    <ns12:amount>
+                                       <ns12:grossAmount>1731.55</ns12:grossAmount>
+                                       <ns12:netAmount>1455.08</ns12:netAmount>
+                                       <ns12:taxAmount>277.47</ns12:taxAmount>
+                                       <ns12:taxCode>
+                                          <ns12:cmsCode>6000</ns12:cmsCode>
+                                       </ns12:taxCode>
+                                       <ns12:taxRate>19.00</ns12:taxRate>
+                                    </ns12:amount>
+                                 </ns12:payment>
+                              </ns12:payments>
+                           </ns12:schedule>
+                           <ns12:assets>
+                              <ns12:asset>
+                                 <ns12:listPrice>
+                                    <ns12:grossAmount>19346.76</ns12:grossAmount>
+                                    <ns12:netAmount>19346.76</ns12:netAmount>
+                                    <ns12:taxAmount>0.00</ns12:taxAmount>
+                                    <ns12:taxRate>0.00</ns12:taxRate>
+                                 </ns12:listPrice>
+                                 <ns12:salePrice>
+                                    <ns12:grossAmount>19346.76</ns12:grossAmount>
+                                    <ns12:netAmount>19346.76</ns12:netAmount>
+                                    <ns12:taxAmount>0.00</ns12:taxAmount>
+                                 </ns12:salePrice>
+                                 <ns12:totalCost>19346.76</ns12:totalCost>
+                                 <ns12:assetReferenceCode>
+                                    <ns12:cmsCode>9590</ns12:cmsCode>
+                                 </ns12:assetReferenceCode>
+                                 <ns12:rvSupport>
+                                    <ns12:grossAmount>0.00</ns12:grossAmount>
+                                    <ns12:netAmount>0.00</ns12:netAmount>
+                                 </ns12:rvSupport>
+                                 <ns12:registrationNumber>${#TestSuite#vin}</ns12:registrationNumber>
+                                 <ns12:registrationDate>2018-07-10Z</ns12:registrationDate>
+                                 <ns12:vin>${#TestSuite#vin}</ns12:vin>
+                                 <ns12:assetCategory>104</ns12:assetCategory>
+                                 <ns12:isNew>true</ns12:isNew>
+                                 <ns12:vehicle>
+                                    <ns12:makeDesc>MERCEDES</ns12:makeDesc>
+                                    <ns12:modelDesc>CITAN</ns12:modelDesc>
+                                    <!--<ns12:modelDesc>123456789012345678901234567890123456789012345678901234567890</ns12:modelDesc>-->
+                                    <ns12:variantDesc>Citan 1.2 112 S&amp;S Kombi Friendly</ns12:variantDesc>
+                                    <ns12:externalVehicleCode>
+                                       <ns12:externalCode>097266201409</ns12:externalCode>
+                                    </ns12:externalVehicleCode>
+                                    <ns12:co2Emission>140.00</ns12:co2Emission>
+                                    <ns12:hpiCode>
+                                       <ns12:cmsCode>OT</ns12:cmsCode>
+                                    </ns12:hpiCode>
+                                    <ns12:capId>9590</ns12:capId>
+                                    <ns12:fuelTypeCode>
+                                       <ns12:cmsCode>P</ns12:cmsCode>
+                                    </ns12:fuelTypeCode>
+                                    <ns12:taxPowerRating>0.0</ns12:taxPowerRating>
+                                    <ns12:envRatingAmount>0.00</ns12:envRatingAmount>
+                                 </ns12:vehicle>
+                                 
+                                 <ns12:partExchanges>
+                                    <ns12:partExchange>
+                                       <ns12:amount>
+                                          <ns12:grossAmount>0.00</ns12:grossAmount>
+                                          <ns12:netAmount>0.00</ns12:netAmount>
+                                       </ns12:amount>
+                                    </ns12:partExchange>
+                                 </ns12:partExchanges>
+                                 
+                                 <ns12:assetCMSType>M</ns12:assetCMSType>
+                                 <ns12:assetDummy>false</ns12:assetDummy>
+                                 <ns12:usage>
+                                    <ns12:unitOfMeasure>KM</ns12:unitOfMeasure>
+                                    <ns12:initialMileage>200</ns12:initialMileage>
+                                    <ns12:annualMileage>10000</ns12:annualMileage>
+                                    <ns12:usageCharges>
+                                       <ns12:chargeDetails>
+                                          <ns12:chargeType>1</ns12:chargeType>
+                                          <ns12:amount>2.9</ns12:amount>
+                                          <ns12:calculationType>F</ns12:calculationType>
+                                       </ns12:chargeDetails>
+                                       <ns12:chargeDetails>
+                                          <ns12:chargeType>2</ns12:chargeType>
+                                          <ns12:amount>1.93</ns12:amount>
+                                          <ns12:calculationType>F</ns12:calculationType>
+                                       </ns12:chargeDetails>
+                                    </ns12:usageCharges>
+                                 </ns12:usage>
+                                 <ns12:orderNumber>${#TestSuite#order}</ns12:orderNumber>
+                                 <ns12:assetUsageType>
+                                    <ns12:cmsCode>01</ns12:cmsCode>
+                                    <ns12:externalCode>01</ns12:externalCode>
+                                 </ns12:assetUsageType>
+                              </ns12:asset>
+                           </ns12:assets>
+                           <ns12:proposalSource>CALMS</ns12:proposalSource>
+                        </ns12:contract>
+                     </ns12:contracts>
+                     <ns12:blendRate>6.1579</ns12:blendRate>
+                  </ns12:bundle>
+               </ns12:bundles>
+               <ns12:blendRate>6.1579</ns12:blendRate>
+               <ns12:customAttributes>
+                  <ns12:customAttribute>
+                     <ns12:key>
+                        <ns12:cmsCode>GPA</ns12:cmsCode>
+                     </ns12:key>
+                     <ns12:value>true</ns12:value>
+                  </ns12:customAttribute>
+               </ns12:customAttributes>
+            </ns12:masterContract>
+         </ns12:contractBundleData>
+         <ns12:applicationInfo>
+            <securityAudit>
+               <messageId>1526648627922</messageId>
+               <timestamp>2018-05-16T06:30:27.925+01:00</timestamp>
+               <clientAppId>P1100131396</clientAppId>
+               <userId>4550</userId>
+               <clientLanguage>en_US</clientLanguage>
+            </securityAudit>
+         </ns12:applicationInfo>
+      </ns12:createContractBundle>
+   </soap:Body>
+</soap:Envelope>]]></con:request><con:assertion type="SOAP Response" id="f9f33e64-d149-499c-b948-5efe1ae7c7dc"/><con:assertion type="Simple Contains" id="c67e7038-24ab-48d6-9bfc-ed0e4ce8c4c8" name="Contains"><con:configuration><token>success</token><ignoreCase>true</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="1001896e-5790-445c-9138-036d7cc48133"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script" id="77557a7b-72dd-4a98-b5a3-370b60bb9813"><con:settings/><con:config><script>import com.eviware.soapui.model.testsuite.TestRunner.Status
+def groovyUtils = new com.eviware.soapui.support.GroovyUtils(context)
+import com.eviware.soapui.support.XmlHolder
+
+
+log.info"################## Get Contract Details  #####################"
+def response = groovyUtils.getXmlHolder ("CreateAContract#Response");
+def request = groovyUtils.getXmlHolder ("CreateAContract#Request");
+def contractNumber = response.getNodeValue ("//*:cmsId") ;
+def externalContractNumber = response.getNodeValue ("//*:externalContractNumber") ;
+def activationStatus = response.getNodeValue("//*:status");
+
+testRunner.testCase.testSuite.project.setPropertyValue("cmsID", contractNumber);
+testRunner.testCase.testSuite.project.setPropertyValue("contractNumberEOT",contractNumber);
+log.info("contractNumber: " +  contractNumber);
+testRunner.testCase.testSuite.project.setPropertyValue("externalContractNumberEOT", externalContractNumber);
+log.info("externalContractNumberEOT: " +  externalContractNumber);
+Thread.sleep(10000)
+log.info"################## Running JDBC Request To Get CMSID #####################"
+testRunner.runTestStepByName("JDBC_Request_toGet_CMSID")
+Thread.sleep(10000)
+def responseToGetCMSID = groovyUtils.getXmlHolder ("JDBC_Request_toGet_CMSID#ResponseAsXml");
+def cmsID = responseToGetCMSID.getNodeValue ("//MCREF_FEE_CONTRACT") ;
+testRunner.testCase.testSuite.project.setPropertyValue("cmsID",cmsID);
+log.info "Generated CMSID = "+cmsID
+log.info"################## Completed JDBC Request To Get CMSID #####################"
+
+log.info"################## Running JDBC Request To get list of invoices generated #####################"
+
+testRunner.runTestStepByName("JDBC_Request")
+def jdbcResponse = groovyUtils.getXmlHolder ("JDBC_Request#ResponseAsXml")
+
+rowcount  =jdbcResponse["count(//Results/ResultSet/Row/@rowNumber)"]
+Integer convertedRowCount = Integer.parseInt(rowcount)
+log.info "		Rowcount from JDBC = " + convertedRowCount
+
+if(convertedRowCount ==0){
+	log.info"******************** ERROR JDBC Row Count is = 0 *******************"
+}
+for(int i=1;i&lt;=convertedRowCount;i++)
+{
+	
+	log.info("Running create invoice paymet for "+i+" Loop");
+	
+	def invoiceNumber = jdbcResponse.getNodeValue ("//Row[@rowNumber='"+i+"']/LONINV_INVOICE_NO") ;
+	testRunner.testCase.testSuite.setPropertyValue("invoiceNumber",invoiceNumber);
+	log.info("INVOICE NUMBER = "+invoiceNumber);
+
+	def openItemNumber = jdbcResponse.getNodeValue ("//Row[@rowNumber='"+i+"']/LONINV_OPEN_ITEM_REF") ;
+	testRunner.testCase.testSuite.setPropertyValue("openItemNumber",openItemNumber);
+	log.info("OpenItem NUMBER = "+openItemNumber);
+
+	def invoiceTotalPaidGross = jdbcResponse.getNodeValue("//Row[@rowNumber='"+i+"']/GROSSTOTAL");
+	testRunner.testCase.testSuite.setPropertyValue("invoiceTotalPaidGross",invoiceTotalPaidGross);
+	log.info("GROSS = "+invoiceTotalPaidGross);
+	
+
+	def invoiceTotalPaidVat = jdbcResponse.getNodeValue("//Row[@rowNumber='"+i+"']/GSTTOTAL");
+	testRunner.testCase.testSuite.setPropertyValue("invoiceTotalPaidVat",invoiceTotalPaidVat);
+	log.info("GST/VAT = "+invoiceTotalPaidVat);
+
+	double convertedInvoiceTotalPaidGross = Double.parseDouble(invoiceTotalPaidGross);
+	double convertedinvoiceTotalPaidVat = Double.parseDouble(invoiceTotalPaidVat);
+	double invoiceTotalPaidNet = convertedInvoiceTotalPaidGross-convertedinvoiceTotalPaidVat;
+	def convertedInvoiceTotalPaidNet = (String)invoiceTotalPaidNet;
+	testRunner.testCase.testSuite.setPropertyValue("invoiceTotalPaidNet",convertedInvoiceTotalPaidNet);
+	log.info("NET = "+convertedInvoiceTotalPaidNet);
+
+	def effectiveDate = jdbcResponse.getNodeValue("//Row[@rowNumber='"+i+"']/LONINV_DUE_DATE");
+	if (!effectiveDate.equals(0)){
+	Date  newdate = new Date().parse("yyyymmdd", effectiveDate)
+	def convertedEffectiveDate = newdate.format("yyyy-mm-dd")
+	testRunner.testCase.testSuite.setPropertyValue("effectiveDate",convertedEffectiveDate);
+	log.info("EFFECTIVE DATE = "+convertedEffectiveDate);
+	}
+	if (invoiceTotalPaidGross.toDouble()>0 &amp;&amp; !effectiveDate.equals(0)){
+		testRunner.runTestStepByName( "createInvoicePayment")
+		testRunner.runTestStepByName("getInvoiceDetails")
+	}else{
+		log.info("SKIPPING DUE TO NEGATIVE/ ZERO GROSS VALUE LOOP = "+i);
+	}
+	log.info("----------------------------------------------");
+}</script></con:config></con:testStep><con:testStep type="jdbc" name="JDBC_Request_toGet_CMSID" id="e36edeae-8fb7-4d57-b8a1-e0a94d2972ee" disabled="true"><con:settings><con:setting id="prettyPrintResponse">true</con:setting></con:settings><con:config xsi:type="con:JdbcRequestTestStep" convertColumnNamesToUpperCase="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dbConnectionName>DBCALMS2CMS</con:dbConnectionName><con:driver>oracle.jdbc.driver.OracleDriver</con:driver><con:connectionString>jdbc:oracle:thin:CMS/password@//mkvsudfsdock06:1522/ORCL</con:connectionString><con:password/><con:connectionProperties/><con:query>select MCREF_FEE_CONTRACT from CMS.LMCREF where MCREF_REFERENCE = :contractNumber
+</con:query><con:storedProcedure>false</con:storedProcedure><con:properties><con:property><con:name>contractNumber</con:name><con:value>${#Project#cmsID}</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="jdbc" name="JDBC_Request" id="8d143212-e898-4df5-948e-239403511b37" disabled="true"><con:settings><con:setting id="prettyPrintResponse">true</con:setting></con:settings><con:config xsi:type="con:JdbcRequestTestStep" convertColumnNamesToUpperCase="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dbConnectionName>DBCALMS2CMS</con:dbConnectionName><con:driver>oracle.jdbc.driver.OracleDriver</con:driver><con:connectionString>jdbc:oracle:thin:CMS/password@//mkvsudfsdock06:1522/ORCL</con:connectionString><con:password/><con:connectionProperties/><con:query>select LONINV_INVOICE_NO,LONINV_OPEN_ITEM_REF,Loninv_Due_Date, sum(LONINV_DUE_GST) as GSTTotal,sum(LONINV_DUE_GROSS) as GrossTotal from CMS.lloninv where loninv_loan = :contractNumber group by LONINV_INVOICE_NO,LONINV_OPEN_ITEM_REF,Loninv_Due_Date order by LONINV_OPEN_ITEM_REF</con:query><con:storedProcedure>false</con:storedProcedure><con:properties><con:property><con:name>contractNumber</con:name><con:value>${#Project#cmsID}</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="request" name="createInvoicePayment" id="1d3f2a6b-17ba-4f16-9c3d-26f2f85db8d8" disabled="true"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>createInvoicePayment</con:operation><con:request name="createInvoicePayment" id="fcda7fcd-f3a3-4852-be2a-fa211ba07f4a"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://${#Project#endpoint}/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:inv="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/InvoicePayment" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <inv:createInvoicePayment>
+         <inv:createInvoicePaymentRequest>
+            <inv:createInvoicePaymentSummary>
+               <!--Optional:-->
+               <inv:invoiceNumber>${#TestSuite#invoiceNumber}</inv:invoiceNumber>
+               
+               <inv:effectiveDate>${#TestSuite#effectiveDate}</inv:effectiveDate>
+               <inv:paymentReceivedDate>${#TestSuite#effectiveDate}</inv:paymentReceivedDate>
+               <!--Optional:-->
+               <inv:externalContractNumber>${#Project#contractNumberEOT}</inv:externalContractNumber>
+               <inv:transactionType>Payment</inv:transactionType>
+               <inv:country>DEU</inv:country>
+               <!--Optional:-->
+               <inv:invoiceTotalPaidGross>${#TestSuite#invoiceTotalPaidGross}</inv:invoiceTotalPaidGross>
+               <!--Optional:-->
+               <inv:invoiceTotalPaidNet>${#TestSuite#invoiceTotalPaidNet}</inv:invoiceTotalPaidNet>
+               <!--Optional:-->
+               <inv:invoiceTotalPaidVat>${#TestSuite#invoiceTotalPaidVat}</inv:invoiceTotalPaidVat>
+               <inv:paymentCurrency>EUR</inv:paymentCurrency>
+               <!--Optional:-->
+               <inv:paymentDescription>Instalment</inv:paymentDescription>
+            </inv:createInvoicePaymentSummary>
+            <inv:listOfPaymentDetails/>
+         </inv:createInvoicePaymentRequest>
+         <inv:applicationInfo>
+            <!--Optional:-->
+            <com:tenantInfo>
+               <com:tenantCode>9</com:tenantCode>
+            </com:tenantInfo>
+            <!--Optional:-->
+            <com:securityAudit>
+               <com:messageId>1458582986089</com:messageId>
+               <com:timestamp>2016-03-21T17:56:26.089Z</com:timestamp>
+               <com:clientAppId>P021728089</com:clientAppId>
+               <com:userId>NA</com:userId>
+               <com:clientLanguage>en_AU</com:clientLanguage>
+            </com:securityAudit>
+         </inv:applicationInfo>
+      </inv:createInvoicePayment>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="27ac06b3-ae5d-4931-a7cd-7d8297390edb"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="1001896e-5790-445c-9138-036d7cc48133"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="groovy" name="getInvoiceDetails" id="762a866c-e9f4-4c86-848e-9ba63ceef7b0" disabled="true"><con:settings/><con:config><script>import com.eviware.soapui.model.testsuite.TestRunner.Status
+
+def groovyUtils = new com.eviware.soapui.support.GroovyUtils(context) ;
+
+def response = groovyUtils.getXmlHolder ("createInvoicePayment#Response");
+def request = groovyUtils.getXmlHolder ("createInvoicePayment#Request");
+
+def responseStatus = response.getNodeValue ("//*:responseStatus") ;
+log.info("Response Status= "+responseStatus);
+
+//Writing it to a file
+def projectDirectoryPath = (context.expand('${projectDir}')).replace("\\","/") + "/CreditTestData";
+def resultDir = new File(projectDirectoryPath);
+if(!resultDir.exists()) 
+{
+   resultDir.mkdirs();
+}
+
+def inputFile = new File(resultDir, "CreateInvoiceDetails.txt");
+fos = new FileOutputStream( inputFile, false );
+pw = new PrintWriter( fos );
+
+
+   
+// Check if a file with same name exisits in the folder.
+if(inputFile.exists())
+{
+	pw.write("responseStatus:" +  responseStatus);
+	pw.println("");
+	}
+pw.close();
+fos.close();
+</script></con:config></con:testStep><con:testStep type="jdbc" name="getInvoiceNumber" id="c2a65da9-c76e-48ca-b421-ee4ae376a60a"><con:settings><con:setting id="prettyPrintResponse">true</con:setting></con:settings><con:config xsi:type="con:JdbcRequestTestStep" convertColumnNamesToUpperCase="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dbConnectionName>DBCALMS2CMS</con:dbConnectionName><con:driver>oracle.jdbc.driver.OracleDriver</con:driver><con:connectionString>jdbc:oracle:thin:CMS/password@//mkvsudfsdock06:1522/ORCL</con:connectionString><con:password/><con:connectionProperties/><con:query>select LONINV_INVOICE_NO, LONINV_OPEN_ITEM_REF,Loninv_Due_Date, sum(LONINV_DUE_GST) as GSTTotal,sum(LONINV_DUE_GROSS) as GrossTotal from CMS.lloninv 
+where loninv_loan = :contractNumber
+and LONINV_STATUS = 30
+and ROWNUM = 1
+group by  LONINV_INVOICE_NO, LONINV_OPEN_ITEM_REF,Loninv_Due_Date 
+order by LONINV_OPEN_ITEM_REF</con:query><con:storedProcedure>false</con:storedProcedure><con:properties><con:property><con:name>contractNumber</con:name><con:value>${#Project#cmsID}</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="groovy" name="setInvoiceNumber" id="30eee7f2-1697-4b81-a1a1-83a7b07e3352"><con:settings/><con:config><script>import com.eviware.soapui.model.testsuite.TestRunner.Status
+def groovyUtils = new com.eviware.soapui.support.GroovyUtils(context)
+import com.eviware.soapui.support.XmlHolder
+
+log.info"################## Running JDBC Request To Get CMSID #####################"
+def externalContractNumber = context.expand( '${#Project#externalContractNumberEOT}' ) 
+log.info("External Contract Number = "+externalContractNumber);
+def response = groovyUtils.getXmlHolder ("getInvoiceNumber#ResponseAsXml");
+def invoiceNumber = response.getNodeValue ("//LONINV_INVOICE_NO") ;
+testRunner.testCase.testSuite.setPropertyValue("invoiceNumber",invoiceNumber);
+log.info("INVOICE NUMBER = "+invoiceNumber);
+
+def invoiceTotalPaidGross = response.getNodeValue("//GROSSTOTAL");
+testRunner.testCase.testSuite.setPropertyValue("invoiceTotalPaidGross",invoiceTotalPaidGross);
+log.info("GROSS = "+invoiceTotalPaidGross);
+
+def invoiceTotalPaidVat = response.getNodeValue("//GSTTOTAL");
+testRunner.testCase.testSuite.setPropertyValue("invoiceTotalPaidVat",invoiceTotalPaidVat);
+log.info("GST/VAT = "+invoiceTotalPaidVat);
+
+double convertedInvoiceTotalPaidGross = Double.parseDouble(invoiceTotalPaidGross);
+double convertedinvoiceTotalPaidVat = Double.parseDouble(invoiceTotalPaidVat);
+double invoiceTotalPaidNet = convertedInvoiceTotalPaidGross-convertedinvoiceTotalPaidVat;
+def convertedInvoiceTotalPaidNet = (String)invoiceTotalPaidNet;
+testRunner.testCase.testSuite.setPropertyValue("invoiceTotalPaidNet",convertedInvoiceTotalPaidNet);
+log.info("NET = "+convertedInvoiceTotalPaidNet);
+
+def effectiveDate = response.getNodeValue("//LONINV_DUE_DATE");
+
+if (!effectiveDate.equals(0)){
+Date  newdate = new Date().parse("yyyymmdd", effectiveDate)
+def convertedCMSIDDYear = newdate.format("yyyy")
+Integer convertedCMSIDD1 = Integer.parseInt(convertedCMSIDDYear)
+
+def convertedCMSIDDMonth = newdate.format("mm")
+Integer convertedCMSIDD2 = Integer.parseInt(convertedCMSIDDMonth)
+nvtdDate = convertedCMSIDD1+""+convertedCMSIDD2
+testRunner.testCase.testSuite.setPropertyValue("NVTLDate",nvtdDate);
+log.info "nvtdDate = "+nvtdDate
+
+def convertedEffectiveDate = newdate.format("yyyy-mm-dd")
+testRunner.testCase.testSuite.setPropertyValue("effectiveDate",convertedEffectiveDate);
+log.info("EFFECTIVE DATE = "+convertedEffectiveDate);
+}
+</script></con:config></con:testStep><con:testStep type="request" name="createContractReversal" id="6e65aea8-a32a-427f-a4ae-a701050c3c19"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>createContractReversal</con:operation><con:request name="createContractReversal" id="dc952ab3-cf22-4eac-a560-2f96447e9a39"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvcalms01/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:con="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <con:createContractReversal>
+         <con:externalContractNumber>${#Project#externalContractNumberEOT}</con:externalContractNumber>
+         <con:type>PaymentFailure</con:type>
+         <con:totalTransactionAmount>${#TestSuite#invoiceTotalPaidNet}</con:totalTransactionAmount><con:effectiveDate>${#TestSuite#effectiveDate}</con:effectiveDate>
+         <con:invoiceNumber>${#TestSuite#invoiceNumber}</con:invoiceNumber>
+         
+         <con:dishonourReasonCode>BE04</con:dishonourReasonCode>
+         <con:territoryCode>DEU</con:territoryCode>
+         <con:applicationInfo>
+            <com:tenantInfo xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+               <com:tenantCode>DE</com:tenantCode>
+            </com:tenantInfo>
+            <com:securityAudit xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+               <com:messageId>1523598600340</com:messageId>
+               <com:timestamp>2018-04-13T05:50:00.340Z</com:timestamp>
+               <com:clientAppId>P1100000001</com:clientAppId>
+               <com:userId>4512</com:userId>
+               <com:clientLanguage>en_AU</com:clientLanguage>
+            </com:securityAudit>
+         </con:applicationInfo>
+      </con:createContractReversal>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="9233c333-fc02-48c5-8a92-7dcf3ff28836"/><con:assertion type="Simple Contains" id="e1387dbe-aad6-4c97-8ba8-e2ed5adf8e23" name="Contains"><con:configuration><token>true</token><ignoreCase>true</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="1001896e-5790-445c-9138-036d7cc48133"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="jdbc" name="checkInvoiceDishonered" id="41e103ab-b93b-4b8e-a6d9-08568bc0ccf5"><con:settings><con:setting id="prettyPrintResponse">true</con:setting></con:settings><con:config xsi:type="con:JdbcRequestTestStep" convertColumnNamesToUpperCase="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dbConnectionName>DBCALMS2CMS</con:dbConnectionName><con:driver>oracle.jdbc.driver.OracleDriver</con:driver><con:connectionString>jdbc:oracle:thin:CMS/password@//mkvsudfsdock06:1522/ORCL</con:connectionString><con:password/><con:connectionProperties/><con:query>select LONINV_STATUS,
+LONINV_PRODUCED,LONINV_PAYER_COLLECTION
+from CMS.LLONINV
+WHERE LONINV_INVOICE_NO = :invoiceNumber</con:query><con:storedProcedure>false</con:storedProcedure><con:properties><con:property><con:name>invoiceNumber</con:name><con:value>${#TestSuite#invoiceNumber}</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="jdbc" name="checkInvoiceDishonered-LNVTL" id="309622b4-9c41-4711-b56a-a3833b9d5584"><con:settings><con:setting id="prettyPrintResponse">true</con:setting></con:settings><con:config xsi:type="con:JdbcRequestTestStep" convertColumnNamesToUpperCase="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:dbConnectionName>DBCALMS2CMS</con:dbConnectionName><con:driver>oracle.jdbc.driver.OracleDriver</con:driver><con:connectionString>jdbc:oracle:thin:CMS/password@//mkvsudfsdock06:1522/ORCL</con:connectionString><con:password/><con:connectionProperties/><con:query>select NVTL_RECORD_STATUS from CMS.LNVTL
+WHERE NVTL_LOAN = :cmsId
+AND NVTL_DUE_CCYYMM = :nvtlDueDate</con:query><con:storedProcedure>false</con:storedProcedure><con:properties><con:property><con:name>nvtlDueDate</con:name><con:value>${#TestSuite#NVTLDate}</con:value></con:property><con:property><con:name>cmsId</con:name><con:value>${#Project#cmsID}</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="groovy" name="verifyInvoiceReversal" id="f29cc280-2fe4-4eee-9fc5-ac2fb6a01d0d"><con:settings/><con:config><script>import com.eviware.soapui.model.testsuite.TestRunner.Status
+def groovyUtils = new com.eviware.soapui.support.GroovyUtils(context)
+import com.eviware.soapui.support.XmlHolder
+
+log.info"################## Verify Invoice Reversal #####################"
+
+def invoiceNumber = context.expand( '${#TestSuite#invoiceNumber}' ) 
+def response = groovyUtils.getXmlHolder ("checkInvoiceDishonered#ResponseAsXml");
+def invoiceStatus = response.getNodeValue ("//LONINV_STATUS");
+log.info("INVOICE Status = "+invoiceStatus);
+def invoiceProduced = response.getNodeValue ("//LONINV_PRODUCED") ;
+log.info("INVOICE Produced = "+invoiceProduced);
+def invoicePayerCollection = response.getNodeValue ("//LONINV_PAYER_COLLECTION") ;
+log.info("INVOICE Payer Collection = "+invoicePayerCollection);
+
+response = groovyUtils.getXmlHolder ("checkInvoiceDishonered-LNVTL#ResponseAsXml");
+def nvtlRecordStatus = response.getNodeValue ("//NVTL_RECORD_STATUS");
+log.info("NVTL Record Status = "+nvtlRecordStatus);
+
+if(invoiceStatus.toString().equals('0') &amp;&amp;  invoicePayerCollection.toString().equals('N')){
+	log.info("Invoice with Invoice Number "+invoiceNumber+ " Dishonured ");
+	assert(true);
+}else{
+ 	 log.info("Invoice not dishonured ");
+ 	 assert(false);
+}</script></con:config></con:testStep><con:testStep type="request" name="createContractFee" id="418a7519-6f34-4b4b-9bc7-8452cd907339" disabled="true"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Calms2CMSServiceSOAP</con:interface><con:operation>createContractFee</con:operation><con:request name="createContractFee" id="4e629934-d4e0-4fc3-9111-65187af584de"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvcalms01/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:con="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract" xmlns:fee="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Fee" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">
+  <soapenv:Header/>
+  <soapenv:Body>
+     <con:createContractFee>
+        <con:externalContractNumber>${#Project#externalContractNumberEOT}</con:externalContractNumber>
+        <!--Optional:-->
+        <con:effectiveDate>2018-09-10</con:effectiveDate>
+        <con:listOfContractFee>
+           <!--1 or more repetitions:-->
+           <fee:contractFee>
+            <!--fee:paymentBlock>true</fee:paymentBlock-->
+              <fee:fee>
+                 <!--Optional:-->
+                 <fee:feeCategory>0011</fee:feeCategory>
+                 <!--Optional:-->
+                 <fee:feeDescription>DishonourFee</fee:feeDescription>
+                 <!--Optional:-->
+                 <fee:feeAmount>
+                    <!--Optional:-->
+                    <fee:grossAmount>100</fee:grossAmount>
+                    <!--Optional:-->
+                    <fee:netAmount>100</fee:netAmount>
+                    <!--Optional:-->
+                    <fee:taxAmount>0.0</fee:taxAmount>
+                    <fee:taxCode>
+                       <com:cmsCode>5250</com:cmsCode>
+                    </fee:taxCode>
+                 </fee:feeAmount>
+              </fee:fee>
+              <fee:feeComment>DDPmtBlkTest</fee:feeComment>
+              <fee:comment>PmtBlkTest</fee:comment>
+               <fee:invoiceNumber>${#TestSuite#invoiceNumber}</fee:invoiceNumber>
+              <fee:eventDate>${#TestSuite#effectiveDate}</fee:eventDate>
+              <fee:processingRecharge>true</fee:processingRecharge>
+              <!--Optional:-->
+              <fee:processingFeeCategory>3</fee:processingFeeCategory>
+              <!--Optional:-->
+              <fee:processingFeeAmount>
+                 <!--Optional:-->
+                 <fee:grossAmount>15.11</fee:grossAmount>
+                 <!--Optional:-->
+                 <fee:netAmount>10.11</fee:netAmount>
+                 <!--Optional:-->
+                 <fee:taxAmount>5.00</fee:taxAmount>
+              </fee:processingFeeAmount>
+         <fee:externalReference>RefPaymentBlockElement1180000000072567</fee:externalReference>
+           </fee:contractFee>
+            </con:listOfContractFee>
+        <con:territoryCode>DEU</con:territoryCode>
+                <con:applicationInfo>
+           <!--Optional:-->
+           <com:tenantInfo>
+              <com:tenantCode>149</com:tenantCode>
+           </com:tenantInfo>
+           <!--Optional:-->
+           <com:securityAudit>
+              <com:messageId>1458584647444</com:messageId>
+              <com:timestamp>2017-05-24T11:59:42.090+05:30</com:timestamp>
+              <com:clientAppId>P021692679</com:clientAppId>
+              <com:userId>kalyanan</com:userId>
+              <com:clientLanguage>en_AU</com:clientLanguage>
+           </com:securityAudit>
+        </con:applicationInfo>
+     </con:createContractFee>
+  </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="33576a7b-f794-4987-aa07-b6915dc3ddac"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="1001896e-5790-445c-9138-036d7cc48133"><con:authProfile>No Authorization</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:properties><con:property><con:name>invoiceNumber</con:name><con:value>2180000002670</con:value></con:property><con:property><con:name>invoiceTotalPaidGross</con:name><con:value>33145.74</con:value></con:property><con:property><con:name>invoiceTotalPaidVat</con:name><con:value>0</con:value></con:property><con:property><con:name>invoiceTotalPaidNet</con:name><con:value>33145.74</con:value></con:property><con:property><con:name>effectiveDate</con:name><con:value>2018-04-13</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>d5dc5176-caff-45e5-8864-694c51d51baa</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>2a56380b-5e14-45dc-96e5-cd6219c41f78</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>c6f1be5f-74b1-4612-8435-fee33f5d379e</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>22e88607-c727-4869-b9d2-4964a425a775</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>a870efba-f3e2-4ff7-b523-b6670fecd18e</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>30dfb8bf-aa10-4549-987e-0cfb6c1244cf</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>870b6e4f-c817-4bb1-9292-a7dae6e361b4</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>ac65e50b-c6ab-49fc-b861-72f495609e16</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>8a05ce6b-35bd-4d6d-b9bb-2e0a529e843f</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>0be3592e-2b58-4f77-86f1-a7bc639cf31b</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>e7f48a0e-a9d4-4f0a-8acd-4db89f31ccc5</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>9ed81ffa-7675-4f61-b818-d06b05fffd44</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>9e902bd7-154b-4cba-806f-95af74e571b4</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>1c55d97e-30c0-4480-b0ee-2a6503c538f3</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>d123b94b-7291-4375-b0d2-0a4b344857e4</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>b992cbd2-7629-4302-ad51-08c73b5544ca</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>cff0da0a-95cf-4e66-ba47-843024c0ffd9</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>ea133da1-3824-4688-b79c-535758e794ac</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>f52c0b69-37ca-48b8-bd47-75e0e5b9d9b2</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>d3a493e8-2b8f-45b6-98e8-bded894db586</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>3217c3ad-2b1b-4f9c-b0e3-2ddcd7340bdb</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>b583f161-b84e-44f1-aa1d-fd3f6570e34e</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>33c37778-09ee-47d4-ab9f-aad13546e48c</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>c6c473d8-7c64-4c0d-9b5b-d63df44a8eee</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>

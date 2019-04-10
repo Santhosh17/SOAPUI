@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:operation id="a09d442f-4304-456f-83c3-66971731cd2b" isOneWay="false" action="createExternalDocument" name="createExternalDocument" bindingOperationName="createExternalDocument" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="33567bbc-b34c-43bc-8ab1-cb768a4c4f99fileName">createExternalDocument</con:setting><con:setting id="a09d442f-4304-456f-83c3-66971731cd2bfileName">createExternalDocument</con:setting></con:settings><con:call id="6341c504-cef7-40bd-9b10-1ee6b327d8eb" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://mkvsudfsdock11:81/calms2cms/services/Calms2CMS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:con="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/Contract" xmlns:com="http://www.whiteclarkegroup.com/services/Calms2CMS/schema/CommonTypes">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <con:createExternalDocument>\r
+         <con:proposal>\r
+            <con:proposalSource>?</con:proposalSource>\r
+            <con:proposalNumber>?</con:proposalNumber>\r
+            <con:externalContractNumber>?</con:externalContractNumber>\r
+         </con:proposal>\r
+         <con:listofDocuments>\r
+            <!--Zero or more repetitions:-->\r
+            <con:document>\r
+               <!--Optional:-->\r
+               <con:pmsDocId>?</con:pmsDocId>\r
+               <!--Optional:-->\r
+               <con:externalDocId>?</con:externalDocId>\r
+               <!--Optional:-->\r
+               <con:verificationStatus>?</con:verificationStatus>\r
+               <!--Optional:-->\r
+               <con:reviewStatus>?</con:reviewStatus>\r
+               <!--Optional:-->\r
+               <con:receivedStatus>?</con:receivedStatus>\r
+               <!--Optional:-->\r
+               <con:templateName>?</con:templateName>\r
+               <!--Optional:-->\r
+               <con:externalDocument>?</con:externalDocument>\r
+            </con:document>\r
+         </con:listofDocuments>\r
+         <con:applicationInfo>\r
+            <!--Optional:-->\r
+            <com:tenantInfo>\r
+               <com:tenantCode>?</com:tenantCode>\r
+            </com:tenantInfo>\r
+            <!--Optional:-->\r
+            <com:securityAudit>\r
+               <com:messageId>?</com:messageId>\r
+               <com:timestamp>?</com:timestamp>\r
+               <com:clientAppId>?</com:clientAppId>\r
+               <com:userId>?</com:userId>\r
+               <!--Optional:-->\r
+               <com:authorisingUserId>?</com:authorisingUserId>\r
+               <com:clientLanguage>?</com:clientLanguage>\r
+            </com:securityAudit>\r
+         </con:applicationInfo>\r
+      </con:createExternalDocument>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508" action="createExternalDocument"/><con:environmentSpec><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:call><con:environmentSpec><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:operation>

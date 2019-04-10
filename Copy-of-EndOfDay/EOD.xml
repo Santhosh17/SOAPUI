@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="7c8011a4-e072-40e5-b8f9-012f283d2ec5" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="EOD" searchProperties="true" timeout="0" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="76da1c44-e525-4f55-b324-e5d9c7c2d006fileName">EOD</con:setting><con:setting id="7c8011a4-e072-40e5-b8f9-012f283d2ec5fileName">EOD</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="httprequest" name="HTTP Request" id="904999b6-5fc4-4b32-a963-60e11e122b33"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="a74a5069-f281-438d-b34b-d2fbff474f8b" name="HTTP Request" postQueryString="false" mediaType="text/xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint xsi:nil="true"/><con:request/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><con:parameter><con:name>jobParameters</con:name><con:value>Territory.Code(long)=${#TestCase#TerritoryCode} , Execution.Time =Execution.Time=2018/03/22 11:40:58</con:value><con:style>QUERY</con:style><con:default>Territory.Code(long)=${#TestCase#TerritoryCode} , Execution.Time =Execution.Time=2018/03/22 11:40:58</con:default></con:parameter></con:parameters><con:environmentSpec><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:config></con:testStep><con:testStep type="groovy" name="EOD Groovy Script" id="10454059-5748-4e13-a915-6582217277d0"><con:settings/><con:config><script>def projName = testRunner.testCase.testSuite.project.name
+def suiteName = testRunner.testCase.testSuite.name
+def tcName   = testRunner.testCase.name
+
+// Use soapUI context object to log project endpoint and Database.
+def endpoint = context.expand( '${#Project#endpoint}' ) 
+def eodUrl = context.expand('${#TestCase#EODUrl}')
+
+log.info "*********************************************************************"
+log.info "			Running Project : "  + projName 
+log.info "			Suite : "  + suiteName 
+log.info "			Testcase : " + tcName
+log.info "			Endpoint : " + endpoint
+log.info "			EodUrl :   " + eodUrl
+log.info "*********************************************************************"
+
+def iterationValue = testRunner.testCase.getPropertyValue("iterationValue")
+iterationValue = iterationValue.toInteger()
+log.info  "Iteration value is   : " + iterationValue 
+
+//def noOfDaysForEODExecution = context.expand( '${#TestCase#noOfDaysForEODExecution}' )
+def noOfDaysForEODExecution = testRunner.testCase.getPropertyValue ("noOfDaysForEODExecution")
+noOfDaysForEODExecution= noOfDaysForEODExecution.toInteger();
+log.info "noOfDaysForEODExecution is : "+ noOfDaysForEODExecution
+
+if (iterationValue > noOfDaysForEODExecution){
+	log.info ("Exit Groovy Data Source Looper")	
+	testRunner.cancel("Iteration is done")		
+}else{
+for( i in iterationValue..noOfDaysForEODExecution ) {
+	iterationValue = testRunner.testCase.getPropertyValue("iterationValue")
+	iterationValue = iterationValue.toInteger()
+	log.info " Iteration Value  "  + iterationValue
+	
+	testRunner.runTestStepByName( "PostEODMainTask")
+	testRunner.runTestStepByName( "Delay")
+	testRunner.runTestStepByName( "getEODMainTask")
+	testRunner.runTestStepByName( "Validate EOD Status")
+
+	if (iterationValue> noOfDaysForEODExecution|| iterationValue== noOfDaysForEODExecution){
+	log.info ("Exit Groovy Data Source Looper")
+	testRunner.cancel("Iteration is done")
+	
+	}
+	else{
+		iterVal = iterationValue+1
+		log.info iterVal
+		testRunner.testCase.setPropertyValue("iterationValue", iterVal.toString() );
+	}
+}
+}
+
+
+</script></con:config></con:testStep><con:testStep type="httprequest" name="PostEODMainTask" id="e273f5b7-3691-46f7-8f1e-15bb8e37a064" disabled="true"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" id="c9b215a1-dd46-49e4-8509-6b2a3ff76fd9" name="PostEODMainTask" postQueryString="false" mediaType="text/xml" downloadIncludedResources="false" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.impl.support.AbstractHttpRequest@follow-redirects">true</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>${#TestCase#EODURL}</con:endpoint><con:request/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><con:parameter><con:name>jobParameters</con:name><con:value>Territory.Code(long)=${#TestCase#TerritoryCode} , Execution.Time =Execution.Time=2018/03/22 11:40:58</con:value><con:style>QUERY</con:style><con:default>Territory.Code(long)=${#TestCase#TerritoryCode} , Execution.Time =Execution.Time=2018/03/22 11:40:58</con:default></con:parameter></con:parameters><con:environmentSpec><con:entry environmentId="2df33d9c-03a8-414c-ade6-61994cc4ada6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="2a361352-f730-4850-9559-b73996a5477d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="06de0333-6715-4960-a9f7-88e5be93a72b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="df1908ce-af9d-4514-9808-3d96da56cf95"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:config></con:testStep><con:testStep type="delay" name="Delay" id="0f3613be-52a0-4f93-8ada-cb137bbc586c" disabled="true"><con:settings/><con:config><delay>100</delay></con:config></con:testStep><con:testStep type="httprequest" name="getEODMainTask" id="abbeb43d-95c1-4671-9f47-98cdb8fb2ea1" disabled="true"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" id="c9b215a1-dd46-49e4-8509-6b2a3ff76fd9" name="getEODMainTask" postQueryString="false" mediaType="text/xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>${#TestCase#EODURL}</con:endpoint><con:request/><con:assertion type="JsonPath Match" id="75874be5-4db1-49f2-ba4e-90874889cec6" name="JsonPath Match" disabled="true"><con:configuration/></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><con:parameter><con:name>jobParameters</con:name><con:value>Territory.Code(long)=${#TestCase#TerritoryCode}</con:value><con:style>QUERY</con:style><con:default>Territory.Code(long)=${#TestCase#TerritoryCode}</con:default></con:parameter></con:parameters><con:environmentSpec><con:entry environmentId="2df33d9c-03a8-414c-ade6-61994cc4ada6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="2a361352-f730-4850-9559-b73996a5477d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="06de0333-6715-4960-a9f7-88e5be93a72b"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="df1908ce-af9d-4514-9808-3d96da56cf95"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:config></con:testStep><con:properties><con:property><con:name>iterationValue</con:name><con:value>2</con:value></con:property><con:property><con:name>noOfDaysForEODExecution</con:name><con:value>3</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>073dfc21-17a0-4db6-86cd-1a0deeea30d9</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>

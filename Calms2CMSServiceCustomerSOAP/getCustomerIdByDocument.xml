@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:operation id="5e4d1e5b-29a5-4bb1-81f5-afd509a36b6a" isOneWay="false" action="getCustomerIdByDocument" name="getCustomerIdByDocument" bindingOperationName="getCustomerIdByDocument" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="f75a3335-dab6-4a5b-a5bc-71e3f3ca5119fileName">getCustomerIdByDocument</con:setting><con:setting id="5e4d1e5b-29a5-4bb1-81f5-afd509a36b6afileName">getCustomerIdByDocument</con:setting></con:settings><con:call id="9a8b0cec-ef3a-4da8-819e-7419099d2707" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://nssrvcalms01/calms2cms/services/Calms2CMSCustomer</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://www.whiteclarkegroup.com/services/Calms2CMSCustomer/schema/Customer">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <cus:getCustomerIdByDocument>\r
+         <cus:idValue>?</cus:idValue>\r
+         <cus:idDocumentType>?</cus:idDocumentType>\r
+         <cus:issuingCountry>?</cus:issuingCountry>\r
+         <cus:audit>\r
+            <cus:messageId>?</cus:messageId>\r
+            <cus:timestamp>?</cus:timestamp>\r
+            <cus:clientAppId>?</cus:clientAppId>\r
+            <cus:userId>?</cus:userId>\r
+            <!--Optional:-->\r
+            <cus:authorisingUserId>?</cus:authorisingUserId>\r
+            <cus:clientLanguage>?</cus:clientLanguage>\r
+         </cus:audit>\r
+      </cus:getCustomerIdByDocument>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508" action="getCustomerIdByDocument"/><con:environmentSpec><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:call><con:call id="64c395ee-e7c4-4d11-aad3-957b784361a1" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://mkvsudfsdock11:81/calms2cms/services/Calms2CMSCustomer</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://www.whiteclarkegroup.com/services/Calms2CMSCustomer/schema/Customer">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <cus:getCustomerIdByDocument>\r
+         <cus:idValue>?</cus:idValue>\r
+         <cus:idDocumentType>?</cus:idDocumentType>\r
+         <cus:issuingCountry>?</cus:issuingCountry>\r
+         <cus:audit>\r
+            <cus:messageId>?</cus:messageId>\r
+            <cus:timestamp>?</cus:timestamp>\r
+            <cus:clientAppId>?</cus:clientAppId>\r
+            <cus:userId>?</cus:userId>\r
+            <!--Optional:-->\r
+            <cus:authorisingUserId>?</cus:authorisingUserId>\r
+            <cus:clientLanguage>?</cus:clientLanguage>\r
+         </cus:audit>\r
+      </cus:getCustomerIdByDocument>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508" action="getCustomerIdByDocument"/><con:environmentSpec><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="016d40b6-6858-4bb5-9df3-ecea7bf8cefe"><con:authProfile>No Authorization</con:authProfile></con:entry></con:environmentSpec></con:call><con:environmentSpec><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:operation>

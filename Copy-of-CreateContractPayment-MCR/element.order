@@ -1,0 +1,13 @@
+createContractPayment---MCR.xml
+Invoice-number-not--provided-Validate-the-paid-Amount.xml
+No-Territory-Code.xml
+Valid-Territory-Code-FRA.xml
+Valid-Territory-code--DE.xml
+Invalid-Invoice-Number.xml
+Transaction-amount-lesser-than-Invoice-Amount%2C-invoice-will-be-partially-paid.xml
+Invalid-Contract--Number---verify-Territory-code-in-LSUSP-%2C-it-should-be-API-territory-code.xml
+Valid-Territory-Code-GB.xml
+Input-Invalid-Payment-type-%2C-it-is-Reversal.xml
+Invalid-Effective-Date.xml
+Invalid-Payment-Type--enter-text.xml
+Invalid-Transaction-amount---Zero.xml

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="9ed58ec4-b6d6-4a62-bfb8-28a37371af02" discardOkResults="false" failOnError="false" failTestCaseOnErrors="true" keepSession="false" name="CMS-10188-CreateContractBundle-CustType-P" searchProperties="true" timeout="0" maxResults="54784455" wsrmEnabled="false" wsrmVersion="1.0" wsrmAckTo="" amfAuthorisation="false" amfEndpoint="" amfLogin="" amfPassword="" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="ef32b6d0-4c11-4a8b-ae8b-a155ae570d4bfileName">TestCase-1</con:setting><con:setting id="09a2b238-6089-4d94-a814-532e3ddbc556fileName">CMS-8323-CreateContractBundle-Valid</con:setting><con:setting id="6bd550a6-8459-492a-b319-24c29ca5ba55fileName">CMS-8323-CreateContractBundle-Valid</con:setting><con:setting id="fdd17e8b-3da2-40e4-8e98-717cec370973fileName">CMS-10188-CreateContractBundle-CustType-C</con:setting><con:setting id="a4ec2412-279e-4299-9041-b7bf0cd5bec3fileName">CMS-10188-CreateContractBundle-CustType-P</con:setting><con:setting id="9ed58ec4-b6d6-4a62-bfb8-28a37371af02fileName">CMS-10188-CreateContractBundle-CustType-P</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="Information" id="b5795769-6d46-417d-847b-21ce7411e901"><con:settings/><con:config><script>// Env - BMWDEV01
+
+//Automated scripts for different customer types like "corporation customer" and "non corporation customers"
+
+
+/*
+* *************Valid Scenarios***************
+* 
+*Automated scripts for CreateContractBundle With Customer type P
+*
+* *******************************************
+*/
+
+
+/*
+*******************Validations***********
+* responseStatus=="Success" 
+* requestCustType == db_acct_cust_type 
+* db_acct_corporation == expectedCorporationCustomer  
+* responseExternalContractNumber == db_lNKNUM_EXTERNAL_REF_FIELD  
+* responseCMSId == db_lOAN_ICON_GROUP  
+* requestBaselCode == db_acct_basel_class_code 
+* requestPreviousName == db_acct_previous_name  
+* requestDriversLicense == db_acct_drivers_lic  
+* reqPrivacyConsent == db_acct_privacy_consent 
+* requestCustomerStatus == db_acct_customer_status  
+* reqDeceased == db_acct_Deceased_Flag  
+* reqIsNegativeInfo == db_acct_neg_info 
+* requestSuffix == db_acct_suffix_alpha  
+* requestSuffixCode == acct_Suffix  
+* requestMaidenName == db_acct_maiden_name  
+* reqMotabilityFlag == db_acct_motability_flag  
+* requestCountryResidence == db_acct_ctry_Residence  
+* reqDirectMarketingPost == db_acct_lit_request
+* 
+*******************************************
+*/
+
+ 
+/*
+*************TABLES*************************
+*
+* LINTRANS  
+* LACMSTR
+* LLOAN 
+* LLNKNUM
+*
+*********************************************
+*/
+
+
+</script></con:config></con:testStep><con:testStep type="groovy" name="SetExcelDataRow" id="04626a03-22a8-4c94-b93c-15f46729f90c"><con:settings/><con:config><script>testRunner.testCase.testSuite.setPropertyValue("TestStartCell", "A26")
+testCaseName = testRunner.testCase.getName()
+testRunner.testCase.testSuite.setPropertyValue("TestCaseName", testCaseName)</script></con:config></con:testStep><con:testStep type="calltestcase" name="Run TestCase" id="0b384210-dcd2-498d-8eab-9617edeb03f9"><con:settings/><con:config xsi:type="con:RunTestCaseStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:targetTestCase>7615c421-f4e2-45e8-94c8-56baf1c35868</con:targetTestCase><con:properties/><con:returnProperties/><con:runMode>PARALLELL</con:runMode></con:config></con:testStep><con:testStep type="assertionteststep" name="Assertion" id="065d1672-89da-45dd-af0b-49f918ea9939"><con:settings/><con:config xsi:type="con:AssertionTestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:entry><con:id>46d5df1c-cfe6-4539-9af3-eecc90c201c6</con:id><con:isGroup>false</con:isGroup><con:sourceId>d28ca9c1-6c59-4e3d-a244-d0591c5c8892</con:sourceId><con:propertyName>TestResult</con:propertyName><con:assertion type="Simple Equals" name="Equals" id="76dd1f9d-32a2-47b7-84f7-83fd50346586"><con:configuration><patternText>PASS</patternText><caseSensitive>true</caseSensitive></con:configuration></con:assertion></con:entry></con:config></con:testStep><con:properties/><con:reportParameters/><con:breakPoints><con:testStepId>bb796fd1-7596-4b06-9553-fe4ae72c019a</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>c21bd6c0-9dcf-48b4-a42c-bb66d9b85a2e</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>c5200f71-a0bc-4b7a-9613-0a5faa8145c1</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="112f4a66-5a4b-434d-b2bd-545253fd642c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4143f28d-a750-4734-bce6-5c2a6d3d7f9c"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="b76764fd-8ea2-4d21-b7df-4cb5351d4f53"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a6566457-9045-4b25-ac54-078c86d840ea"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="ae8e0480-fa17-44a7-bcc7-f4a450334b74"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="9f36af4a-1bb6-4e88-a92d-65ff3a0063c2"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="1b4cb691-92fd-43d3-8eb1-2fffb04f906d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d36d30f7-59cd-4be8-8b69-bbe1d5a35292"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="d2d1977c-5412-4ad0-aead-f799c1228abb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="31740623-c48a-4d64-ba9e-c19c0684b8f8"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="24ca39f1-63a3-4ac0-932a-b6649948b285"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>
